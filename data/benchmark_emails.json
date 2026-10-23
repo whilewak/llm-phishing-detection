@@ -1,0 +1,58 @@
+[
+  {
+    "id": "CASE_1_CREDENTIAL_HARVEST",
+    "ground_truth": "PHISHING",
+    "attack_vector": "Credential Harvesting",
+    "subject": "CRITICAL: Microsoft 365 Password Expires in 2 Hours",
+    "from": "security-alert@micros0ft-portal-verify.com",
+    "body": "Your corporate Microsoft 365 password will expire today. All email access and OneDrive files will be locked unless verified immediately. Click here to confirm your credentials: http://login.micros0ft-portal-verify.com/auth"
+  },
+  {
+    "id": "CASE_2_LEGITIMATE_TRANSACTIONAL",
+    "ground_truth": "BENIGN",
+    "attack_vector": "N/A - Legitimate",
+    "subject": "Your monthly GitHub invoice is now available",
+    "from": "billing@github.com",
+    "body": "Hello, your monthly invoice for GitHub Team subscription (Invoice #INV-2026-9938) is now available. Your credit card ending in 4102 was charged $21.00. You can download your PDF receipt from your account settings at any time. Thanks for using GitHub!"
+  },
+  {
+    "id": "CASE_3_CEO_FRAUD_BEC",
+    "ground_truth": "PHISHING",
+    "attack_vector": "Business Email Compromise (BEC)",
+    "subject": "Quick task / in a meeting",
+    "from": "ceo.executive.urgent@gmail.com",
+    "body": "Are you at your desk? I am stuck in a confidential board meeting with clients and need a quick favor. Please purchase 4 Apple gift cards of $200 each for client gifts and email me the redemption codes immediately. I will reimburse you by EOD."
+  },
+  {
+    "id": "CASE_4_INTERNAL_IT_ANNOUNCEMENT",
+    "ground_truth": "BENIGN",
+    "attack_vector": "N/A - Legitimate",
+    "subject": "Scheduled Maintenance: Core Network Switch Upgrade this Sunday",
+    "from": "it-support@corp.company.com",
+    "body": "Team, please be aware that internal IT will be upgrading network switches in Building 4 this Sunday, October 26, from 2:00 AM to 5:00 AM. Access to local file shares and printers may be temporarily disrupted. Cloud services will remain unaffected. No user action is required."
+  },
+  {
+    "id": "CASE_5_FAKE_INVOICE_MACRO",
+    "ground_truth": "PHISHING",
+    "attack_vector": "Malicious Attachment / Macro Lure",
+    "subject": "OVERDUE PAYMENT NOTICE: Invoice #84109 Final Notice",
+    "from": "accounts-receivable@fastpay-billing-collections.net",
+    "body": "Attached is the final notice for overdue invoice #84109 in the amount of $4,850.00. Continued non-payment will result in legal referral within 24 hours. Open the attached document and enable content to review payment instructions."
+  },
+  {
+    "id": "CASE_6_SHIPPING_DELIVERY_SCAM",
+    "ground_truth": "PHISHING",
+    "attack_vector": "Package Delivery Scam",
+    "subject": "Failed Delivery Attempt: Package #USPS-9821034-US",
+    "from": "notification@usps-tracking-support-desk.com",
+    "body": "We attempted to deliver your parcel on Oct 23, but no authorized recipient was present. To reschedule delivery and pay the $1.99 redelivery fee, please visit our portal within 12 hours: http://usps-redelivery-portal.info/pay"
+  },
+  {
+    "id": "CASE_7_LEGITIMATE_TEAM_MEETING",
+    "ground_truth": "BENIGN",
+    "attack_vector": "N/A - Legitimate",
+    "subject": "Updated agenda for Q4 Product Planning sync tomorrow",
+    "from": "alex.chen@company.com",
+    "body": "Hi everyone, I have updated the slide deck for our quarterly planning meeting tomorrow at 10 AM PST. Please take 5 minutes to review the roadmap items before the call. Let me know if you have any questions!"
+  }
+]
