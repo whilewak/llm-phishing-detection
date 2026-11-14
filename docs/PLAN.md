@@ -29,6 +29,26 @@ Dropped:
 
 The project uses one ready-made combined public phishing dataset for now, with our own cleaning and frozen splits. Results on it are labelled **preliminary** until a dataset we build ourselves exists (see [Later: building our own dataset](#later-building-our-own-dataset)).
 
+**Chosen (Phase 1):** [Phishing Email Curated Datasets](https://zenodo.org/records/8339691) (Champa et al., Zenodo record 8339691, CC-BY-4.0), 9 of its 11 CSVs: CEAS-08, Nazario, Nigerian Fraud, SpamAssassin, TREC-05/06/07, Enron, Ling. Nazario_5 and Nigerian_5 are left out (they repeat the phishing and add legitimate mail of unstated origin). Frozen as `data/splits/champa2023-v1`:
+
+| Split | Emails | Phishing | Legitimate |
+| --- | --- | --- | --- |
+| Train | 119,755 | 53,598 | 66,157 |
+| Validation | 25,660 | 11,484 | 14,176 |
+| Test | 25,666 | 11,487 | 14,179 |
+| Validation LLM subsample | 2,500 | 1,118 | 1,382 |
+| Test LLM subsample | 2,500 | 1,118 | 1,382 |
+
+How it meets the requirements below, and where it doesn't:
+
+- Source recorded: one file per corpus, kept as `source` on every email.
+- Spam vs. phishing: **not separated.** Source label 1 means spam or phishing and is mapped to phishing (decision: matches most papers). Nazario and Nigerian Fraud are phishing/fraud by construction and are reported separately as "true phishing" recall. The test LLM subsample holds only 57 of them (20 Nazario, 37 Nigerian), so that recall has a wide confidence interval there.
+- Fields: Enron and Ling have no sender, and their text is lowercased and tokenised ("may 25 , 2001"), a visible source artifact.
+- Deduplication removed 5,555 exact and 31,225 near duplicates (MinHash, Jaccard ≥ 0.8 on 5-word shingles), mostly Enron emails that also appear in TREC-05; the raw TREC-05 copy is kept. 363 emails in duplicate groups with conflicting labels were dropped. 876 TREC rows with a blank label were dropped.
+- Cleaning strips header lines, inline message IDs and RFC 2822 dates from bodies and caps bodies at 100k characters (77 truncated).
+
+Rebuild: `python scripts/download_data.py` then `python scripts/build_splits.py` (needs the `data` extra). Loading a split checks its ids and content against the manifest.
+
 Choosing the set — check each candidate (e.g. `ealvaradob/phishing-dataset` on Hugging Face, or the Kaggle sets that merge Enron, Nazario, CEAS, SpamAssassin and others) for:
 
 | Requirement | Why | If missing |
@@ -62,7 +82,7 @@ Splits are built once, saved as a manifest of email IDs with a hash, and never c
 | Test: cross-source | One whole source left out of training (only if source is recorded). TF-IDF + LR and one fine-tuned encoder are retrained per held-out source; zero-shot models are just scored per source | One source per run | Is it learning the source? |
 | Test: LLM subsample | Stratified by label, drawn from the test split | ~2–3k | Like-for-like table across all models |
 
-Note, to revisit once the dataset is chosen: a validation split of "a few thousand" emails gives only ~10–20 false positives at the 1% false-positive rate, which is too few to set thresholds reliably. Likely fix: make validation at least as large as the LLM subsample, and size the other splits around it.
+Validation size, revisited after Phase 1: the full validation split has 14,176 legitimate emails, so about 140 false positives at the 1% rate; that is enough to set thresholds for the non-LLM models. The validation LLM subsample has 1,382 legitimate emails, so only about 14 false positives at 1%; thresholds set on it for Qwen and Claude will be noisy. Revisit before Phase 4–5 (for example, a larger validation subsample for Qwen, which runs locally at no API cost).
 
 What each model may use:
 
@@ -162,7 +182,7 @@ class TrainingCost:
 ```
 llm-phishing-detection/
   pyproject.toml
-  configs/models/          # one YAML per model: version, data allowed, params
+  configs/models/          # one TOML per model: version, data allowed, params
   data/
     raw/                   # downloaded combined set (git-ignored)
     processed/             # cleaned JSONL in the shared schema
@@ -172,7 +192,7 @@ llm-phishing-detection/
     detectors/             # rules, classical, encoders, laya, slm, llm, cascade
     eval/                  # harness, metrics, statistics, timing
     report/                # tables and Pareto plots
-  scripts/evaluate.py      # python scripts/evaluate.py --model configs/models/laya.yaml
+  scripts/evaluate.py      # python scripts/evaluate.py --model configs/models/laya.toml --test <emails>
   results/                 # one JSON per run
   tests/                   # unit tests with stub detectors
 ```

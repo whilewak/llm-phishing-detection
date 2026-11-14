@@ -1,0 +1,201 @@
+{
+  "version": "champa2023-v1",
+  "dataset": {
+    "record": "8339691",
+    "doi": "10.5281/zenodo.8339691",
+    "title": "Phishing Email Curated Datasets",
+    "license": "cc-by-4.0",
+    "files": {
+      "CEAS_08.csv": "md5:1f0d59191eec892a709995d48cd8decb",
+      "Enron.csv": "md5:10489e0fdcc8af6fe62135c689367d40",
+      "Ling.csv": "md5:eac6399dc0c7ae455aebb64423dadc8b",
+      "Nazario.csv": "md5:4022d055bb7cf8602f30f768f652e91e",
+      "Nigerian_Fraud.csv": "md5:65fd47ae7cb4ae762e4be42b11905d63",
+      "SpamAssasin.csv": "md5:d921e0b2333bfaa058bd38193e6b3fbd",
+      "TREC_05.csv": "md5:ef4023fa9e64247212487b77a4c7d98e",
+      "TREC_06.csv": "md5:b840dc9477f86c098a71a0dfd25c928e",
+      "TREC_07.csv": "md5:e5a5ae0de1580965191cb32806dc0dae"
+    }
+  },
+  "processed_file": "data/processed/champa2023-v1.jsonl",
+  "label_mapping": "source label 1 (spam or phishing) -> phishing; 0 -> legitimate",
+  "true_phishing_sources": [
+    "nazario",
+    "nigerian"
+  ],
+  "seed": 20261114,
+  "fractions": {
+    "train": 0.7,
+    "val": 0.15,
+    "test": 0.15
+  },
+  "llm_subsample_size": 2500,
+  "read_per_source": {
+    "ceas08": 39154,
+    "nazario": 1563,
+    "nigerian": 3332,
+    "spamassassin": 5809,
+    "trec05": 55275,
+    "trec06": 16400,
+    "trec07": 53757,
+    "enron": 29767,
+    "ling": 2859
+  },
+  "dropped_while_reading": {
+    "mbox_artifact": 2,
+    "empty": 0,
+    "bad_label": 876
+  },
+  "bodies_truncated": 77,
+  "dedup": {
+    "exact_duplicates": 5555,
+    "near_duplicates": 31225,
+    "mixed_label_groups": 55,
+    "mixed_label_emails": 363,
+    "kept": 171081,
+    "params": {
+      "shingle_tokens": 5,
+      "num_perm": 128,
+      "bands": 16,
+      "rows_per_band": 8,
+      "jaccard_threshold": 0.8
+    }
+  },
+  "splits": {
+    "train": {
+      "n": 119755,
+      "labels": {
+        "legitimate": 66157,
+        "phishing": 53598
+      },
+      "by_source_label": {
+        "ceas08/legitimate": 10713,
+        "ceas08/phishing": 10110,
+        "enron/legitimate": 8254,
+        "enron/phishing": 7349,
+        "ling/legitimate": 1607,
+        "ling/phishing": 286,
+        "nazario/phishing": 976,
+        "nigerian/phishing": 1788,
+        "spamassassin/legitimate": 2724,
+        "spamassassin/phishing": 949,
+        "trec05/legitimate": 19662,
+        "trec05/phishing": 13514,
+        "trec06/legitimate": 8069,
+        "trec06/phishing": 2111,
+        "trec07/legitimate": 15128,
+        "trec07/phishing": 16515
+      },
+      "ids_sha256": "d7fa5eb8dc05d81cc2dbf5170865a3ea3bfa285c5f388ca39c82ea9f633b0cea",
+      "content_fingerprint": "849a2cae21b614eaca19a8353dfb17c002d28d2aa15c6887b1b7d63373b7d671"
+    },
+    "val": {
+      "n": 25660,
+      "labels": {
+        "legitimate": 14176,
+        "phishing": 11484
+      },
+      "by_source_label": {
+        "ceas08/legitimate": 2295,
+        "ceas08/phishing": 2166,
+        "enron/legitimate": 1769,
+        "enron/phishing": 1575,
+        "ling/legitimate": 344,
+        "ling/phishing": 61,
+        "nazario/phishing": 209,
+        "nigerian/phishing": 383,
+        "spamassassin/legitimate": 584,
+        "spamassassin/phishing": 203,
+        "trec05/legitimate": 4213,
+        "trec05/phishing": 2896,
+        "trec06/legitimate": 1729,
+        "trec06/phishing": 452,
+        "trec07/legitimate": 3242,
+        "trec07/phishing": 3539
+      },
+      "ids_sha256": "e2527b25675d642ca08b6faab85f07824b8614d88c4b71ceb25e4cd16e6df3a6",
+      "content_fingerprint": "f7ec83ea8a0ecf66444b2aa3522a9e6b33ba0fadd593726d0919a4c8dc569b4d"
+    },
+    "test": {
+      "n": 25666,
+      "labels": {
+        "legitimate": 14179,
+        "phishing": 11487
+      },
+      "by_source_label": {
+        "ceas08/legitimate": 2296,
+        "ceas08/phishing": 2167,
+        "enron/legitimate": 1769,
+        "enron/phishing": 1575,
+        "ling/legitimate": 345,
+        "ling/phishing": 62,
+        "nazario/phishing": 209,
+        "nigerian/phishing": 383,
+        "spamassassin/legitimate": 584,
+        "spamassassin/phishing": 204,
+        "trec05/legitimate": 4214,
+        "trec05/phishing": 2896,
+        "trec06/legitimate": 1729,
+        "trec06/phishing": 452,
+        "trec07/legitimate": 3242,
+        "trec07/phishing": 3539
+      },
+      "ids_sha256": "f2c993da2ee82e941ac74a6ea7a69604444ddf2f59e27388c0679c8738562673",
+      "content_fingerprint": "83ead5ccec55bb72a501b14bb5376fbdc17813a80510762635c4d6cdf6d925aa"
+    },
+    "val_llm": {
+      "n": 2500,
+      "labels": {
+        "legitimate": 1382,
+        "phishing": 1118
+      },
+      "by_source_label": {
+        "ceas08/legitimate": 224,
+        "ceas08/phishing": 211,
+        "enron/legitimate": 172,
+        "enron/phishing": 153,
+        "ling/legitimate": 34,
+        "ling/phishing": 6,
+        "nazario/phishing": 20,
+        "nigerian/phishing": 37,
+        "spamassassin/legitimate": 57,
+        "spamassassin/phishing": 20,
+        "trec05/legitimate": 411,
+        "trec05/phishing": 282,
+        "trec06/legitimate": 168,
+        "trec06/phishing": 44,
+        "trec07/legitimate": 316,
+        "trec07/phishing": 345
+      },
+      "ids_sha256": "d5b78d76b3d3b698e3dfd6fa7318bfeddb596ff425b540ee075ea8e8705f1093",
+      "content_fingerprint": "f23a630eaa22f64cda9aeb71c407a88a3763fa8bdbf6d5ebe692f8f36bb8e5ae"
+    },
+    "test_llm": {
+      "n": 2500,
+      "labels": {
+        "legitimate": 1382,
+        "phishing": 1118
+      },
+      "by_source_label": {
+        "ceas08/legitimate": 224,
+        "ceas08/phishing": 211,
+        "enron/legitimate": 172,
+        "enron/phishing": 153,
+        "ling/legitimate": 34,
+        "ling/phishing": 6,
+        "nazario/phishing": 20,
+        "nigerian/phishing": 37,
+        "spamassassin/legitimate": 57,
+        "spamassassin/phishing": 20,
+        "trec05/legitimate": 411,
+        "trec05/phishing": 282,
+        "trec06/legitimate": 168,
+        "trec06/phishing": 44,
+        "trec07/legitimate": 316,
+        "trec07/phishing": 345
+      },
+      "ids_sha256": "894743f81dd383bee9c30d10905748c975ce6525d10caf1d0beb5b752fab0d88",
+      "content_fingerprint": "413b900477812f3c09ef1a793a1c8040287d76ab921d150d6efa0c8f5543f9fb"
+    }
+  }
+}
