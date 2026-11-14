@@ -1,0 +1,305 @@
+{
+  "model": "laya-english",
+  "timestamp": "2026-11-14T08:09:08+00:00",
+  "config": {
+    "path": "configs/models/laya.toml",
+    "detector": {
+      "class": "phishbench.detectors.laya:LayaDetector",
+      "data_allowed": [
+        "validation: threshold"
+      ],
+      "params": {
+        "default_model": "english",
+        "risk_threshold": 1.05
+      }
+    },
+    "eval": {
+      "warmup": 3,
+      "batch_size": 1
+    }
+  },
+  "data": {
+    "train": {
+      "n": 0,
+      "labels": {},
+      "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "val": {
+      "n": 0,
+      "labels": {},
+      "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test": {
+      "n": 7,
+      "labels": {
+        "phishing": 4,
+        "legitimate": 3
+      },
+      "fingerprint": "91e7dc9b982c8cbb50a0ef6e17b8990d4087b026ae8beced3569cdeeae343133"
+    }
+  },
+  "threshold": {
+    "value": 0.5,
+    "chosen_on": "default (no usable validation data)"
+  },
+  "errors": {
+    "count": 0,
+    "rate": 0.0,
+    "examples": [],
+    "rule": "always counted wrong: a miss if phishing, a false positive if not"
+  },
+  "score_ties": {
+    "tie_share": 0.0
+  },
+  "calibration": {
+    "ece": 0.33358534798534795
+  },
+  "speed": {
+    "latency_ms_p50": 415.287708863616,
+    "latency_ms_p95": 926.6560829710215,
+    "latency_ms_mean": 493.49483944076513,
+    "throughput_per_s": 2.0262417849635415,
+    "batch_size": 1,
+    "warmup_calls": 3
+  },
+  "inference_cost_usd": {
+    "total": 0.0,
+    "per_million_emails": 0.0
+  },
+  "training_cost": {
+    "wall_clock_s": 0.0,
+    "peak_memory_mb": 0.0,
+    "hardware": "mps",
+    "cost_usd": 0.0,
+    "n_train_emails": 0
+  },
+  "resources": {
+    "peak_rss_mb": 958.671875,
+    "gpu": {
+      "mps_driver_allocated_mb": 3082.8125,
+      "mps_current_allocated_mb": 1610.387451171875
+    }
+  },
+  "environment": {
+    "python": "3.14.8",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "processor": "arm",
+    "packages": {
+      "laya": "0.4.31",
+      "torch": "2.15.0",
+      "transformers": "5.23.0"
+    },
+    "git_commit": "bb0074559f8b4688dba5c057aeb0b81f4d258174-dirty"
+  },
+  "detection": {
+    "headline_recall_at_fpr": {
+      "max_fpr": 0.01,
+      "recall": 1.0,
+      "ci95": [
+        1.0,
+        1.0
+      ],
+      "threshold": 0.28887948717948714
+    },
+    "secondary_recall_at_fpr": {
+      "max_fpr": 0.001,
+      "recall": 1.0,
+      "ci95": [
+        1.0,
+        1.0
+      ],
+      "threshold": 0.28887948717948714
+    },
+    "pr_auc": 1.0,
+    "at_chosen_threshold": {
+      "threshold": 0.5,
+      "tp": 1,
+      "fp": 0,
+      "tn": 3,
+      "fn": 3,
+      "precision": 1.0,
+      "recall": 0.25,
+      "f1": 0.4,
+      "false_positive_rate": 0.0,
+      "precision_at_0.01_prevalence": 1.0
+    }
+  },
+  "predictions": [
+    {
+      "id": "CASE_1_CREDENTIAL_HARVEST",
+      "label": "phishing",
+      "score": 0.5142512820512821,
+      "model_label": "phishing",
+      "latency_ms": 387.42275000549853,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "signals": {
+          "is_phishing": 0.5974,
+          "urgency_pressure": 0.7243,
+          "credential_harvest": 0.7033,
+          "financial_pressure": 0.191,
+          "suspicious_attachment": 0.3688
+        },
+        "classification": "phishing",
+        "classification_probabilities": {
+          "benign": 0.2499,
+          "promotional": 0.3598,
+          "phishing": 0.3903
+        },
+        "composite": 2.00558
+      }
+    },
+    {
+      "id": "CASE_2_LEGITIMATE_TRANSACTIONAL",
+      "label": "legitimate",
+      "score": 0.24532051282051281,
+      "model_label": "legitimate",
+      "latency_ms": 926.6560829710215,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "signals": {
+          "is_phishing": 0.3881,
+          "urgency_pressure": 0.0499,
+          "credential_harvest": 0.0986,
+          "financial_pressure": 0.0672,
+          "suspicious_attachment": 0.5801
+        },
+        "classification": "benign",
+        "classification_probabilities": {
+          "benign": 0.7029,
+          "promotional": 0.1849,
+          "phishing": 0.1122
+        },
+        "composite": 0.95675
+      }
+    },
+    {
+      "id": "CASE_3_CEO_FRAUD_BEC",
+      "label": "phishing",
+      "score": 0.48334358974358976,
+      "model_label": "phishing",
+      "latency_ms": 475.026500178501,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "signals": {
+          "is_phishing": 0.4076,
+          "urgency_pressure": 0.6523,
+          "credential_harvest": 0.3196,
+          "financial_pressure": 0.5961,
+          "suspicious_attachment": 0.505
+        },
+        "classification": "benign",
+        "classification_probabilities": {
+          "benign": 0.4185,
+          "promotional": 0.3072,
+          "phishing": 0.2743
+        },
+        "composite": 1.88504
+      }
+    },
+    {
+      "id": "CASE_4_INTERNAL_IT_ANNOUNCEMENT",
+      "label": "legitimate",
+      "score": 0.11807948717948717,
+      "model_label": "legitimate",
+      "latency_ms": 485.3169589769095,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "signals": {
+          "is_phishing": 0.0,
+          "urgency_pressure": 0.2083,
+          "credential_harvest": 0.0393,
+          "financial_pressure": 0.0841,
+          "suspicious_attachment": 0.3383
+        },
+        "classification": "benign",
+        "classification_probabilities": {
+          "benign": 0.9045,
+          "promotional": 0.0524,
+          "phishing": 0.0431
+        },
+        "composite": 0.46051
+      }
+    },
+    {
+      "id": "CASE_5_FAKE_INVOICE_MACRO",
+      "label": "phishing",
+      "score": 0.28887948717948714,
+      "model_label": "phishing",
+      "latency_ms": 409.14745815098286,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "signals": {
+          "is_phishing": 0.2104,
+          "urgency_pressure": 0.236,
+          "credential_harvest": 0.0379,
+          "financial_pressure": 0.2359,
+          "suspicious_attachment": 0.7937
+        },
+        "classification": "benign",
+        "classification_probabilities": {
+          "benign": 0.8038,
+          "promotional": 0.1222,
+          "phishing": 0.074
+        },
+        "composite": 1.1266299999999998
+      }
+    },
+    {
+      "id": "CASE_6_SHIPPING_DELIVERY_SCAM",
+      "label": "phishing",
+      "score": 0.35307692307692307,
+      "model_label": "phishing",
+      "latency_ms": 415.287708863616,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "signals": {
+          "is_phishing": 0.7483,
+          "urgency_pressure": 0.4689,
+          "credential_harvest": 0.0977,
+          "financial_pressure": 0.1139,
+          "suspicious_attachment": 0.2544
+        },
+        "classification": "phishing",
+        "classification_probabilities": {
+          "benign": 0.2243,
+          "promotional": 0.1664,
+          "phishing": 0.6093
+        },
+        "composite": 1.377
+      }
+    },
+    {
+      "id": "CASE_7_LEGITIMATE_TEAM_MEETING",
+      "label": "legitimate",
+      "score": 0.10188974358974359,
+      "model_label": "legitimate",
+      "latency_ms": 355.60641693882644,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "signals": {
+          "is_phishing": 0.0,
+          "urgency_pressure": 0.0301,
+          "credential_harvest": 0.0719,
+          "financial_pressure": 0.1533,
+          "suspicious_attachment": 0.2845
+        },
+        "classification": "benign",
+        "classification_probabilities": {
+          "benign": 0.931,
+          "promotional": 0.0424,
+          "phishing": 0.0266
+        },
+        "composite": 0.39737
+      }
+    }
+  ]
+}

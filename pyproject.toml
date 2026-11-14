@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "phishbench"
+version = "0.1.0"
+description = "Benchmark comparing rules, classifiers, System 1 models and LLMs for phishing email detection"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+data = ["numpy>=1.26"]
+laya = [
+    "laya>=0.4.14",
+    "torch>=2.0.0",
+    "transformers>=4.48.0",
+    "safetensors>=0.4.0",
+    "huggingface_hub>=0.20.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]

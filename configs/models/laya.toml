@@ -1,0 +1,14 @@
+# Laya System 1 decision model, zero-shot with the POC's hand-picked signal weights.
+# Phase 3 replaces the weights with ones fitted on the validation split.
+
+[detector]
+class = "phishbench.detectors.laya:LayaDetector"
+data_allowed = ["validation: threshold"]
+
+[detector.params]
+default_model = "english"
+risk_threshold = 1.05
+
+[eval]
+warmup = 3
+batch_size = 1
