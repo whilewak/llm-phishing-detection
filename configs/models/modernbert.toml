@@ -1,0 +1,21 @@
+# Fine-tuned ModernBERT-base encoder (~8k max context)
+
+[detector]
+class = "phishbench.detectors.encoder:TransformerEncoderDetector"
+data_allowed = ["train: fit", "validation: threshold"]
+
+[detector.params]
+model_name_or_path = "answerdotai/ModernBERT-base"
+name = "modernbert-base"
+max_length = 512
+batch_size = 4
+gradient_accumulation_steps = 4
+eval_batch_size = 16
+epochs = 2
+lr = 2e-5
+max_train_samples = 2000
+checkpoint_dir = "checkpoints/modernbert_base"
+
+[eval]
+warmup = 3
+batch_size = 16
