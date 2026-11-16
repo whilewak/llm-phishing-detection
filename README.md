@@ -13,7 +13,7 @@ The full project plan is in [docs/PLAN.md](docs/PLAN.md).
 | 1 · Cheap baselines | Handwritten rules, TF-IDF + logistic regression | Local CPU |
 | 2 · Encoders / System 1 | Laya (ModernBERT-large System 1 decision model), fine-tuned ModernBERT and DeBERTa-v3 | Local GPU (Apple MPS) |
 | 3 · Small language model | Qwen ~4B, prompted | Local (MLX) |
-| 4 · Frontier LLM | Claude Sonnet and Haiku | API |
+| 4 · Frontier LLM | Claude Sonnet 5.5 and Haiku 5.5, GPT-6.1 Sol and GPT-6 Luna | API (Amazon Bedrock) |
 
 Each model is also evaluated on its own. The cascade escalates only uncertain emails to the next tier; each tier's model is chosen on validation data. Target: keep ≥95% of the best single model's recall (at 1% false-positive rate) while sending ≤10% of emails to the top tier.
 
@@ -125,7 +125,7 @@ Then:
 python scripts/evaluate.py --model configs/models/<name>.toml --splits data/splits/champa2023-v1 \
     --train train --val val --test test
 
-# Every model, including Qwen and Claude: the shared LLM subsample (the headline comparison)
+# Every model, including Qwen and the frontier LLMs: the shared LLM subsample (the headline comparison)
 python scripts/evaluate.py --model configs/models/<name>.toml --splits data/splits/champa2023-v1 \
     --train train --val val_llm --test test_llm
 ```
@@ -145,5 +145,5 @@ python scripts/evaluate.py --model configs/models/<name>.toml --splits data/spli
 | 2 · Baselines | Handwritten rules must output a 0–1 score (a weighted count of triggered rules), not just yes/no. TF-IDF + LR needs scikit-learn as a new extra. The cross-source test isn't scripted yet: it retrains TF-IDF + LR (and one encoder in Phase 3) once per held-out source. |
 | 3 · Encoders | Fit Laya's signal weights on `val`; the per-email signals are already saved in each prediction's `details`. Check whether laya supports fine-tuning. DeBERTa-v3 reads only 512 tokens. Fine-tuning large models may not fit a 16 GB M4. Laya warns that some of its confidences are uncalibrated. |
 | 4 · SLM | Qwen ~4B via MLX, scored from the probability of the "phishing" answer token. `val_llm` gives only ~14 false positives at 1%; consider a larger validation subsample for Qwen, since it runs locally. |
-| 5 · Frontier LLMs | Claude Sonnet and Haiku return a 0–100 risk score in structured output. Read the API key from an environment variable and never commit it. Cache every response so reruns cost nothing. Report the share of tied scores. |
+| 5 · Frontier LLMs | Built: `detectors/claude.py`, `detectors/openai_llm.py` (shared base `detectors/llm_base.py`, prompt in `prompts.py`), 7 configs in `configs/models/`. All calls go through Amazon Bedrock with one key in `AWS_BEARER_TOKEN_BEDROCK`. Responses are cached in `data/cache/llm/`, so reruns are free; each config has a cost cap. Run order and budget: [docs/phase5-plan.md](docs/phase5-plan.md). |
 | 6 · Cascade and report | Build the cascade as a `Detector` that wraps the tier detectors, so it goes through the same harness. Choose each tier's model and the hand-off thresholds on `val_llm`. |

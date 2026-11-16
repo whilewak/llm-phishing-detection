@@ -1,0 +1,25 @@
+# GPT-6 Luna, 8-example few-shot, 0-100 score
+# Phase 5 frontier LLM via Amazon Bedrock (global cross-Region inference, us-east-1).
+# Needs AWS_BEARER_TOKEN_BEDROCK. Responses are cached in data/cache/llm/, so reruns are free.
+
+[detector]
+class = "phishbench.detectors.openai_llm:OpenAIDetector"
+data_allowed = ["train: few-shot pool", "val_llm: threshold"]
+
+[detector.params]
+name = "gpt-6-luna-fewshot"
+model = "global.openai.gpt-6-luna"
+region = "us-east-1"
+prices = { input = 0.10, cache_write = 0.125, cache_read = 0.01, output = 0.50 }  # $/1M
+effort = "none"
+temperature = 0.0
+max_output_tokens = 256
+cache_prefix = true  # Bedrock explicit caching (prefix must be >= 1,024 tokens)
+max_total_cost_usd = 5
+concurrency = 8
+max_input_chars = 32000
+few_shot = "configs/prompts/fewshot-champa2023-v1.json"
+split_dir = "data/splits/champa2023-v1"
+[eval]
+warmup = 1
+batch_size = 16

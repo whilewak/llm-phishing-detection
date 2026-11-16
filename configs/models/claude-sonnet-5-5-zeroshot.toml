@@ -1,0 +1,23 @@
+# Claude Sonnet 5.5, zero-shot, 0-100 score
+# Phase 5 frontier LLM via Amazon Bedrock (global cross-Region inference, us-east-1).
+# Needs AWS_BEARER_TOKEN_BEDROCK. Responses are cached in data/cache/llm/, so reruns are free.
+
+[detector]
+class = "phishbench.detectors.claude:ClaudeDetector"
+data_allowed = ["val_llm: threshold"]
+
+[detector.params]
+name = "claude-sonnet-5-5-zeroshot"
+model = "global.anthropic.claude-sonnet-5-5"
+region = "us-east-1"
+prices = { input = 2.00, cache_write = 2.50, cache_read = 0.10, output = 10.00 }  # $/1M, Bedrock global = Anthropic list
+thinking = { type = "between_tools" }  # thinking off; "disabled" is a 400 on Sonnet 5.5
+effort = "low"
+max_output_tokens = 256
+max_total_cost_usd = 20
+concurrency = 8
+max_input_chars = 32000
+
+[eval]
+warmup = 1
+batch_size = 16

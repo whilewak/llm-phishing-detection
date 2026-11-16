@@ -1,0 +1,24 @@
+# GPT-6 Luna, zero-shot, scored from answer-token logprobs
+# Phase 5 frontier LLM via Amazon Bedrock (global cross-Region inference, us-east-1).
+# Needs AWS_BEARER_TOKEN_BEDROCK. Responses are cached in data/cache/llm/, so reruns are free.
+
+[detector]
+class = "phishbench.detectors.openai_llm:OpenAIDetector"
+data_allowed = ["val_llm: threshold"]
+
+[detector.params]
+name = "gpt-6-luna-logprob-zeroshot"
+model = "global.openai.gpt-6-luna"
+region = "us-east-1"
+prices = { input = 0.10, cache_write = 0.125, cache_read = 0.01, output = 0.50 }  # $/1M
+effort = "none"
+temperature = 0.0
+answer_mode = "answer_token"
+max_output_tokens = 4
+max_total_cost_usd = 5
+concurrency = 8
+max_input_chars = 32000
+
+[eval]
+warmup = 1
+batch_size = 16

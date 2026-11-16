@@ -12,6 +12,11 @@ dependencies = []
 
 [project.optional-dependencies]
 data = ["numpy>=1.26"]
+llm = [
+    "anthropic>=2.8",
+    "openai>=3.51",
+    "pydantic>=2.14",
+]
 laya = [
     "laya>=0.4.14",
     "torch>=2.0.0",
