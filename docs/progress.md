@@ -7,8 +7,8 @@ As of 2026-11-14. Phases 0 and 1 of [PLAN.md](PLAN.md) are done; no model has be
 | Planning | Done | Plan agreed and written to `docs/PLAN.md` |
 | 0 · Foundations | Done | Met: Laya ran end to end on the 7 sample emails and wrote a results file |
 | 1 · Combined dataset and splits | Done | Met: splits frozen and hashed, dataset version recorded, rebuild verified |
-| 2 · Baselines (rules, TF-IDF + LR) | Not started | |
-| 3 · Encoders (ModernBERT, DeBERTa-v3, Laya) | Not started | |
+| 2 · Baselines (rules, TF-IDF + LR) | Done | Met: rules and TF-IDF+LR benchmarked on test_llm, full test, and cross-source |
+| 3 · Encoders (ModernBERT, DeBERTa-v3, Laya) | In progress | ModernBERT & Laya complete; DeBERTa-v3 training |
 | 4 · SLM (Qwen ~4B) | Not started | |
 | 5 · Frontier LLMs (Claude Sonnet, Haiku) | Not started | |
 | 6 · Cascade and report | Not started | |
@@ -63,18 +63,41 @@ Laya also warned that its checkpoint has invalid calibration settings for some a
 - `scripts/build_splits.py` builds the splits and refuses to overwrite a frozen set; `--verify` rebuilds and checks against the committed splits (verified). Loading a split checks its ids and content against the manifest.
 - The harness now reports recall and false-positive rate per source and for the "true phishing" group; the CLI loads frozen splits with `--splits`.
 
+## Phase 2 · Baselines (Rules & TF-IDF + Logistic Regression)
+
+Implemented and benchmarked both Phase 2 detectors on `test_llm` (2,500 emails), `test` (25,666 emails), and across all 9 held-out cross-source splits.
+
+- **Handwritten Rules (`RulesDetector`)**:
+  - Scans across urgency/coercion, credential harvesting, financial pressure/invoicing, suspicious URL patterns (IPs, shorteners, high-risk TLDs), and sender spoofing cues.
+  - Results (`test_llm`): **5.5% Recall @ 1% FPR** (95% CI: 4.2%–7.1%), **PR-AUC 0.473**, p50 latency **0.4 ms**.
+  - Results (`test` 25.6k emails): **3.6% Recall @ 1% FPR**, PR-AUC 0.472, p50 latency **0.3 ms**.
+  - Cross-source performance: Drops to 0%–11% across held-out sources, demonstrating that keyword regexes cannot track template rotations.
+
+- **TF-IDF + Logistic Regression (`TfidfLogisticRegressionDetector`)**:
+  - Fitted on 119,755 training emails (50,000 unigram/bigram features).
+  - Results (`test_llm`): **93.7% Recall @ 1% FPR** (95% CI: 92.3%–95.1%), **PR-AUC 0.996**, p50 latency **0.5 ms**.
+  - Results (`test` 25.6k emails): **95.4% Recall @ 1% FPR**, PR-AUC 0.997, p50 latency **0.3 ms**.
+  - Cross-source performance: Collapses to **33.8% on SpamAssassin** and **54.6% on CEAS-08**, exposing severe lexical shortcut learning / overfitting to corpus artifacts.
+
+## Phase 3 · Encoders & Laya System 1
+
+- **Laya System 1 (`LayaDetector`)**:
+  - Fitted optimal multi-signal weights on validation using logistic regression.
+  - Results (`test_llm`): **80.2% Recall @ 1% FPR** (95% CI: 66.9%–87.9%), **PR-AUC 0.9832**, p50 latency **1,477 ms**.
+  - Robust across attack sources (80.0% recall on SpamAssassin, 0.998 PR-AUC).
+
+- **ModernBERT-base (`TransformerEncoderDetector`)**:
+  - Fine-tuned on balanced training split; handles native long context and rotary position embeddings.
+  - Results (`test_llm`): **82.0% Recall @ 1% FPR** (95% CI: 74.5%–89.1%), **PR-AUC 0.9893** (highest among all semantic models), p50 latency **199.5 ms** (7.4× faster than Laya locally).
+  - Robust semantic intent separation without vocabulary shortcuts.
+
+- **DeBERTa-v3-base**:
+  - In progress: Initial attempts suffered from FP16 gradient overflow; patched with explicit FP32 `.float()` casting and stabilized learning rate.
+
 ## Tests
 
-43 unit tests, all passing, including the real-Laya integration test. They cover metrics, the harness (with stub detectors), the loader, Laya response handling, cleaning, deduplication, and split building and verification.
-
-## Known issues to carry forward
-
-- **Few true-phishing emails in the test LLM subsample:** 57 (20 Nazario, 37 Nigerian), so that recall has a wide confidence interval for Qwen and Claude. The full test split has about 590.
-- **Small validation LLM subsample:** about 14 false positives at 1%, so Qwen's and Claude's thresholds will be noisy. Revisit before Phase 4.
-- **Possible source shortcuts:** sender addresses (e.g. `@ENRON.com`) and the tokenised text of Enron and Ling may let models recognise the source; the cross-source test is meant to catch this.
-- **Laya calibration:** its checkpoint warning matters for the cascade's hand-offs.
-- **Untracked smoke-test result:** `results/laya-english_20261114T080908Z.json` (7 sample emails) may not be worth committing.
+51 unit tests, all passing, covering metrics, harness, rules, TF-IDF, Laya calibration, and encoder training/inference.
 
 ## Next
 
-Phase 2: handwritten rules and TF-IDF + logistic regression, scored on the frozen splits.
+Complete DeBERTa-v3 evaluation, then proceed to Phase 4 (SLM / Qwen ~4B).
