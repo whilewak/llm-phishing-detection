@@ -1,0 +1,24 @@
+# Claude Opus 5.5, zero-shot, 0-100 score
+# Phase 5 frontier LLM via Anthropic's API (needs ANTHROPIC_API_KEY).
+# Opus 5.5 can't turn thinking off ("disabled" is a 400), so `thinking` is omitted
+# (adaptive) and effort is set to low. Its reasoning tokens are billed as output
+# and count against max_output_tokens, hence the larger limit.
+# Responses are cached in data/cache/llm/, so reruns are free.
+
+[detector]
+class = "phishbench.detectors.claude:ClaudeDetector"
+data_allowed = ["val_llm: threshold"]
+
+[detector.params]
+name = "claude-opus-5-5-zeroshot"
+model = "claude-opus-5-5"
+prices = { input = 4.00, cache_write = 5.00, cache_read = 0.20, output = 20.00 }  # $/1M tokens, Anthropic list price
+effort = "low"
+max_output_tokens = 2048
+max_total_cost_usd = 35
+concurrency = 16
+max_input_chars = 32000
+
+[eval]
+warmup = 1
+batch_size = 16

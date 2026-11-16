@@ -231,7 +231,7 @@ class ConfigsTest(unittest.TestCase):
 
         root = Path(__file__).resolve().parents[1]
         configs = sorted((root / "configs" / "models").glob("claude-*.toml"))
-        self.assertEqual(len(configs), 4)
+        self.assertEqual(len(configs), 5)
         pool = root / "configs" / "prompts" / "fewshot-champa2023-v1.json"
         for path in configs:
             cfg = tomllib.loads(path.read_text())["detector"]

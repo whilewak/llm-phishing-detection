@@ -13,7 +13,7 @@ Phase 5 of [PLAN.md](PLAN.md) adds frontier LLMs to the benchmark as its expensi
 | **Claude only**: Sonnet 5.5 and Haiku 5.5 | No OpenAI or Google API credit. |
 | **Anthropic's API**, key in `ANTHROPIC_API_KEY` | One key and one bill. |
 | **Both models zero- and few-shot** (4 configs) | With one provider, the few-shot runs are cheap enough to keep for both. |
-| **Opus 5.5 deferred** | ~$31 more for zero-shot; to be decided after these results. |
+| **Opus 5.5 zero-shot added after the first results** | Run as a ceiling check; ~$17 actual. |
 | **No temperature**; thinking off, effort `low` | Current Claude models reject `temperature`. Thinking off keeps cost and latency low and fits a cascade tier. Reproducibility comes from the response cache. |
 | **0–100 risk score** in structured output, divided by 100 | Claude returns no token probabilities. Tie share is reported. |
 | **No refusal fallback** | A fallback would answer with a different model. Refusals count as errors. |
@@ -37,6 +37,7 @@ Account rate limits (read from response headers): 13,000 requests/min, 10M input
 | `claude-sonnet-5-5-fewshot` | 8 examples | $24.90 |
 | `claude-haiku-5-5-zeroshot` | zero-shot | $5 |
 | `claude-haiku-5-5-fewshot` | 8 examples | $5 |
+| `claude-opus-5-5-zeroshot` | zero-shot, thinking on (can't be disabled), effort `low`, `max_output_tokens = 2048` | $35 (run alone, after the other four) |
 
 Caps sum to $54.90, so the four can run in parallel without exceeding $55. Each config pins the model, prices, thinking, effort, `max_output_tokens = 256`, `concurrency = 16`, `max_input_chars = 32000`, `data_allowed`, and `[eval] warmup = 1, batch_size = 16`.
 
@@ -90,6 +91,6 @@ Smoke tests on the 7 sample emails cost $0.015.
 
 - **OpenAI** GPT-6.1 Sol ($2/$10) and GPT-6 Luna ($0.10/$0.50) were price-matched to Sonnet and Haiku, with Luna also scored from logprobs (allowed only at reasoning effort `none`). Dropped: no API credit. GPT-6 Astra ($10/$50) was excluded on price.
 - **Google Gemini** 4 Argon and 3.5 Flash-Lite: recent Gemini models ignore `temperature` and logprobs are deprecated on Gemini 3.x. Dropped: no API credit.
-- **Claude Opus 5.5** ($4/$20, thinking always on): ~$31 zero-shot, ~$37 few-shot. Deferred.
+- **Claude Opus 5.5** ($4/$20, thinking always on): estimated ~$31 zero-shot; ran zero-shot for $16.57 (no hidden reasoning at effort `low`). Few-shot not run.
 
 Sources: Anthropic model and pricing reference (claude-api skill, 2026-11-03); OpenAI docs (pricing, models, latest-model guide); Google AI Studio docs (models, pricing, thinking, generate-content reference) and Google Cloud's inference reference.
