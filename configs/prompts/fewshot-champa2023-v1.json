@@ -1,0 +1,86 @@
+{
+  "split_version": "champa2023-v1",
+  "train_ids_sha256": "d7fa5eb8dc05d81cc2dbf5170865a3ea3bfa285c5f388ca39c82ea9f633b0cea",
+  "seed": 0,
+  "examples_sha256": "14c29c791c53619cc0ca0443c1514052bdc869782ce7974991bea6c162ee4dce",
+  "examples": [
+    {
+      "id": "nazario:267",
+      "label": "phishing",
+      "source": "nazario",
+      "from": "AppStore <hst-vic-lnx-17@vertisoftpme.com>",
+      "subject": "uberprufen Sie Ihre Konto informationen : (AA-LL-ML-04L2)",
+      "body": "Ihre Apple ID wurde verwendet, um eine Sitzung 1cloud von einem nicht autorisierten Computer zu offnen.      Ihr ITunes-Konto ist nun gesperrt , greifen Sie bitte Ihr Konto und eine Prufung Ihrer Angaben durchzufuhren.    Jetzt p  urufen Sie erhalten eine zweite E-Mail erhalten Zur Bestatigung Ihrer Identitat innerhalb von 24 Stunden.",
+      "urls": []
+    },
+    {
+      "id": "enron:3375",
+      "label": "legitimate",
+      "source": "enron",
+      "from": "",
+      "subject": "23 rd noms",
+      "body": "- - - - - - - - - - - - - - - - - - - - - - forwarded by ami chokshi / corp / enron on 12 / 23 / 99 10 : 30\nam - - - - - - - - - - - - - - - - - - - - - - - - - - -\nroyal _ b _ edmondson @ reliantenergy . com on 12 / 22 / 99 11 : 32 : 52 am\n\nhow could i ever be mad at someone so nice as you . . . . just real busy . . .\n( see attached file : hpldecl 999 . xls )\n- hpldecl 999 . xls",
+      "urls": []
+    },
+    {
+      "id": "nigerian:1272",
+      "label": "phishing",
+      "source": "nigerian",
+      "from": "barr_tunjibe33 <barr_tunjibe33@yahoo.co.uk>",
+      "subject": "PLEASE LET ME HEAR FROM YOU",
+      "body": "Greetings \n\nDear Friend \n\nPlease Permit me to contact you through this medium. I am Barrister Tunji Bello, a solicitor at-law. I was the personal attorney to one of my late clients that used to work with an indigenous company here in my country.In summer 2001, my client, his wife and their three children were involved in an auto-crash while on a picnic-trip. Unfortunately, all occupants of the vehicle lost their lives. \n\nSince then I have made several enquiries to his embassy to locate any of my clients extended relatives and this has also proved unsuccessful. After these several unsuccessful attempts, I decided to contact you over Internet. \n\nI have contacted you to assist in receiving and accommodating the money left behind by my client before they get confiscated or declared unserviceable by the bank where these huge deposits were lodged. My deceased client had an account balance with his bank valued at about US$9.9million, and I have been issued a notice as his attorney to provide his next of kin or have the account confiscated. \n\nSince I have been unsuccessful in locating my client's relatives; I now seek your consent to present you as the next of kin of my deceased client so that the proceeds of his account (US$9.9million) can be paid to you. You and I can then share the money 60% to me and 40% for you. All I require is your honest cooperation to enable us seeing this project through. I guarantee that this will be executed under a legitimate/risk-free arrangement that will protect you and me from any breach of the law. \n\nI await your positive response to my private email address at tunji_b333@yahoo.com as soon as you read this email. \n\nBest Regards, \n\nBarrister Tunji Bello\n\n___________________________________________________________________________\nMail sent from WebMail service at PHP-Nuke Powered Site\n- http://www.duhe.com",
+      "urls": [
+        "http://www.duhe.com"
+      ]
+    },
+    {
+      "id": "ling:2068",
+      "label": "legitimate",
+      "source": "ling",
+      "from": "",
+      "subject": "re : 3 . 402 queries : language - speakers , syntax , texts",
+      "body": "the folks concerned with speaking a lot of languages would include those directing the mormon missionary effort and those who run the schools for diplomats ( etc . ) assigned to a variety of foreign postings . such people are very clever at developing language skills in their students but in part because they are remorselessly practical ( i . e . anti-theoretical ) . it strikes me that the popularity of language instruction by the intuitive method may explain in part why knowledge of grammar ( any sort of rudimentary grammar ) is no longer very common in the general population . lots of people get a dose of english grammar in middle school , but i wonder if that sort of thing will stick when it simply seems to tell you ( or even to misrepresent ) what you know already . if only seventh-grade grammar teachers could convince their students that it is interesting to see how systematically you behave without knowing it ! but this is the age at which one 's children may raise their voices in protest if you seem to be lecturing them about an area in which they lay claim to adult competence . . . . - - rick",
+      "urls": []
+    },
+    {
+      "id": "trec07:18384",
+      "label": "phishing",
+      "source": "trec07",
+      "from": "Letha Kendrick <blake@telephonebrokers.com>",
+      "subject": "Photoshop CS3 Extended ready to download",
+      "body": "With my foot the supple ball, for perhapsNo name, no meaning. Oh my friends,Dim, and die tonight?And half-starved foxes shake and pawI am sleeping, and dreaming, and wandering alongStars, the last day, endless and centerless,Chose to walk out of it, they'd have to passFrom point to point of meaning\u2014open? closed?\u2014Whiteness, those pediments that riseYes. The obviousNever does any motion, sound, or lightEnd of the comedy.Glimmering of light:But snow has gathered there, has piled up,The road, but not far enough aheadWind, sleet. The branches sway,Seen. What you know is only manifestthere's a pulpy orange-y smell from juice factories....Down the road, at Cypress Gardens, a woman",
+      "urls": []
+    },
+    {
+      "id": "spamassassin:2820",
+      "label": "legitimate",
+      "source": "spamassassin",
+      "from": "Nick Murtagh <nickm@go2.ie>",
+      "subject": "Re: [ILUG] SUSE 8 disks? (thread changed slightly)",
+      "body": "On Mon, 2002-08-12 at 19:26, Rick Moen wrote:\n> NON-freely redistributable apps (in boxed sets):\n> -----------------------------------------------\n> SAP database\n\nThe same one as provided on www.sapdb.org? \nWhich is released under the GPL/LGPL?\n\n-- \nIrish Linux Users' Group: ilug@linux.ie\nhttp://www.linux.ie/mailman/listinfo/ilug for (un)subscription information.\nList maintainer: listmaster@linux.ie",
+      "urls": [
+        "http://www.linux.ie/mailman/listinfo/ilug"
+      ]
+    },
+    {
+      "id": "trec06:1105",
+      "label": "phishing",
+      "source": "trec06",
+      "from": "Bert Christopher <vhbllyqczt@chartermi.net>",
+      "subject": "RE: play today and win",
+      "body": "Hey, so glad to finally get hold of you, \n\nLog on to Hi Roller Casino and get $888 FREE \n\nFeel like getting rich in the comfort of your own home? Welcome to Hi Roll=\ner \nCasino, Where Fortunes are Made! \n\nHi Roller Casino offers over 60 interactive games, including six progressi=\nve \nslots and three progressive games that have paid out some of the largest \nonline jackpots in history! Even better. Hi Roller Casino will give you $1=\n0 \nFree when you download the free software and open a real account. Once \nyou've opened your REAL account and made your first deposit, \nHi Roller Casino will match it up to $888. \n\nAll commercial transactions at Hi Roller Casino are facilitated by Proc-Cy=\nber \nServices, a well-known and established e-cash merchant. Which means you ca=\nn \nrest assured that all your credit card transactions are 100% secured by \ndigital encryption as well as a unique password and account number. Online=\n \nbanking can be done through a variety of safe and user-friendly methods \nlike FirePay, Citadel, NETeller, PrePaidATM, ACH, Wire transfers or Credit=\n \nCards. \n\nNeed help? Hi Roller Casino provides a friendly, efficient 24/7 Support De=\nsk \nvia email and toll-free lines. \n\nBy now you'll be keen to start making your fortune, so click here: \nhttp://nuevedvd.com/d1/now/ and start WINNING! \n\nThis e-mail is not spam. You are receiving this e-mail as you have either =\n\nopted to receive our newsletter, or you entered one of our competitions. \nPlease note that this e-mail has NOT been sent by our sponsor, casino or \npartner/s that is/are being listed in this e-mail. There is no need to \nunsubscribe as this is a one time only email",
+      "urls": [
+        "http://nuevedvd.com/d1/now/"
+      ]
+    },
+    {
+      "id": "trec06:10097",
+      "label": "legitimate",
+      "source": "trec06",
+      "from": "\"j.c.f.\" <jforster@psy1.psych.arizona.edu>",
+      "subject": "[DMDX] calls",
+      "body": "I'm going to add another series of keywords to DMDX, the ability to call \na  function, gosubs, subroutines, whatever you want to all them (I'm \nsticking to call).  Given the way I've restructured the branching code and \nthe way it lends itself to calling functions and a couple of paradigms \nneeded around here (custom feedback routines and automatic pausing for \ncontinuous jobs when there's no response) and the elegance of a simple call \nability to solve them I'm going to stick calls in there.  It'll just be one \nlevel of calling though, I don't want to have to deal with recursive item \nfiles screwing up -- if someone really needs multiple levels it can be \nadded later.\n\n-jonathan (j.c.f.)\n\n  /\"\\\\\n  \\\\ /\n   X  ASCII RIBBON CAMPAIGN - AGAINST HTML MAIL\n  / \\\\\n\n\"This is not movement of the wind,\n   nor is it movement of the flag,\n   It is movement of your mind\"",
+      "urls": []
+    }
+  ]
+}

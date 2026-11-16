@@ -17,7 +17,7 @@ thinking = { type = "between_tools" }  # thinking off; "disabled" is a 400 on So
 effort = "low"
 max_output_tokens = 256
 max_total_cost_usd = 25
-concurrency = 8
+concurrency = 16
 max_input_chars = 32000
 few_shot = "configs/prompts/fewshot-champa2023-v1.json"
 split_dir = "data/splits/champa2023-v1"

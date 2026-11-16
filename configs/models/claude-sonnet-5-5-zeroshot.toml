@@ -17,7 +17,7 @@ thinking = { type = "between_tools" }  # thinking off; "disabled" is a 400 on So
 effort = "low"
 max_output_tokens = 256
 max_total_cost_usd = 20
-concurrency = 8
+concurrency = 16
 max_input_chars = 32000
 
 [eval]
