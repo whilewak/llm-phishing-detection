@@ -10,7 +10,7 @@ As of 2026-11-14. Phases 0 and 1 of [PLAN.md](PLAN.md) are done; no model has be
 | 2 · Baselines (rules, TF-IDF + LR) | Not started | |
 | 3 · Encoders (ModernBERT, DeBERTa-v3, Laya) | Not started | |
 | 4 · SLM (Qwen ~4B) | Not started | |
-| 5 · Frontier LLMs (Claude Sonnet 5.5, Haiku 5.5) | Built and unit-tested; not run yet (needs an Anthropic API key) | |
+| 5 · Frontier LLMs (Claude Sonnet 5.5, Haiku 5.5) | Done (PR #2, draft) | Met: all 4 configs scored on `test_llm`, thresholds from `val_llm` |
 | 6 · Cascade and report | Not started | |
 
 ## Planning
@@ -63,7 +63,7 @@ Laya also warned that its checkpoint has invalid calibration settings for some a
 - `scripts/build_splits.py` builds the splits and refuses to overwrite a frozen set; `--verify` rebuilds and checks against the committed splits (verified). Loading a split checks its ids and content against the manifest.
 - The harness now reports recall and false-positive rate per source and for the "true phishing" group; the CLI loads frozen splits with `--splits`.
 
-## Phase 5 · Frontier LLMs (in progress)
+## Phase 5 · Frontier LLMs
 
 Branch `phase-5-frontier-llms`. Plan and sources: [phase5-plan.md](phase5-plan.md).
 
@@ -75,7 +75,22 @@ Branch `phase-5-frontier-llms`. Plan and sources: [phase5-plan.md](phase5-plan.m
 - **Temperature:** current Claude models reject it, so Claude runs with thinking off at effort `low`. Reproducibility comes from the response cache.
 - **Budget:** about $27 for all 4 configs; caps sum to $55.
 
-To run (needs `ANTHROPIC_API_KEY`): smoke-test each config on `data/benchmark_emails.json`, check real token use on 50 `val_llm` emails, then run each config with `--val val_llm --test test_llm`.
+### Results (2026-11-16, `test_llm`: 2,500 emails, 1,118 phishing; thresholds chosen on `val_llm`)
+
+| Config | Recall at 1% FPR (95% CI) | PR-AUC | Errors | p50 / p95 latency | $ per 1M emails | Run cost |
+| --- | --- | --- | --- | --- | --- | --- |
+| Sonnet 5.5 zero-shot | **0.979** (0.968–0.986) | 0.998 | 0 | 1.7 s / 3.6 s | $1,638 | $8.31 |
+| Sonnet 5.5 few-shot | 0.978 (0.967–0.990) | 0.998 | 0 | 1.6 s / 2.1 s | $1,988 | $10.19 |
+| Haiku 5.5 few-shot | 0.898 (0.869–0.917) | 0.965 | 49 refusals | 1.0 s / 1.7 s | $120 | $0.61 |
+| Haiku 5.5 zero-shot | 0.807 (0.738–0.864) | 0.943 | 89 refusals | 1.2 s / 1.9 s | $85 | $0.41 |
+
+- Total new API spend: about **$19.60** (including smoke tests and a run interrupted to parallelise), against a $55 cap and a ~$27 estimate. Rerunning a finished config makes 0 API calls.
+- **Sonnet** is the strongest single model so far and the current Tier 4 candidate. Few-shot doesn't help it. "True phishing" recall (Nazario + Nigerian, 57 emails) is 1.0 for both Sonnet configs.
+- **Haiku is held back by refusals, not only by accuracy.** 88 of the zero-shot errors and 48 of the few-shot ones are phishing emails that Haiku's safety classifier declined (category `bio`, likely pharmacy spam), and each counts as a miss. Few-shot halves the refusals and lifts recall by 9 points.
+- Calibration error (ECE) is 0.03–0.04 for all four. Precision at the chosen threshold is about 0.99 for all four. 0.28% of emails hit the 32,000-character input cap.
+- Opus 5.5 was deferred; to be decided now that these results are in.
+
+To rerun (needs `ANTHROPIC_API_KEY`; cached responses are reused for free): see "Running it" in [phase5-plan.md](phase5-plan.md).
 
 ## Tests
 
@@ -87,6 +102,8 @@ To run (needs `ANTHROPIC_API_KEY`): smoke-test each config on `data/benchmark_em
 - **Small validation LLM subsample:** about 14 false positives at 1%, so Qwen's and Claude's thresholds will be noisy. Revisit before Phase 4.
 - **Possible source shortcuts:** sender addresses (e.g. `@ENRON.com`) and the tokenised text of Enron and Ling may let models recognise the source; the cross-source test is meant to catch this.
 - **Laya calibration:** its checkpoint warning matters for the cascade's hand-offs.
+- **Haiku 5.5 refusals:** 3.5–8% of phishing emails in `test_llm` are declined (category `bio`). They count as misses, so Haiku's recall partly measures refusals. Not fixable by prompting without changing the shared prompt; noted for the cascade (a refusal could escalate to the next tier instead).
+- **0–100 scores tie heavily:** nearly every LLM score shares its value with another email (scores cluster at a few values like 5 and 95), so recall at 1% FPR moves in steps. Qwen's logprob scores in Phase 4 will not have this problem.
 - **Untracked smoke-test result:** `results/laya-english_20261114T080908Z.json` (7 sample emails) may not be worth committing.
 
 ## Next
