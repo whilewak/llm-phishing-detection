@@ -1,0 +1,17 @@
+# Handwritten heuristic rules baseline detector.
+# Evaluates multi-signal phishing indicators (urgency, credentials, finance, URLs).
+
+[detector]
+class = "phishbench.detectors.rules:RulesDetector"
+data_allowed = ["validation: threshold"]
+
+[detector.params]
+urgency_weight = 1.2
+credential_weight = 1.8
+financial_weight = 1.5
+url_weight = 1.4
+
+[eval]
+warmup = 3
+batch_size = 100
+
