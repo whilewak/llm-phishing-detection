@@ -1,4 +1,10 @@
-"""Claude (Sonnet 5.5, Haiku 5.5) through Amazon Bedrock's Messages API.
+"""Claude (Sonnet 5.5, Haiku 5.5) as a Detector.
+
+Two backends, same request:
+- "anthropic" (default): Anthropic's API, key from ANTHROPIC_API_KEY (or an
+  `ant auth login` profile). Model ids like "claude-haiku-5-5".
+- "bedrock": Amazon Bedrock's Messages API, key from AWS_BEARER_TOKEN_BEDROCK.
+  Model ids like "global.anthropic.claude-haiku-5-5".
 
 Scores are the model's 0-100 risk score / 100 (Claude returns no token
 probabilities). Thinking is configured per model in the TOML: Sonnet 5.5 turns
@@ -24,23 +30,32 @@ from phishbench.detectors.llm_base import (
     score_from_json,
 )
 
+BACKENDS = {
+    "anthropic": ("anthropic", "API (Anthropic)"),
+    "bedrock": ("anthropic-bedrock", "API (Amazon Bedrock)"),
+}
+
 
 class ClaudeDetector(LLMDetector):
-    provider = "anthropic-bedrock"
-
     def __init__(
         self,
         model: str,
         prices: dict[str, float],
         thinking: dict[str, Any] | None = None,
         effort: str | None = "low",
-        region: str = "us-east-1",
+        backend: str = "anthropic",
+        region: str = "us-west-1",
         name: str | None = None,
         client: Any = None,
         **kwargs: Any,
     ):
+        if backend not in BACKENDS:
+            raise ValueError(f"backend must be one of {sorted(BACKENDS)}, got {backend!r}")
         if kwargs.get("answer_mode", prompts.SCORE_0_100) != prompts.SCORE_0_100:
             raise ValueError("Claude returns no logprobs; only the 0-100 score mode is supported")
+        # Separate cache namespaces, so responses from the two backends never mix.
+        self.provider, self.hardware = BACKENDS[backend]
+        self.backend = backend
         self.thinking = thinking
         self.effort = effort
         self.region = region
@@ -50,11 +65,14 @@ class ClaudeDetector(LLMDetector):
         if client is None:
             import anthropic
 
-            client = anthropic.Anthropic(
-                base_url=bedrock_base_url(region, "anthropic"),
-                api_key=bedrock_api_key(),
-                max_retries=5,
-            )
+            if backend == "bedrock":
+                client = anthropic.Anthropic(
+                    base_url=bedrock_base_url(region, "anthropic"),
+                    api_key=bedrock_api_key(),
+                    max_retries=5,
+                )
+            else:
+                client = anthropic.Anthropic(max_retries=5)
         self.client = client
 
     def _request_kwargs(self, user_text: str) -> dict[str, Any]:

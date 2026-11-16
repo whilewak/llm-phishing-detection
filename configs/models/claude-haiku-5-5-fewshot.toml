@@ -1,6 +1,8 @@
 # Claude Haiku 5.5, 8-example few-shot, 0-100 score
-# Phase 5 frontier LLM via Amazon Bedrock (global cross-Region inference, us-west-1).
-# Needs AWS_BEARER_TOKEN_BEDROCK. Responses are cached in data/cache/llm/, so reruns are free.
+# Phase 5 frontier LLM. Default backend: Anthropic's API (needs ANTHROPIC_API_KEY).
+# To use Amazon Bedrock instead: backend = "bedrock", model = "global.anthropic.claude-haiku-5-5",
+# region = the region your Bedrock API key was issued in (needs AWS_BEARER_TOKEN_BEDROCK).
+# Responses are cached in data/cache/llm/, so reruns are free.
 
 [detector]
 class = "phishbench.detectors.claude:ClaudeDetector"
@@ -8,9 +10,9 @@ data_allowed = ["train: few-shot pool", "val_llm: threshold"]
 
 [detector.params]
 name = "claude-haiku-5-5-fewshot"
-model = "global.anthropic.claude-haiku-5-5"
-region = "us-west-1"
-prices = { input = 0.10, cache_write = 0.125, cache_read = 0.01, output = 0.50 }  # $/1M, prompts <=100k tokens
+backend = "anthropic"
+model = "claude-haiku-5-5"
+prices = { input = 0.10, cache_write = 0.125, cache_read = 0.01, output = 0.50 }  # $/1M tokens, prompts <=100k
 thinking = { type = "disabled" }
 effort = "low"
 max_output_tokens = 256
@@ -19,6 +21,7 @@ concurrency = 8
 max_input_chars = 32000
 few_shot = "configs/prompts/fewshot-champa2023-v1.json"
 split_dir = "data/splits/champa2023-v1"
+
 [eval]
 warmup = 1
 batch_size = 16

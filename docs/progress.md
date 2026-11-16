@@ -10,7 +10,7 @@ As of 2026-11-14. Phases 0 and 1 of [PLAN.md](PLAN.md) are done; no model has be
 | 2 · Baselines (rules, TF-IDF + LR) | Not started | |
 | 3 · Encoders (ModernBERT, DeBERTa-v3, Laya) | Not started | |
 | 4 · SLM (Qwen ~4B) | Not started | |
-| 5 · Frontier LLMs (Claude Sonnet 5.5 / Haiku 5.5, GPT-6.1 Sol / GPT-6 Luna via Bedrock) | Built and unit-tested; not run yet (needs a Bedrock API key) | |
+| 5 · Frontier LLMs (Claude Sonnet 5.5, Haiku 5.5) | Built and unit-tested; not run yet (needs an Anthropic API key) | |
 | 6 · Cascade and report | Not started | |
 
 ## Planning
@@ -65,17 +65,17 @@ Laya also warned that its checkpoint has invalid calibration settings for some a
 
 ## Phase 5 · Frontier LLMs (in progress)
 
-Branch `phase-5-frontier-llms`. Plan, model research and sources: [phase5-plan.md](phase5-plan.md).
+Branch `phase-5-frontier-llms`. Plan and sources: [phase5-plan.md](phase5-plan.md).
 
-- **Models:** two price-matched tiers through Amazon Bedrock (global cross-Region inference): Claude Sonnet 5.5 and GPT-6.1 Sol ($2/$10 per 1M tokens), Claude Haiku 5.5 and GPT-6 Luna ($0.10/$0.50). Gemini was dropped because it isn't on Bedrock; Opus 5.5 and GPT-6 Astra were left out on cost.
-- **Configs (7):** Sonnet and Sol zero-shot; Haiku and Luna zero- and few-shot; Luna scored from answer-token logprobs.
-- **Shared prompt** (`src/phishbench/prompts.py`): one set of task instructions for every LLM, the email marked as untrusted data, bodies capped at 32,000 characters (~8k tokens).
+- **Models:** Claude Sonnet 5.5 ($2/$10 per 1M tokens) and Claude Haiku 5.5 ($0.10/$0.50), through Anthropic's API. OpenAI and Gemini were dropped (no API credit; Gemini isn't on Bedrock). Amazon Bedrock is supported as a backend, but this AWS account is refused Claude ("not available for this account"), even in the console.
+- **Configs (4):** Sonnet and Haiku, each zero- and few-shot.
+- **Shared prompt** (`src/phishbench/prompts.py`): one set of task instructions for every LLM (Qwen too), the email marked as untrusted data, bodies capped at 32,000 characters (~8k tokens).
 - **Few-shot pool:** 8 train emails (4 phishing incl. 1 Nazario and 1 Nigerian Fraud, 4 legitimate), frozen in `configs/prompts/fewshot-champa2023-v1.json` by `scripts/build_fewshot.py`. Fixed rather than chosen on `val_llm`, which is too small to compare pools.
-- **Detectors:** `llm_base.py` (concurrency, response cache in `data/cache/llm/`, cost accounting, per-run cost cap, JSON and logprob scoring), `claude.py`, `openai_llm.py`. Refusals, incomplete answers and unparseable output are errors; throttling and server errors are errors too but are not cached, so a rerun retries them. No refusal fallback, since it would answer with a different model.
-- **Temperature:** current Claude models reject it and GPT-6.1 Sol can't use it (it always reasons), so each model runs at its lowest reasoning setting; Luna runs at temperature 0. Reproducibility comes from the response cache.
-- **Budget:** about $43 for all 7 configs; caps sum to $90.
+- **Detectors:** `llm_base.py` (concurrency, response cache in `data/cache/llm/`, cost accounting, per-run cost cap, JSON and logprob scoring; the logprob scorer is for Qwen) and `claude.py`. Refusals and unparseable output are errors; throttling and server errors are errors too but are not cached, so a rerun retries them. No refusal fallback, since it would answer with a different model.
+- **Temperature:** current Claude models reject it, so Claude runs with thinking off at effort `low`. Reproducibility comes from the response cache.
+- **Budget:** about $27 for all 4 configs; caps sum to $55.
 
-To run (needs `AWS_BEARER_TOKEN_BEDROCK`): smoke-test each config on `data/benchmark_emails.json`, check real token use on 50 `val_llm` emails, then run each config with `--val val_llm --test test_llm`.
+To run (needs `ANTHROPIC_API_KEY`): smoke-test each config on `data/benchmark_emails.json`, check real token use on 50 `val_llm` emails, then run each config with `--val val_llm --test test_llm`.
 
 ## Tests
 
@@ -87,7 +87,6 @@ To run (needs `AWS_BEARER_TOKEN_BEDROCK`): smoke-test each config on `data/bench
 - **Small validation LLM subsample:** about 14 false positives at 1%, so Qwen's and Claude's thresholds will be noisy. Revisit before Phase 4.
 - **Possible source shortcuts:** sender addresses (e.g. `@ENRON.com`) and the tokenised text of Enron and Ling may let models recognise the source; the cross-source test is meant to catch this.
 - **Laya calibration:** its checkpoint warning matters for the cascade's hand-offs.
-- **Bedrock logprobs for GPT-6 Luna:** OpenAI's docs allow logprobs at reasoning effort `none`, but the Bedrock model card doesn't mention them. The first smoke run settles it; if Bedrock rejects them, the logprob config is dropped.
 - **Untracked smoke-test result:** `results/laya-english_20261114T080908Z.json` (7 sample emails) may not be worth committing.
 
 ## Next

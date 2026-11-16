@@ -14,7 +14,6 @@ dependencies = []
 data = ["numpy>=1.26"]
 llm = [
     "anthropic>=2.8",
-    "openai>=3.51",
     "pydantic>=2.14",
 ]
 laya = [

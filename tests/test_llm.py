@@ -23,7 +23,7 @@ from phishbench.detectors.llm_base import (
 )
 from tests.stubs import make_email, make_split
 
-HAS_SDKS = all(importlib.util.find_spec(m) for m in ("anthropic", "openai"))
+HAS_SDKS = importlib.util.find_spec("anthropic") is not None
 PRICES = {"input": 2.0, "cache_write": 2.5, "cache_read": 0.1, "output": 10.0}
 
 
@@ -141,7 +141,7 @@ class BaseDetectorTest(unittest.TestCase):
         det = ScriptedLLM(results=lambda t: CallResult(score=0.9 if "body 1" in t and "body 10" not in t else 0.1))
         result = evaluate(det, make_split(3, 3), val=make_split(3, 3, start=50), warmup=1, n_bootstrap=20)
         self.assertEqual(result["errors"]["count"], 0)
-        self.assertEqual(result["training_cost"]["hardware"], "API (Amazon Bedrock)")
+        self.assertEqual(result["training_cost"]["hardware"], "API")
 
 
 # --- Claude ------------------------------------------------------------------
@@ -171,13 +171,14 @@ def claude_response(score=91, verdict="phishing", stop="end_turn", category=None
     )
 
 
-@unittest.skipUnless(HAS_SDKS, "anthropic/openai SDKs not installed")
+@unittest.skipUnless(HAS_SDKS, "anthropic SDK not installed")
 class ClaudeTest(unittest.TestCase):
     def make(self, client, **kw):
         from phishbench.detectors.claude import ClaudeDetector
 
-        return ClaudeDetector(model="global.anthropic.claude-sonnet-5-5", prices=PRICES,
-                              thinking={"type": "between_tools"}, client=client, cache_dir=None, **kw)
+        kw.setdefault("model", "claude-sonnet-5-5")
+        kw.setdefault("cache_dir", None)
+        return ClaudeDetector(prices=PRICES, thinking={"type": "between_tools"}, client=client, **kw)
 
     def test_request_shape_and_score(self):
         client = FakeAnthropic(claude_response())
@@ -186,7 +187,7 @@ class ClaudeTest(unittest.TestCase):
         self.assertAlmostEqual(p.score, 0.91)
         self.assertEqual(det.name, "claude-sonnet-5-5")
         req = client.requests[0]
-        self.assertEqual(req["model"], "global.anthropic.claude-sonnet-5-5")
+        self.assertEqual(req["model"], "claude-sonnet-5-5")
         self.assertEqual(req["thinking"], {"type": "between_tools"})
         self.assertEqual(req["output_config"], {"effort": "low"})
         self.assertNotIn("temperature", req)
@@ -213,106 +214,24 @@ class ClaudeTest(unittest.TestCase):
         with self.assertRaises(anthropic.BadRequestError):
             self.make(FakeAnthropic(error=fatal)).predict([make_email(1, "phishing")])
 
+    def test_backends(self):
+        det = self.make(FakeAnthropic(), backend="bedrock", model="global.anthropic.claude-haiku-5-5")
+        self.assertEqual(det.name, "claude-haiku-5-5")
+        self.assertEqual(det.fit([], []).hardware, "API (Amazon Bedrock)")
+        self.assertEqual(self.make(FakeAnthropic()).fit([], []).hardware, "API (Anthropic)")
+        with tempfile.TemporaryDirectory() as d:
+            a = self.make(FakeAnthropic(), cache_dir=d)
+            b = self.make(FakeAnthropic(), cache_dir=d, backend="bedrock")
+            self.assertNotEqual(a.cache_dir, b.cache_dir)
+        with self.assertRaises(ValueError):
+            self.make(FakeAnthropic(), backend="vertex")
+
     def test_rejects_logprob_mode(self):
         with self.assertRaises(ValueError):
             self.make(FakeAnthropic(), answer_mode=prompts.ANSWER_TOKEN)
 
 
-# --- OpenAI ------------------------------------------------------------------
-
-
-class FakeOpenAI:
-    def __init__(self, response):
-        self.requests = []
-        self.response = response
-        self.responses = NS(parse=self._call("parse"), create=self._call("create"))
-
-    def _call(self, method):
-        def f(**kw):
-            self.requests.append((method, kw))
-            return self.response
-        return f
-
-
-def openai_response(parts, status="completed", reason=None, parsed=None, reasoning=0):
-    return NS(
-        status=status,
-        incomplete_details=NS(reason=reason) if reason else None,
-        output=[NS(type="reasoning"), NS(type="message", content=parts)],
-        output_parsed=parsed,
-        usage=NS(input_tokens=1200, input_tokens_details=NS(cached_tokens=1000, cache_write_tokens=0),
-                 output_tokens=40, output_tokens_details=NS(reasoning_tokens=reasoning)),
-    )
-
-
-@unittest.skipUnless(HAS_SDKS, "anthropic/openai SDKs not installed")
-class OpenAITest(unittest.TestCase):
-    def make(self, response, **kw):
-        from phishbench.detectors.openai_llm import OpenAIDetector
-
-        client = FakeOpenAI(response)
-        kw.setdefault("effort", "none")
-        return OpenAIDetector(model="global.openai.gpt-6-luna", prices=PRICES, client=client,
-                              cache_dir=None, **kw), client
-
-    def test_score_mode(self):
-        parsed = RiskAssessment(risk_score=12, verdict="legitimate")
-        det, client = self.make(openai_response([NS(type="output_text", text=parsed.model_dump_json(), logprobs=None)],
-                                                parsed=parsed, reasoning=30), temperature=0.0)
-        (p,) = det.predict([make_email(1, "legitimate")])
-        self.assertAlmostEqual(p.score, 0.12)
-        method, req = client.requests[0]
-        self.assertEqual(method, "parse")
-        self.assertEqual(req["reasoning"], {"effort": "none"})
-        self.assertEqual(req["temperature"], 0.0)
-        self.assertIs(req["text_format"], RiskAssessment)
-        self.assertIn("instructions", req)
-        self.assertEqual(p.details["reasoning_tokens"], 30)
-        self.assertEqual(p.details["cache_read_tokens"], 1000)
-        self.assertAlmostEqual(p.cost_usd, (200 * 2.0 + 1000 * 0.1 + 40 * 10.0) / 1e6)
-
-    def test_logprob_mode(self):
-        lp = NS(token="phishing", logprob=math.log(0.8),
-                top_logprobs=[NS(token="phishing", logprob=math.log(0.8)), NS(token="legit", logprob=math.log(0.2))])
-        det, client = self.make(openai_response([NS(type="output_text", text="phishing", logprobs=[lp])]),
-                                temperature=0.0, answer_mode=prompts.ANSWER_TOKEN, max_output_tokens=4)
-        (p,) = det.predict([make_email(1, "phishing")])
-        self.assertAlmostEqual(p.score, 0.8)
-        method, req = client.requests[0]
-        self.assertEqual(method, "create")
-        self.assertEqual(req["include"], ["message.output_text.logprobs"])
-        self.assertEqual(req["top_logprobs"], 20)
-
-    def test_missing_logprobs_is_error(self):
-        det, _ = self.make(openai_response([NS(type="output_text", text="phishing", logprobs=None)]),
-                           answer_mode=prompts.ANSWER_TOKEN)
-        (p,) = det.predict([make_email(1, "phishing")])
-        self.assertIn("no logprobs", p.error)
-
-    def test_refusal_and_incomplete(self):
-        det, _ = self.make(openai_response([NS(type="refusal", refusal="I can't help")]))
-        (p,) = det.predict([make_email(1, "phishing")])
-        self.assertIn("refusal", p.error)
-        det, _ = self.make(openai_response([], status="incomplete", reason="max_output_tokens"))
-        (p,) = det.predict([make_email(1, "phishing")])
-        self.assertIn("max_output_tokens", p.error)
-
-    def test_reasoning_models_reject_sampling_params(self):
-        with self.assertRaises(ValueError):
-            self.make(openai_response([]), effort="low", temperature=0.0)
-        with self.assertRaises(ValueError):
-            self.make(openai_response([]), effort="low", answer_mode=prompts.ANSWER_TOKEN)
-
-    def test_cache_prefix_marks_breakpoint(self):
-        det, client = self.make(openai_response([NS(type="output_text", text="{}", logprobs=None)]), cache_prefix=True)
-        det.predict([make_email(1, "phishing")])
-        _, req = client.requests[0]
-        self.assertNotIn("instructions", req)
-        self.assertEqual(req["input"][0]["content"][0]["prompt_cache_breakpoint"], {"mode": "explicit"})
-        self.assertEqual(req["input"][1]["role"], "user")
-
-
-@unittest.skipUnless(HAS_SDKS, "anthropic/openai SDKs not installed")
+@unittest.skipUnless(HAS_SDKS, "anthropic SDK not installed")
 class ConfigsTest(unittest.TestCase):
     def test_phase5_configs_build_with_fake_clients(self):
         import tomllib
@@ -320,8 +239,8 @@ class ConfigsTest(unittest.TestCase):
         from phishbench.detectors import load_detector
 
         root = Path(__file__).resolve().parents[1]
-        configs = sorted((root / "configs" / "models").glob("[cg]*-*shot.toml"))
-        self.assertEqual(len(configs), 7)
+        configs = sorted((root / "configs" / "models").glob("claude-*.toml"))
+        self.assertEqual(len(configs), 4)
         pool = root / "configs" / "prompts" / "fewshot-champa2023-v1.json"
         for path in configs:
             cfg = tomllib.loads(path.read_text())["detector"]
@@ -337,8 +256,8 @@ class ConfigsTest(unittest.TestCase):
             self.assertEqual(det.name, path.stem)
 
 
-@unittest.skipUnless(HAS_SDKS and os.environ.get("AWS_BEARER_TOKEN_BEDROCK"), "needs SDKs and a Bedrock API key")
-class BedrockIntegrationTest(unittest.TestCase):
+@unittest.skipUnless(HAS_SDKS and os.environ.get("ANTHROPIC_API_KEY"), "needs the SDK and ANTHROPIC_API_KEY")
+class AnthropicIntegrationTest(unittest.TestCase):
     def test_sample_emails(self):
         import tomllib
 
@@ -347,12 +266,10 @@ class BedrockIntegrationTest(unittest.TestCase):
 
         root = Path(__file__).resolve().parents[1]
         emails = load_emails(root / "data" / "benchmark_emails.json")
-        for name in ("claude-haiku-5-5-zeroshot", "gpt-6-luna-zeroshot"):
-            cfg = tomllib.loads((root / "configs" / "models" / f"{name}.toml").read_text())["detector"]
-            det = load_detector(cfg["class"], cfg["params"])
-            preds = det.predict(emails)
-            self.assertEqual([p.error for p in preds], [None] * len(emails), name)
-
+        cfg = tomllib.loads((root / "configs" / "models" / "claude-haiku-5-5-zeroshot.toml").read_text())["detector"]
+        det = load_detector(cfg["class"], cfg["params"])
+        preds = det.predict(emails)
+        self.assertEqual([p.error for p in preds], [None] * len(emails))
 
 if __name__ == "__main__":
     unittest.main()

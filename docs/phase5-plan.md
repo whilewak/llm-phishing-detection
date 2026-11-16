@@ -1,5 +1,16 @@
 # Phase 5 · Frontier LLMs: plan
 
+> **Revision (2026-11-15): Claude only, via Anthropic's API.** No OpenAI API credit, so GPT-6.1 Sol and GPT-6 Luna (and the Luna logprob config) are dropped. Amazon Bedrock refused Claude for this AWS account ("not available for this account", even in the console), so the default backend is now Anthropic's API (`ANTHROPIC_API_KEY`); `backend = "bedrock"` remains available. With only Claude left, both models run zero- and few-shot:
+>
+> | Config | Est. cost |
+> | --- | --- |
+> | claude-sonnet-5-5-zeroshot | ~$11 |
+> | claude-sonnet-5-5-fewshot | ~$14 |
+> | claude-haiku-5-5-zeroshot / -fewshot | ~$1.50 |
+> | **Total** | **~$27** (caps sum to $55) |
+>
+> Same prompt module, few-shot pool, response cache, cost caps and 8k-token input cap as below. Run steps 3–5 use `ANTHROPIC_API_KEY` instead of the Bedrock key. The rest of this document is the original two-provider plan, kept for the research and sources.
+
 ## Context
 
 Phase 5 of `docs/PLAN.md` adds frontier LLMs to the benchmark as its expensive, strongest point of comparison. They are used three ways: the comparison point for goal 3 (System 1 / encoders vs LLM), the Tier 4 candidates for the Phase 6 cascade, and the reference for the cascade target (≥95% of the best single model's recall). Phases 0–1 are done (harness, metrics, frozen `champa2023-v1` splits with 2,500-email `val_llm` / `test_llm`). Phases 2–4 haven't started. Phase 5 doesn't depend on them.

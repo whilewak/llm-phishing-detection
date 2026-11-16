@@ -119,6 +119,7 @@ class LLMDetector(ABC):
     """Base for API LLM detectors. Subclasses set `provider` and implement `_call`."""
 
     provider: str = "llm"
+    hardware: str = "API"
 
     def __init__(
         self,
@@ -164,7 +165,7 @@ class LLMDetector(ABC):
     # --- Detector interface --------------------------------------------------
 
     def fit(self, train: Sequence[Email], val: Sequence[Email]) -> TrainingCost:
-        return TrainingCost(hardware="API (Amazon Bedrock)", n_train_emails=len(self.few_shot))
+        return TrainingCost(hardware=self.hardware, n_train_emails=len(self.few_shot))
 
     def predict(self, emails: Sequence[Email]) -> list[Prediction]:
         if self.concurrency == 1 or len(emails) <= 1:
