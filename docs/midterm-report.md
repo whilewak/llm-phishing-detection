@@ -1,67 +1,108 @@
-# LLMs for Phishing Detection: Midterm Report
+# How Much Accuracy Does Each Dollar Buy? Benchmarking Cheap-to-Frontier Phishing Detectors
 
 **Team 16B** · Ronit Barman, Vishal Dandamudi, Kyle Pak, Aneesh Ratnala, Gavin Sonntag
-ECE M117 / CS M138, Fall 2026 · Draft of 2026-11-16
+ECE M117 / CS M138 Computer System Security, Fall 2026 · Mid-term Report (draft of 2026-11-16)
 
-> Placeholders are marked **TODO (name)**. Everything not marked TODO comes from the repo (`docs/PLAN.md`, `docs/progress.md`, `results/`).
+> Placeholders are marked **TODO (name)**. Everything else comes from the repo (`docs/PLAN.md`, `docs/progress.md`, `results/`).
 
-## 1. Problem area
+## Abstract
 
-Phishing email remains one of the most common ways into an organisation: one convincing message can lead to stolen credentials, a fraudulent payment or malware. Filters must catch as much phishing as possible while flagging almost no legitimate mail, because users quickly start ignoring a filter with too many false alarms.
+Phishing email remains one of the most common ways attackers gain access to accounts and organisations. Large language models (LLMs) now detect phishing well, but they cost around 2 seconds and over $1,600 per million emails, while cheap detectors run in milliseconds for almost nothing but miss more attacks. We benchmark five families of detectors, ordered from cheap to expensive (hand-written rules, TF-IDF + logistic regression, encoder / "System 1" classifiers, a small local LLM, and frontier Claude models), on the same 171,081-email public dataset, with one harness and one headline metric: recall at a 1% false-positive rate. We then propose a cascade that sends only uncertain emails to more expensive tiers. So far, the frontier tier is complete: Claude Sonnet 5.5 catches 97.9% of phishing at a 1% false-positive rate, Opus 5.5 is no better at twice the cost, and model safety refusals turn out to be a measurable failure mode for phishing detection.
 
-Large language models (LLMs) are now strong phishing detectors, but they are slow (about 2 s per email) and costly (over $1,600 per million emails for the models we tested). Cheaper detectors, such as hand-written rules, classic machine learning and small "System 1" classifiers, run in milliseconds at almost no cost but are less accurate. A real mail system processes millions of emails a day, so the trade-off between **accuracy, latency and cost** decides which detector is practical.
+## I. Introduction
 
-> **TODO (all):** 2–3 citations on LLM phishing detection (e.g. Aziz et al. 2026; Liu et al. 2026 from the intro slides), with full references in section 7.
+Phishing detectors range from free hand-written rules to frontier LLMs that cost over a thousand dollars per million emails. This project measures what each step up in cost buys and whether a cascade of cheap and expensive models can get the best of both.
 
-## 2. Focused topic and proposed solution
+The report is structured as follows. Section II states the high-level problem area. Section III describes our focused topic and potential solution. Sections IV and V outline the goals and timeline. Section VI presents preliminary results, risks and backup plans. Section VII covers related work and Section VIII concludes.
 
-**Question:** how much accuracy does each step up in model cost buy, and can a combination of cheap and expensive models match the best model at a fraction of its cost?
+## II. High-Level Problem Area
 
-**Approach:** benchmark five families of detectors on the same emails, with the same harness and the same metrics, ordered from cheapest to most expensive:
+A single convincing phishing email can lead to stolen credentials, fraudulent payments or malware. Mail filters must catch as much phishing as possible while flagging almost no legitimate mail, because users ignore a filter that raises too many false alarms. Real mail systems also process millions of emails a day, so the cost and speed of each check matter as much as its accuracy.
 
-| Tier | Detectors | Runs on |
+LLMs have been shown to outperform traditional machine-learning and deep-learning phishing detectors and to add robustness, multilingual coverage and explanations **[TODO: cite Aziz et al. 2026]**. At the same time, LLMs make phishing easier to write and to personalise for each target [3], so detectors must keep up. But LLMs are slow and expensive per email. Cheaper detectors, such as rules, classic machine learning and small encoder models, run locally in milliseconds but are less accurate. **Which detector is practical depends on the trade-off between accuracy, latency and cost**, and that trade-off has not been measured on equal terms across all of these model families.
+
+## III. Topic and Potential Solution
+
+### A. Topic
+
+We ask two questions:
+
+- How much detection accuracy does each step up in model cost buy?
+- Can a combination of cheap and expensive models match the best single model at a fraction of its cost?
+
+### B. Potential solution
+
+Our solution has two key ideas.
+
+1. *One benchmark for every detector.* Every model implements the same interface, sees the same emails and fields (sender, subject, body, URLs), and is scored by the same harness with the same metrics. Thresholds, prompts and hyperparameters are tuned on validation data only, never on test data. Failed predictions (unparseable output, timeouts, refusals) always count as wrong.
+2. *A cascade (Figure 1).* Every email first goes to the cheapest tier. Only emails that tier is unsure about are escalated to the next tier, so most emails stop early and only the hardest reach the frontier LLM. Each tier's model and hand-off threshold are chosen on validation data. A similar cheap-to-expensive cascade idea has been used to cut LLM cost on general tasks [2]; we apply and measure it for phishing detection.
+
+| Tier | Candidate detectors | Runs on |
 | --- | --- | --- |
 | 1 · Baselines | Hand-written rules; TF-IDF + logistic regression | Laptop CPU |
-| 2 · Encoders / System 1 | Laya (ModernBERT-large System 1 model); fine-tuned ModernBERT and DeBERTa-v3 | Laptop GPU (Apple M4) |
+| 2 · Encoders / System 1 | Laya (ModernBERT-large "System 1" decision model); fine-tuned ModernBERT and DeBERTa-v3 | Laptop GPU (Apple M4) |
 | 3 · Small LLM | Qwen ~4B, prompted | Laptop (MLX) |
 | 4 · Frontier LLM | Claude Sonnet 5.5, Haiku 5.5, Opus 5.5 | Anthropic API |
 
-**Proposed solution (Phase 6): a cascade.** Every email first goes to the cheapest tier; only emails it is unsure about are escalated to the next tier. Most emails stop early, and only the hardest reach the frontier LLM. Each tier's model and hand-off threshold are chosen on validation data.
+```mermaid
+flowchart LR
+    E[Email] --> T1["Tier 1<br/>rules / TF-IDF + LR"]
+    T1 -- confident --> D[Verdict]
+    T1 -- unsure --> T2["Tier 2<br/>encoder / Laya"]
+    T2 -- confident --> D
+    T2 -- unsure --> T3["Tier 3<br/>Qwen ~4B"]
+    T3 -- confident --> D
+    T3 -- unsure --> T4["Tier 4<br/>Claude"]
+    T4 --> D
+```
 
-**Threat model (brief):** the attacker sends phishing email (credential theft, advance-fee fraud, malicious links) and wants it delivered. The defender sees only the email's sender, subject, body and URLs; no header-authentication results (SPF/DKIM) or reputation lookups. Email text is untrusted: the LLM prompt marks it as data to classify, not instructions to follow.
+*Figure 1: The proposed cascade. Cost and accuracy rise from left to right; the target is to send ≤10% of emails to Tier 4.*
 
-## 3. Goals and timeline
+### C. Threat model and limitations
 
-**Goals**
+**Threat model.** The attacker sends phishing email (credential theft, advance-fee fraud, malicious links or payment requests) and wants it delivered and acted on. The defender sees only the email's content (sender, subject, body and URLs), not header authentication (SPF/DKIM) or sender reputation. Email text is attacker-controlled, so the LLM prompt marks it as untrusted data to classify, never as instructions to follow.
 
-1. **Detection:** measure recall at a 1% false-positive rate (share of phishing caught while flagging only 1% of legitimate mail) for every detector.
-2. **Cost:** measure latency, memory, dollars per million emails and training cost.
-3. **System 1 vs. LLM:** test whether fast System 1 / encoder models come close to frontier LLMs.
-4. **Cascade:** keep ≥95% of the best single model's recall while sending ≤10% of emails to the top tier.
+**Limitations.**
 
-**Timeline**
+- *Dataset age:* the public corpora are old (mostly 2000s), likely appear in LLM training data, and label spam as phishing, so results are preliminary.
+- *Content only:* without headers or live lookups, attacks that rely only on a forged sender cannot be detected.
+- *Cost:* frontier-LLM runs are capped at a 2,500-email test sample to keep API spend bounded.
 
-| Phase | Work | Owner | Status |
+## IV. Goals
+
+The goal is to measure, for every detector family, where it sits on the accuracy–latency–cost trade-off, and to build and evaluate the cascade. We seek to answer:
+
+- **Detection:** what recall does each detector reach at a 1% false-positive rate (FPR)?
+- **Cost:** what are its latency, memory use, dollars per million emails and training cost?
+- **System 1 vs. LLM:** do fast System 1 / encoder models come close to frontier LLMs?
+- **Cascade:** can a cascade keep ≥95% of the best single model's recall while sending ≤10% of emails to the top tier?
+
+## V. Timeline
+
+The project follows the phases in `docs/PLAN.md`. Phases 2–5 depend only on phase 1 and run in parallel, and the course deliverables are the intro presentation (10/21), the mid-term presentation and report (11/16–11/18), and the final presentation (12/02) and report (12/10).
+
+| Date | Milestone | Owner | Status |
 | --- | --- | --- | --- |
-| 0 · Foundations | Detector interface, evaluation harness, metrics, tests | Kyle | Done |
-| 1 · Dataset + splits | Combined public dataset, cleaning, dedup, frozen splits | Kyle | Done |
-| 2 · Baselines | Rules, TF-IDF + LR | Vishal | **TODO (Vishal):** status |
-| 3 · Encoders | Laya, ModernBERT, DeBERTa-v3 | Vishal | **TODO (Vishal):** status |
-| 4 · Small LLM | Qwen ~4B, zero- and few-shot | Ronit | **TODO (Ronit):** status |
-| 5 · Frontier LLMs | Claude Sonnet / Haiku / Opus 5.5 | Aneesh, Gavin | Done |
-| 6 · Cascade + report | Tier choice, hand-off thresholds, accuracy–cost charts, final report | All | After midterm |
+| 11/14 | Phase 0: detector interface, harness, metrics, tests | Kyle | Done |
+| 11/14 | Phase 1: combined dataset, cleaning, deduplication, frozen splits | Kyle | Done |
+| 11/16 | Phase 5: frontier LLMs (Claude Sonnet / Haiku / Opus 5.5) | Aneesh, Gavin | Done |
+| **TODO** | Phase 2: rules, TF-IDF + LR | Vishal | **TODO (Vishal)** |
+| **TODO** | Phase 3: Laya, fine-tuned ModernBERT and DeBERTa-v3 | Vishal | **TODO (Vishal)** |
+| **TODO** | Phase 4: Qwen ~4B, zero- and few-shot | Ronit | **TODO (Ronit)** |
+| 11/18 | Mid-term presentation | All | — |
+| **TODO** (before 11/30) | Phase 6: cascade, tier choice, hand-off thresholds, accuracy–cost plots | All | Planned |
+| 11/30 | Final slides due; 12/02 final presentation | All | — |
+| 12/10 | Final report | All | — |
 
-Phases 2–5 depend only on Phase 1 and run in parallel. Target: Phases 0–5 by the midterm, Phase 6 and the final report by the final presentation.
+## VI. Preliminary Results
 
-## 4. Experimental setup (Phases 0–1)
+### A. Dataset and splits (phases 0–1)
 
-> **TODO (Kyle):** check and expand this section.
+ **[TODO (Kyle): check and expand.]** We use the Phishing Email Curated Datasets [1], 9 corpora: CEAS-08, Nazario, Nigerian Fraud, SpamAssassin, TREC-05/06/07, Enron and Ling. The source label "spam or phishing" is mapped to phishing; Nazario and Nigerian Fraud, which are phishing or fraud by construction, are also reported separately as "true phishing".
 
-**Dataset.** Phishing Email Curated Datasets (Champa et al., Zenodo record 8339691, CC-BY-4.0), 9 corpora: CEAS-08, Nazario, Nigerian Fraud, SpamAssassin, TREC-05/06/07, Enron, Ling. The source label "spam or phishing" is mapped to phishing. Nazario and Nigerian Fraud are phishing/fraud by construction and are also reported separately as "true phishing".
-
-**Cleaning.** Header lines, message IDs and dates are stripped from bodies so no model can recognise the source corpus. Removed 5,555 exact and 31,225 near duplicates (MinHash, Jaccard ≥ 0.8), and 363 emails whose duplicates had conflicting labels. **171,081 emails** remain.
-
-**Splits** (70/15/15, stratified by source and label, frozen and hashed):
+- *Cleaning:* header lines, message IDs and dates are stripped from email bodies so no model can recognise the source corpus.
+- *Deduplication:* 5,555 exact and 31,225 near duplicates were removed (MinHash, Jaccard ≥ 0.8), plus 363 emails whose duplicates had conflicting labels. 171,081 emails remain.
+- *Splits:* 70/15/15, stratified by source and label, then frozen and hashed (Table 1).
 
 | Split | Emails | Phishing | Legitimate |
 | --- | ---: | ---: | ---: |
@@ -71,13 +112,11 @@ Phases 2–5 depend only on Phase 1 and run in parallel. Target: Phases 0–5 by
 | Validation LLM subsample | 2,500 | 1,118 | 1,382 |
 | Test LLM subsample | 2,500 | 1,118 | 1,382 |
 
-The LLM subsamples keep API cost bounded; **every** model is scored on the test LLM subsample, so the headline table compares all models on the same 2,500 emails.
+*Table 1: Frozen splits. Every model is scored on the same 2,500-email test LLM subsample, so all models are compared on identical emails.*
 
-**Evaluation rules.** Every model implements one `Detector` interface and returns a 0–1 phishing score. Thresholds, prompts and hyperparameters are chosen on validation only, never on test. Unparseable outputs, timeouts and refusals count as errors, and an error is always wrong (a miss if phishing, a false alarm if legitimate). Every metric has a 95% bootstrap confidence interval.
+### B. Results across models
 
-## 5. Preliminary results
-
-### 5.1 All models (test LLM subsample: 2,500 emails, 1,118 phishing)
+Table 2 is the cross-model comparison; rows for phases 2–4 are filled in as those phases finish.
 
 | Phase | Model | Recall @ 1% FPR | Latency (p50) | $ / 1M emails |
 | --- | --- | --- | --- | --- |
@@ -90,58 +129,76 @@ The LLM subsamples keep API cost bounded; **every** model is scored on the test 
 | 5 | Claude Opus 5.5 (zero-shot) | 0.976 | 1.9 s | $3,277 |
 | 5 | Claude Haiku 5.5 (few-shot) | 0.898 | 1.0 s | $120 |
 
-### 5.2 Phase 2–4 results
+*Table 2: All models on the test LLM subsample (2,500 emails, 1,118 phishing).*
 
-> **TODO (Vishal):** Phase 2 (rules, TF-IDF + LR) and Phase 3 (Laya, ModernBERT, DeBERTa-v3): setup, results table, observations; full-test-split and cross-source results if available.
+> **TODO (Vishal):** phase 2 and 3 setup, results and observations.
 >
-> **TODO (Ronit):** Phase 4 (Qwen ~4B): setup, zero- vs few-shot, results table, observations.
+> **TODO (Ronit):** phase 4 setup, zero- vs. few-shot results and observations.
 
-### 5.3 Phase 5: frontier LLMs (Aneesh, Gavin)
+### C. Frontier LLMs (phase 5)
 
-**Setup.** Claude Sonnet 5.5, Haiku 5.5 and Opus 5.5 through Anthropic's API. Each email goes into one shared prompt (also to be used for Qwen) that marks the email as untrusted data; the model returns a 0–100 risk score in structured output, divided by 100. Thinking is off where the model allows it (Opus cannot turn it off), at effort `low`. Few-shot runs add 8 fixed examples from the training split (4 phishing, 4 legitimate). Inputs are capped at 32,000 characters (~8k tokens); 0.28% of emails hit the cap. Every API response is cached, so all results reproduce with $0 and no API key.
 
-| Config | Recall @ 1% FPR (95% CI) | PR-AUC | Precision* | Errors | p50 / p95 latency | $ / 1M emails | Run cost |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| Sonnet 5.5 zero-shot | **0.979** (0.968–0.986) | 0.998 | 0.988 | 0 | 1.7 / 3.6 s | $1,638 | $8.31 |
-| Sonnet 5.5 few-shot | 0.978 (0.967–0.990) | 0.998 | 0.988 | 0 | 1.6 / 2.1 s | $1,988 | $10.19 |
-| Opus 5.5 zero-shot | 0.976 (0.967–0.986) | 0.995 | 0.991 | 7 refusals | 1.9 / 2.7 s | $3,277 | $16.57 |
-| Haiku 5.5 few-shot | 0.898 (0.869–0.917) | 0.965 | 0.989 | 49 refusals | 1.0 / 1.7 s | $120 | $0.61 |
-| Haiku 5.5 zero-shot | 0.807 (0.738–0.864) | 0.943 | 0.989 | 89 refusals | 1.2 / 1.9 s | $85 | $0.41 |
+- *Models and prompt:* Claude Sonnet 5.5, Haiku 5.5 and Opus 5.5, called through Anthropic's API with one shared prompt (also to be used for Qwen). The prompt marks the email as untrusted data.
+- *Score:* the model returns a 0–100 risk score in structured output, which we divide by 100.
+- *Settings:* thinking is off where the model allows it (Opus cannot turn it off), at effort `low`. Few-shot runs add 8 fixed training emails (4 phishing, 4 legitimate) to the prompt.
+- *Inputs:* capped at 32,000 characters (~8k tokens); 0.28% of emails hit the cap.
+- *Reproducibility:* every API response is cached, so all results reproduce at $0. Total spend was about $36.
 
-\*Precision at the threshold chosen on validation. Total Phase 5 API spend: about $36.
+| Config | Recall @ 1% FPR (95% CI) | PR-AUC | Errors | p50 / p95 latency | $ / 1M emails |
+| --- | --- | --- | --- | --- | --- |
+| Sonnet 5.5 zero-shot | **0.979** (0.968–0.986) | 0.998 | 0 | 1.7 / 3.6 s | $1,638 |
+| Sonnet 5.5 few-shot | 0.978 (0.967–0.990) | 0.998 | 0 | 1.6 / 2.1 s | $1,988 |
+| Opus 5.5 zero-shot | 0.976 (0.967–0.986) | 0.995 | 7 refusals | 1.9 / 2.7 s | $3,277 |
+| Haiku 5.5 few-shot | 0.898 (0.869–0.917) | 0.965 | 49 refusals | 1.0 / 1.7 s | $120 |
+| Haiku 5.5 zero-shot | 0.807 (0.738–0.864) | 0.943 | 89 refusals | 1.2 / 1.9 s | $85 |
 
-**Findings**
+*Table 3: Phase 5 results. Thresholds were chosen on the validation LLM subsample; refusals count as misses.*
 
-- **Sonnet 5.5 is the strongest model so far** and the current top-tier candidate for the cascade. It caught all 57 "true phishing" emails (Nazario + Nigerian Fraud).
-- **Opus 5.5 adds nothing over Sonnet** (overlapping confidence intervals) at twice the cost. **Few-shot examples do not help Sonnet.**
-- **Safety refusals are a measurable failure mode.** Claude's safety classifiers sometimes decline to answer, and a refusal counts as a miss. Haiku refused 88 phishing emails zero-shot (48 few-shot), mostly flagged as `bio`, likely pharmacy spam; Opus refused 7 of the 20 Nazario credential-phishing emails (`cyber`), so its "true phishing" recall falls to 0.88. Sonnet refused none. Haiku's lower recall therefore partly measures its safety filter, not its judgement. Few-shot halves Haiku's refusals and raises its recall by 9 points.
-- **Base rate matters.** Precision is about 0.99 on the test sample, where 45% of emails are phishing. Re-weighted to a realistic 1% phishing rate, it drops to about 0.51–0.58, so roughly every other flag would be a false alarm. This is why the 1%-FPR operating point, not accuracy, is the headline metric.
-- **Scores are coarse.** Claude's 0–100 scores cluster on a few values (e.g. 5 and 95), so almost every score is tied with another and recall at a fixed FPR moves in steps. Calibration error is low (ECE 0.03–0.04).
+Observations:
 
-## 6. Next steps, risks and backup plans
+- **Sonnet 5.5 is the strongest model so far** and the current Tier 4 candidate. It caught all 57 "true phishing" emails.
+- **Opus 5.5 adds nothing over Sonnet** (overlapping confidence intervals) at twice the cost, and **few-shot examples do not help Sonnet**.
+- **Safety refusals are a failure mode.** Claude's safety classifiers sometimes decline to answer, and a refusal counts as a miss.
+  - Haiku refused 88 phishing emails zero-shot and 48 few-shot, mostly in the `bio` category (likely pharmacy spam). Its lower recall therefore partly measures its safety filter rather than its judgement.
+  - Opus refused 7 of the 20 Nazario credential-phishing emails (`cyber` category), lowering its true-phishing recall to 0.88.
+  - Sonnet refused none.
+- **Base rate matters.** Precision is about 0.99 on the test sample, where 45% of emails are phishing. Re-weighted to a realistic 1% phishing rate, precision drops to 0.51–0.58: about every other flag would be a false alarm. This is why we report recall at a fixed low false-positive rate rather than accuracy.
+- **Scores are coarse.** Claude's 0–100 scores cluster on a few values (e.g. 5 and 95), so recall at a fixed FPR moves in steps. Calibration error is low (ECE 0.03–0.04).
 
-**Next (Phase 6):** choose each tier's model and the hand-off thresholds on validation, build the cascade as one more `Detector` so it runs through the same harness, and plot accuracy against latency and cost.
+### D. Potential risks
 
-- A refused email could be escalated to the next tier instead of counted as a miss; this rule must be fixed on validation before it is applied to test.
-- **TODO (Vishal / Kyle):** further Phase 6 details.
+- *Data contamination and age:* the public corpora are old and probably in LLM training data, which may inflate LLM scores and limit transfer to modern phishing.
+- *Source shortcuts:* models may learn which corpus an email came from (e.g. Enron addresses, tokenised Ling text) rather than whether it is phishing. Header stripping and deduplication reduce this; a cross-source test (train without one corpus) will measure it.
+- *Spam labelled as phishing:* the dataset partly measures spam detection.
+- *Small LLM validation sample:* it gives only ~14 false positives at a 1% FPR, so LLM thresholds are noisy.
+- **TODO (Vishal / Ronit):** risks from phases 2–4 (e.g. fine-tuning large encoders on a 16 GB laptop).
 
-| Risk | Effect | Mitigation / backup |
-| --- | --- | --- |
-| Public corpora are old and likely in LLM training data | LLM scores look too good, results may not transfer to modern phishing | Label results preliminary; build a newer or synthetic test set if results look suspicious |
-| Dataset labels spam as phishing | Partly measures spam detection | Report "true phishing" recall (Nazario, Nigerian Fraud) separately |
-| Models learn the source corpus, not phishing | Inflated scores | Headers stripped, dedup; cross-source test (train without one corpus) |
-| Safety refusals | Missed phishing in the top tier | Track refusals; escalate them in the cascade |
-| Small validation LLM subsample (~14 false positives at 1%) | Noisy LLM thresholds | Larger validation sample for Qwen, which runs locally for free |
-| **TODO (Vishal / Ronit):** risks from Phases 2–4 (e.g. fine-tuning memory on a 16 GB M4) | | |
+### E. Backup plan
 
-## 7. References
+- If results look too good to trust (near-perfect, models hard to tell apart), we replace the test set with newer phishing (recent Nazario years, honeypot mail) plus a small hand-checked synthetic set that no LLM has seen; every model reruns unchanged on the new splits.
+- If fine-tuning does not fit on our laptops, we fall back to base-size encoders or rent a cloud GPU.
+- Refusals can be escalated to the next cascade tier instead of counted as misses; this rule is fixed on validation before it touches test data.
 
-> **TODO (all):** full references, including the dataset (Champa et al., Zenodo 8339691) and the papers cited in the intro slides.
+## VII. Related Work
 
-## Contributions (so far)
+**[TODO (all): expand with the papers from the intro slides, verified.]**
 
-- **Kyle:** Phases 0–1 (harness, dataset, splits), project plan.
-- **Vishal:** **TODO**
-- **Ronit:** **TODO**
-- **Gavin:** Phase 5 implementation and runs (Claude detectors, prompt, response cache, results).
-- **Aneesh:** Phase 5 review and verification, midterm slides and report draft.
+- *LLMs for phishing detection:* LLM-based detectors outperform traditional ML and deep learning and add robustness, multilingual coverage and explanations **[TODO: Aziz et al. 2026]**.
+- *System 1 models vs. LLMs:* **[TODO: Liu et al. 2026]** compares fast decision models with LLMs for phishing.
+- *LLMs for generating phishing:* Hazell [3] shows that LLMs can cheaply write convincing, personalised spear-phishing at scale, which raises the bar for detectors.
+- *Cascades:* FrugalGPT [2] cascades LLMs of increasing cost on general NLP tasks and reports large cost savings at similar accuracy.
+- *Our contribution:* we differ from these works by (1) comparing rules, classic ML, encoders, a small LLM and frontier LLMs on identical emails and metrics, and (2) measuring a cascade specifically for phishing, including safety refusals as a failure mode.
+
+## VIII. Conclusion
+
+We have defined the problem (the accuracy–latency–cost trade-off in phishing detection), built a shared benchmark with a frozen 171,081-email dataset, and completed the frontier-LLM tier. Claude Sonnet 5.5 sets the bar at 97.9% recall at a 1% false-positive rate for about $1,600 per million emails. Opus adds nothing at twice the cost, and safety refusals are a measurable weakness of Haiku and Opus. **[TODO (Vishal, Ronit): one sentence each on phases 2–4.]** Next, we finish the cheaper tiers and build the cascade to test whether it keeps ≥95% of Sonnet's recall while sending ≤10% of emails to it.
+
+## References
+
+[1] Champa et al. Phishing Email Curated Datasets. Zenodo, record 8339691, CC-BY-4.0. https://zenodo.org/records/8339691 **[TODO: add the paper citation]**
+
+[2] L. Chen, M. Zaharia and J. Zou. FrugalGPT: How to Use Large Language Models While Reducing Cost and Improving Performance. arXiv:2305.05176, 2023.
+
+[3] J. Hazell. Spear Phishing With Large Language Models. arXiv:2305.06972, 2023.
+
+**[TODO (all): Aziz et al. 2026; Hasan et al. 2025; Liu et al. 2026; Hmimou et al. 2026 if voice phishing stays in scope.]**
