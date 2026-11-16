@@ -85,6 +85,7 @@ Branch `phase-5-frontier-llms`. Plan and sources: [phase5-plan.md](phase5-plan.m
 | Haiku 5.5 few-shot | 0.898 (0.869–0.917) | 0.965 | 49 refusals | 1.0 s / 1.7 s | $120 | $0.61 |
 | Haiku 5.5 zero-shot | 0.807 (0.738–0.864) | 0.943 | 89 refusals | 1.2 s / 1.9 s | $85 | $0.41 |
 
+- Every API response is saved in `results/llm-response-cache-champa2023-v1.tar.gz` (3.3 MB, no email text); unpacked into `data/cache/`, it reproduces all five results with no API key and $0 spent.
 - Total new API spend: about **$36.20** (Sonnet and Haiku $19.60 including smoke tests and a run interrupted to parallelise; Opus $16.60), against a $55 cap. Rerunning a finished config makes 0 API calls.
 - **Sonnet** is the strongest single model so far and the current Tier 4 candidate. Few-shot doesn't help it.
 - **Opus 5.5 adds nothing over Sonnet** (0.976 vs 0.979, overlapping CIs) at twice the cost. It refused 7 phishing emails (category `cyber`), all of them Nazario credential-phishing emails: 7 of the 20 Nazario emails in `test_llm`. Its "true phishing" recall is therefore 0.88, against 1.0 for Sonnet. At effort `low` it wrote no hidden reasoning (~23 output tokens per email). "True phishing" recall (Nazario + Nigerian, 57 emails) is 1.0 for both Sonnet configs.

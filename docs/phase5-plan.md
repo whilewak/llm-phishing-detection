@@ -80,6 +80,16 @@ Smoke tests on the 7 sample emails cost $0.015.
    ```
    Or one after another under one budget: `python scripts/run_suite.py --budget 55 configs/models/claude-*.toml`.
 
+### Reusing the response cache
+
+`results/llm-response-cache-champa2023-v1.tar.gz` (3.3 MB, 25,021 responses) holds every API answer from the runs: score, verdict, token counts, cost, latency and refusal category, no email text. Unpack it before running, and every config reproduces its results with 0 API calls and $0 spent (no API key needed):
+
+```bash
+mkdir -p data/cache && tar -xzf results/llm-response-cache-champa2023-v1.tar.gz -C data/cache
+```
+
+Cache entries are keyed by model, request settings, prompt version and the exact prompt text, so a changed prompt or config makes new (paid) calls rather than reusing stale answers.
+
 ## Verification
 
 - `python -m unittest discover tests` passes without a key.
