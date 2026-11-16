@@ -94,11 +94,14 @@ class LayaDetector:
         weights: dict[str, float] | None = None,
         risk_threshold: float = POC_RISK_THRESHOLD,
         router: Any = None,
+        fit_weights_on_val: bool = True,
     ):
         """`router` lets tests pass a fake; otherwise laya and torch are loaded here."""
         self.name = f"laya-{default_model}"
         self.weights = dict(weights or POC_WEIGHTS)
         self.risk_threshold = risk_threshold
+        self.fit_weights_on_val = fit_weights_on_val
+        self.meta_classifier: Any = None
         if router is None:
             from laya import Router
 
@@ -110,14 +113,57 @@ class LayaDetector:
         self.router = router
 
     def fit(self, train: Sequence[Email], val: Sequence[Email]) -> TrainingCost:
-        # Zero-shot until Phase 3 fits the signal weights on validation.
-        return TrainingCost(hardware=self.device)
+        """Phase 3: Fits optimal signal weights on validation split using logistic regression."""
+        if not val or not self.fit_weights_on_val:
+            return TrainingCost(hardware=self.device)
+
+        from sklearn.linear_model import LogisticRegression
+        from phishbench.data.splits import stratified_sample
+
+        t0 = time.perf_counter()
+        features = []
+        labels = []
+
+        # Predict on validation to collect signals (subsample to 200 for fast fitting if large)
+        fit_val = val if len(val) <= 200 else stratified_sample(val, 200, seed=42)
+        preds = self.predict(fit_val)
+        for email, p in zip(fit_val, preds):
+            if email.label is None or p.failed or "signals" not in p.details:
+                continue
+            sigs = p.details["signals"]
+            probs = p.details.get("classification_probabilities", {})
+            row = [
+                sigs.get("is_phishing", 0.0),
+                sigs.get("urgency_pressure", 0.0),
+                sigs.get("credential_harvest", 0.0),
+                sigs.get("financial_pressure", 0.0),
+                sigs.get("suspicious_attachment", 0.0),
+                probs.get("phishing", 0.0),
+                probs.get("benign", 0.0),
+            ]
+            features.append(row)
+            labels.append(1 if email.is_phishing else 0)
+
+        if len(set(labels)) > 1:
+            clf = LogisticRegression(class_weight="balanced", max_iter=500, random_state=42)
+            clf.fit(features, labels)
+            self.meta_classifier = clf
+
+        wall_clock = time.perf_counter() - t0
+        return TrainingCost(
+            wall_clock_s=wall_clock,
+            hardware=self.device,
+            cost_usd=0.0,
+            n_train_emails=len(features),
+        )
 
     def predict(self, emails: Sequence[Email]) -> list[Prediction]:
         return [self._predict_one(e) for e in emails]
 
     def _predict_one(self, email: Email) -> Prediction:
-        state = {"from": email.sender, "subject": email.subject, "body": email.body}
+        # Truncate body to ~4000-5000 tokens to safely stay within ModernBERT's 8192 context limit on MPS
+        body = email.body[:16000] if email.body else ""
+        state = {"from": email.sender, "subject": email.subject, "body": body}
         start = time.perf_counter()
         raw = self.router.predict(state, QUESTIONS)
         latency_ms = (time.perf_counter() - start) * 1000
@@ -132,7 +178,19 @@ class LayaDetector:
             )
 
         composite = sum(self.weights[q] * signals[q] for q in self.weights)
-        score = composite / sum(self.weights.values())
+        if self.meta_classifier is not None:
+            feat = [[
+                signals.get("is_phishing", 0.0),
+                signals.get("urgency_pressure", 0.0),
+                signals.get("credential_harvest", 0.0),
+                signals.get("financial_pressure", 0.0),
+                signals.get("suspicious_attachment", 0.0),
+                class_probs.get("phishing", 0.0),
+                class_probs.get("benign", 0.0),
+            ]]
+            score = float(self.meta_classifier.predict_proba(feat)[0, 1])
+        else:
+            score = composite / sum(self.weights.values())
         # The POC's verdict rule, kept for reference; metrics use `score`.
         flagged = composite >= self.risk_threshold or choice == "phishing"
         return Prediction(

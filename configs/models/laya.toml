@@ -3,11 +3,12 @@
 
 [detector]
 class = "phishbench.detectors.laya:LayaDetector"
-data_allowed = ["validation: threshold"]
+data_allowed = ["validation: fit signal weights and threshold"]
 
 [detector.params]
 default_model = "english"
 risk_threshold = 1.05
+fit_weights_on_val = true
 
 [eval]
 warmup = 3
