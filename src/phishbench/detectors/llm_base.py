@@ -279,15 +279,3 @@ class LLMDetector(ABC):
             },
         )
 
-
-def bedrock_api_key(env_var: str = "AWS_BEARER_TOKEN_BEDROCK") -> str:
-    import os
-
-    key = os.environ.get(env_var)
-    if not key:
-        raise RuntimeError(f"set {env_var} to an Amazon Bedrock API key (see docs/phase5-plan.md)")
-    return key
-
-
-def bedrock_base_url(region: str, path: str) -> str:
-    return f"https://bedrock-runtime.{region}.amazonaws.com/{path}"

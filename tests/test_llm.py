@@ -214,17 +214,8 @@ class ClaudeTest(unittest.TestCase):
         with self.assertRaises(anthropic.BadRequestError):
             self.make(FakeAnthropic(error=fatal)).predict([make_email(1, "phishing")])
 
-    def test_backends(self):
-        det = self.make(FakeAnthropic(), backend="bedrock", model="global.anthropic.claude-haiku-5-5")
-        self.assertEqual(det.name, "claude-haiku-5-5")
-        self.assertEqual(det.fit([], []).hardware, "API (Amazon Bedrock)")
+    def test_hardware_label(self):
         self.assertEqual(self.make(FakeAnthropic()).fit([], []).hardware, "API (Anthropic)")
-        with tempfile.TemporaryDirectory() as d:
-            a = self.make(FakeAnthropic(), cache_dir=d)
-            b = self.make(FakeAnthropic(), cache_dir=d, backend="bedrock")
-            self.assertNotEqual(a.cache_dir, b.cache_dir)
-        with self.assertRaises(ValueError):
-            self.make(FakeAnthropic(), backend="vertex")
 
     def test_rejects_logprob_mode(self):
         with self.assertRaises(ValueError):

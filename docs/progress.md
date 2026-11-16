@@ -67,7 +67,7 @@ Laya also warned that its checkpoint has invalid calibration settings for some a
 
 Branch `phase-5-frontier-llms`. Plan and sources: [phase5-plan.md](phase5-plan.md).
 
-- **Models:** Claude Sonnet 5.5 ($2/$10 per 1M tokens) and Claude Haiku 5.5 ($0.10/$0.50), through Anthropic's API. OpenAI and Gemini were dropped (no API credit; Gemini isn't on Bedrock). Amazon Bedrock is supported as a backend, but this AWS account is refused Claude ("not available for this account"), even in the console.
+- **Models:** Claude Sonnet 5.5 ($2/$10 per 1M tokens) and Claude Haiku 5.5 ($0.10/$0.50), through Anthropic's API. OpenAI and Gemini were dropped (no API credit).
 - **Configs (4):** Sonnet and Haiku, each zero- and few-shot.
 - **Shared prompt** (`src/phishbench/prompts.py`): one set of task instructions for every LLM (Qwen too), the email marked as untrusted data, bodies capped at 32,000 characters (~8k tokens).
 - **Few-shot pool:** 8 train emails (4 phishing incl. 1 Nazario and 1 Nigerian Fraud, 4 legitimate), frozen in `configs/prompts/fewshot-champa2023-v1.json` by `scripts/build_fewshot.py`. Fixed rather than chosen on `val_llm`, which is too small to compare pools.

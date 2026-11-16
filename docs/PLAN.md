@@ -15,7 +15,7 @@
 | Fine-tuned encoders | ModernBERT, DeBERTa-v3 | — | — | Yes | Local GPU (MPS) |
 | System 1 decision model | Laya | Yes | — | If the library supports it (checked in Phase 3) | Local GPU (MPS) |
 | Small language model | Qwen ~4B (latest version pinned at Phase 4 start), prompted | Yes | Yes | — | Local (MLX, for answer-token probabilities) |
-| Frontier LLMs | Claude Sonnet 5.5 ($2/$10 per 1M tokens) and Claude Haiku 5.5 ($0.10/$0.50), via Anthropic's API (Amazon Bedrock optional) | Yes | Yes | — | API |
+| Frontier LLMs | Claude Sonnet 5.5 ($2/$10 per 1M tokens) and Claude Haiku 5.5 ($0.10/$0.50), via Anthropic's API | Yes | Yes | — | API |
 | Cascade | Four tiers, escalating only uncertain emails. Each tier's model is the best on validation among: Tier 1 rules or TF-IDF + LR → Tier 2 Laya, ModernBERT or DeBERTa-v3 → Tier 3 Qwen ~4B → Tier 4 the best frontier LLM | — | — | Tier choice and thresholds tuned on validation | Mixed |
 
 The fine-tuned encoders are the key control for Laya: they are a similar size and speed, and ModernBERT is Laya's own backbone, so they show whether the System 1 approach adds anything beyond a well-trained classifier.
@@ -24,7 +24,7 @@ Dropped:
 
 - SpamAssassin / rspamd and header-based features (SPF/DKIM, domain age): they need raw headers or live lookups that a combined dataset doesn't provide.
 - Naive Bayes, LightGBM, character CNN on URLs, embeddings + linear head, DistilBERT, RoBERTa, SetFit, zero-shot NLI classifiers, safety classifiers (Llama Guard, ShieldGemma), LoRA-fine-tuned SLMs, other SLMs (Gemma, Llama, Phi): lower priority or cost; can be added later as extra detectors without changing the harness.
-- Other frontier LLMs: OpenAI GPT-6.x and Google Gemini (no API credit for them; Gemini is also not on Amazon Bedrock) and flagship-priced Claude Opus 5.5 ($4/$20). Phase 5 decisions and sources are in [phase5-plan.md](phase5-plan.md).
+- Other frontier LLMs: OpenAI GPT-6.x and Google Gemini (no API credit for them) and flagship-priced Claude Opus 5.5 ($4/$20). Phase 5 decisions and sources are in [phase5-plan.md](phase5-plan.md).
 
 ## Dataset
 

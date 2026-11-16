@@ -10,8 +10,8 @@ Phase 5 of [PLAN.md](PLAN.md) adds frontier LLMs to the benchmark as its expensi
 
 | Decision | Why |
 | --- | --- |
-| **Claude only**: Sonnet 5.5 and Haiku 5.5 | No OpenAI API credit. Gemini isn't on Amazon Bedrock, which was the first plan for one bill. |
-| **Anthropic's API** (`ANTHROPIC_API_KEY`) is the default backend; Amazon Bedrock is a config option (`backend = "bedrock"`) | Bedrock refused Claude for the AWS account ("not available for this account"), even in the console. |
+| **Claude only**: Sonnet 5.5 and Haiku 5.5 | No OpenAI or Google API credit. |
+| **Anthropic's API**, key in `ANTHROPIC_API_KEY` | One key and one bill. |
 | **Both models zero- and few-shot** (4 configs) | With one provider, the few-shot runs are cheap enough to keep for both. |
 | **Opus 5.5 deferred** | ~$31 more for zero-shot; to be decided after these results. |
 | **No temperature**; thinking off, effort `low` | Current Claude models reject `temperature`. Thinking off keeps cost and latency low and fits a cascade tier. Reproducibility comes from the response cache. |
@@ -46,7 +46,7 @@ The harness (`src/phishbench/eval/harness.py`) is unchanged: it chooses the thre
 
 - **Shared prompt** (`src/phishbench/prompts.py`): one set of task instructions for every LLM (Qwen in Phase 4 too), the email inside `<email>` tags marked as untrusted data, answer formats for a 0–100 score or a single answer token, and `PROMPT_VERSION = "v1"`. Wording may change only from `val_llm` outputs.
 - **Few-shot pool** (`configs/prompts/fewshot-champa2023-v1.json`, built by `scripts/build_fewshot.py`): 8 train emails, labels alternating. Phishing: Nazario, Nigerian Fraud, TREC-07, TREC-06. Legitimate: Enron, Ling, SpamAssassin, TREC-06. Stored with its content hash and the train split's id hash. Fixed rather than chosen on `val_llm`, which is too small to compare pools.
-- **Shared LLM base** (`src/phishbench/detectors/llm_base.py`): parallel requests; a response cache in `data/cache/llm/<backend>/` (git-ignored), so reruns and interrupted runs resume for free; cost from token usage × config prices; a cost cap checked before each request; JSON scoring, plus the logprob scoring Qwen will use. Refusals, `max_tokens` and unparseable answers are cached errors. Throttling, server and network errors left after 5 SDK retries are errors that aren't cached, so a rerun retries them. Bad requests (4xx) stop the run.
+- **Shared LLM base** (`src/phishbench/detectors/llm_base.py`): parallel requests; a response cache in `data/cache/llm/anthropic/` (git-ignored), so reruns and interrupted runs resume for free; cost from token usage × config prices; a cost cap checked before each request; JSON scoring, plus the logprob scoring Qwen will use. Refusals, `max_tokens` and unparseable answers are cached errors. Throttling, server and network errors left after 5 SDK retries are errors that aren't cached, so a rerun retries them. Bad requests (4xx) stop the run.
 - **Claude detector** (`src/phishbench/detectors/claude.py`): `client.messages.parse(...)` with the Pydantic `RiskAssessment` output, the system prompt marked for prompt caching, and thinking and effort from the config.
 - **Runners:** `scripts/evaluate.py --max-cost N` lowers a config's cap and records new API spend in the results file (`api_spend`). `scripts/run_suite.py --budget N` runs configs one after another under one total budget.
 - **Tests:** `tests/test_prompts.py` and `tests/test_llm.py` use fake clients and need no key. An integration test runs the 7 sample emails on Haiku when `ANTHROPIC_API_KEY` is set.
@@ -89,8 +89,7 @@ Smoke tests on the 7 sample emails cost $0.015.
 ## Appendix: providers considered (2026-11-15)
 
 - **OpenAI** GPT-6.1 Sol ($2/$10) and GPT-6 Luna ($0.10/$0.50) were price-matched to Sonnet and Haiku, with Luna also scored from logprobs (allowed only at reasoning effort `none`). Dropped: no API credit. GPT-6 Astra ($10/$50) was excluded on price.
-- **Google Gemini** 4 Argon and 3.5 Flash-Lite: recent Gemini models ignore `temperature` and logprobs are deprecated on Gemini 3.x. Dropped: not on Amazon Bedrock (only open-weight Gemma is).
-- **Amazon Bedrock**: Claude, GPT-6.x and Gemma are available through it, at global-routing prices equal to list prices but with no batch discount. Dropped as the default because the account was refused Claude.
+- **Google Gemini** 4 Argon and 3.5 Flash-Lite: recent Gemini models ignore `temperature` and logprobs are deprecated on Gemini 3.x. Dropped: no API credit.
 - **Claude Opus 5.5** ($4/$20, thinking always on): ~$31 zero-shot, ~$37 few-shot. Deferred.
 
-Sources: Anthropic model and pricing reference (claude-api skill, 2026-11-03); OpenAI docs (pricing, models, latest-model guide); Google AI Studio docs (models, pricing, thinking, generate-content reference) and Google Cloud's inference reference; AWS Bedrock model cards for Claude Sonnet 5.5, Haiku 5.5, GPT-6.1 Sol, GPT-6 Luna and the Google model list.
+Sources: Anthropic model and pricing reference (claude-api skill, 2026-11-03); OpenAI docs (pricing, models, latest-model guide); Google AI Studio docs (models, pricing, thinking, generate-content reference) and Google Cloud's inference reference.
