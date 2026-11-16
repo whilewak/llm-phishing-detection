@@ -5,4 +5,5 @@ __pycache__/
 *.egg-info/
 data/raw/
 data/processed/
+data/cache/
 checkpoints/

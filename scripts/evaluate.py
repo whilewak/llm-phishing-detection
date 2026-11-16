@@ -34,6 +34,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--train", help="training split or file, for models that learn")
     parser.add_argument("--out", type=Path, default=Path("results"), help="results directory")
     parser.add_argument("--bootstrap", type=int, default=1000, help="bootstrap resamples for CIs")
+    parser.add_argument("--max-cost", type=float,
+                        help="API models: lower the config's max_total_cost_usd to this many dollars of new spend")
     args = parser.parse_args(argv)
 
     config = tomllib.loads(args.model.read_text(encoding="utf-8"))
@@ -54,7 +56,10 @@ def main(argv: list[str] | None = None) -> int:
     val = load(args.val) if args.val else []
     train = load(args.train) if args.train else []
 
-    detector = load_detector(det_cfg["class"], det_cfg.get("params"))
+    params = dict(det_cfg.get("params") or {})
+    if args.max_cost is not None:
+        params["max_total_cost_usd"] = min(params.get("max_total_cost_usd", args.max_cost), args.max_cost)
+    detector = load_detector(det_cfg["class"], params)
     result = evaluate(
         detector,
         test,
@@ -67,6 +72,10 @@ def main(argv: list[str] | None = None) -> int:
                 "data_ref": {**data_ref, "test": args.test, "val": args.val, "train": args.train}},
         source_groups=source_groups,
     )
+    if hasattr(detector, "spent_usd"):
+        # Money actually spent in this run; cached responses cost nothing.
+        result["api_spend"] = {"new_usd": detector.spent_usd, "api_calls": detector.api_calls,
+                               "cap_usd": params.get("max_total_cost_usd")}
     path = write_result(result, args.out)
 
     det = result["detection"]
@@ -77,6 +86,9 @@ def main(argv: list[str] | None = None) -> int:
         print(f"PR-AUC: {det['pr_auc']:.3f}")
     p50 = result["speed"]["latency_ms_p50"]
     print(f"errors: {result['errors']['count']}  p50 latency: {p50 if p50 is None else round(p50, 1)} ms")
+    if "api_spend" in result:
+        s = result["api_spend"]
+        print(f"new API spend: ${s['new_usd']:.4f} over {s['api_calls']} calls (cap ${s['cap_usd']})")
     print(f"wrote {path}")
     return 0
 

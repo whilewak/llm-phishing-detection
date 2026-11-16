@@ -10,7 +10,7 @@ As of 2026-11-14. Phases 0 and 1 of [PLAN.md](PLAN.md) are done; no model has be
 | 2 · Baselines (rules, TF-IDF + LR) | Done | Met: rules and TF-IDF+LR benchmarked on test_llm, full test, and cross-source |
 | 3 · Encoders (ModernBERT, DeBERTa-v3, Laya) | In progress | ModernBERT & Laya complete; DeBERTa-v3 training |
 | 4 · SLM (Qwen ~4B) | Not started | |
-| 5 · Frontier LLMs (Claude Sonnet, Haiku) | Not started | |
+| 5 · Frontier LLMs (Claude Sonnet 5.5, Haiku 5.5) | Done (PR #2, draft) | Met: all 4 configs scored on `test_llm`, thresholds from `val_llm` |
 | 6 · Cascade and report | Not started | |
 
 ## Planning
@@ -94,9 +94,50 @@ Implemented and benchmarked both Phase 2 detectors on `test_llm` (2,500 emails),
 - **DeBERTa-v3-base**:
   - In progress: Initial attempts suffered from FP16 gradient overflow; patched with explicit FP32 `.float()` casting and stabilized learning rate.
 
+## Phase 5 · Frontier LLMs
+
+Branch `phase-5-frontier-llms`. Plan and sources: [phase5-plan.md](phase5-plan.md).
+
+- **Models:** Claude Sonnet 5.5 ($2/$10 per 1M tokens) and Claude Haiku 5.5 ($0.10/$0.50), through Anthropic's API. OpenAI and Gemini were dropped (no API credit).
+- **Configs (4):** Sonnet and Haiku, each zero- and few-shot.
+- **Shared prompt** (`src/phishbench/prompts.py`): one set of task instructions for every LLM (Qwen too), the email marked as untrusted data, bodies capped at 32,000 characters (~8k tokens).
+- **Few-shot pool:** 8 train emails (4 phishing incl. 1 Nazario and 1 Nigerian Fraud, 4 legitimate), frozen in `configs/prompts/fewshot-champa2023-v1.json` by `scripts/build_fewshot.py`. Fixed rather than chosen on `val_llm`, which is too small to compare pools.
+- **Detectors:** `llm_base.py` (concurrency, response cache in `data/cache/llm/`, cost accounting, per-run cost cap, JSON and logprob scoring; the logprob scorer is for Qwen) and `claude.py`. Refusals and unparseable output are errors; throttling and server errors are errors too but are not cached, so a rerun retries them. No refusal fallback, since it would answer with a different model.
+- **Temperature:** current Claude models reject it, so Claude runs with thinking off at effort `low`. Reproducibility comes from the response cache.
+- **Budget:** about $27 for all 4 configs; caps sum to $55.
+
+### Results (2026-11-16, `test_llm`: 2,500 emails, 1,118 phishing; thresholds chosen on `val_llm`)
+
+| Config | Recall at 1% FPR (95% CI) | PR-AUC | Errors | p50 / p95 latency | $ per 1M emails | Run cost |
+| --- | --- | --- | --- | --- | --- | --- |
+| Sonnet 5.5 zero-shot | **0.979** (0.968–0.986) | 0.998 | 0 | 1.7 s / 3.6 s | $1,638 | $8.31 |
+| Sonnet 5.5 few-shot | 0.978 (0.967–0.990) | 0.998 | 0 | 1.6 s / 2.1 s | $1,988 | $10.19 |
+| Opus 5.5 zero-shot | 0.976 (0.967–0.986) | 0.995 | 7 refusals | 1.9 s / 2.7 s | $3,277 | $16.57 |
+| Haiku 5.5 few-shot | 0.898 (0.869–0.917) | 0.965 | 49 refusals | 1.0 s / 1.7 s | $120 | $0.61 |
+| Haiku 5.5 zero-shot | 0.807 (0.738–0.864) | 0.943 | 89 refusals | 1.2 s / 1.9 s | $85 | $0.41 |
+
+- Every API response is saved in `results/llm-response-cache-champa2023-v1.tar.gz` (3.3 MB, no email text); unpacked into `data/cache/`, it reproduces all five results with no API key and $0 spent.
+- Total new API spend: about **$36.20** (Sonnet and Haiku $19.60 including smoke tests and a run interrupted to parallelise; Opus $16.60), against a $55 cap. Rerunning a finished config makes 0 API calls.
+- **Sonnet** is the strongest single model so far and the current Tier 4 candidate. Few-shot doesn't help it.
+- **Opus 5.5 adds nothing over Sonnet** (0.976 vs 0.979, overlapping CIs) at twice the cost. It refused 7 phishing emails (category `cyber`), all of them Nazario credential-phishing emails: 7 of the 20 Nazario emails in `test_llm`. Its "true phishing" recall is therefore 0.88, against 1.0 for Sonnet. At effort `low` it wrote no hidden reasoning (~23 output tokens per email). "True phishing" recall (Nazario + Nigerian, 57 emails) is 1.0 for both Sonnet configs.
+- **Haiku is held back by refusals, not only by accuracy.** 88 of the zero-shot errors and 48 of the few-shot ones are phishing emails that Haiku's safety classifier declined (category `bio`, likely pharmacy spam), and each counts as a miss. Few-shot halves the refusals and lifts recall by 9 points.
+- Calibration error (ECE) is 0.03–0.04 for all four. Precision at the chosen threshold is about 0.99 for all four. 0.28% of emails hit the 32,000-character input cap.
+
+To rerun (needs `ANTHROPIC_API_KEY`; cached responses are reused for free): see "Running it" in [phase5-plan.md](phase5-plan.md).
+
 ## Tests
 
 51 unit tests, all passing, covering metrics, harness, rules, TF-IDF, Laya calibration, and encoder training/inference.
+
+## Known issues to carry forward
+
+- **Few true-phishing emails in the test LLM subsample:** 57 (20 Nazario, 37 Nigerian), so that recall has a wide confidence interval for Qwen and Claude. The full test split has about 590.
+- **Small validation LLM subsample:** about 14 false positives at 1%, so Qwen's and Claude's thresholds will be noisy. Revisit before Phase 4.
+- **Possible source shortcuts:** sender addresses (e.g. `@ENRON.com`) and the tokenised text of Enron and Ling may let models recognise the source; the cross-source test is meant to catch this.
+- **Laya calibration:** its checkpoint warning matters for the cascade's hand-offs.
+- **Safety refusals on phishing emails:** Haiku 5.5 declines 3.5–8% of phishing emails in `test_llm` (category `bio`), and Opus 5.5 declines 7 of 20 Nazario credential-phishing emails (category `cyber`); Sonnet 5.5 declined none. They count as misses, so Haiku's recall partly measures refusals. Not fixable by prompting without changing the shared prompt; noted for the cascade (a refusal could escalate to the next tier instead).
+- **0–100 scores tie heavily:** nearly every LLM score shares its value with another email (scores cluster at a few values like 5 and 95), so recall at 1% FPR moves in steps. Qwen's logprob scores in Phase 4 will not have this problem.
+- **Untracked smoke-test result:** `results/laya-english_20261114T080908Z.json` (7 sample emails) may not be worth committing.
 
 ## Next
 

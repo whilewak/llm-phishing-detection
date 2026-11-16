@@ -9,7 +9,7 @@ import sys
 from importlib import metadata
 from pathlib import Path
 
-_TRACKED_PACKAGES = ("laya", "torch", "transformers", "mlx", "mlx-lm", "anthropic")
+_TRACKED_PACKAGES = ("laya", "torch", "transformers", "mlx", "mlx-lm", "anthropic", "pydantic")
 
 
 def peak_rss_mb() -> float:
