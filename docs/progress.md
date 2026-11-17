@@ -8,7 +8,7 @@ As of 2026-11-14. Phases 0 and 1 of [PLAN.md](PLAN.md) are done; no model has be
 | 0 · Foundations | Done | Met: Laya ran end to end on the 7 sample emails and wrote a results file |
 | 1 · Combined dataset and splits | Done | Met: splits frozen and hashed, dataset version recorded, rebuild verified |
 | 2 · Baselines (rules, TF-IDF + LR) | Done | Met: rules and TF-IDF+LR benchmarked on test_llm, full test, and cross-source |
-| 3 · Encoders (ModernBERT, DeBERTa-v3, Laya) | In progress | ModernBERT & Laya complete; DeBERTa-v3 training |
+| 3 · Encoders (ModernBERT, DeBERTa-v3, Laya) | Done | Met: all 3 encoder models benchmarked on test_llm, Laya calibrated on validation |
 | 4 · SLM (Qwen ~4B) | Not started | |
 | 5 · Frontier LLMs (Claude Sonnet 5.5, Haiku 5.5) | Done (PR #2, draft) | Met: all 4 configs scored on `test_llm`, thresholds from `val_llm` |
 | 6 · Cascade and report | Not started | |
@@ -91,8 +91,10 @@ Implemented and benchmarked both Phase 2 detectors on `test_llm` (2,500 emails),
   - Results (`test_llm`): **82.0% Recall @ 1% FPR** (95% CI: 74.5%–89.1%), **PR-AUC 0.9893** (highest among all semantic models), p50 latency **199.5 ms** (7.4× faster than Laya locally).
   - Robust semantic intent separation without vocabulary shortcuts.
 
-- **DeBERTa-v3-base**:
-  - In progress: Initial attempts suffered from FP16 gradient overflow; patched with explicit FP32 `.float()` casting and stabilized learning rate.
+- **DeBERTa-v3-base (`TransformerEncoderDetector`)**:
+  - Fine-tuned with explicit FP32 `.float()` casting to avoid disentangled attention gradient overflow on MPS/CPU.
+  - Results (`test_llm`): **88.2% Recall @ 1% FPR** (95% CI: 84.3%–91.4%), **PR-AUC 0.987**, **0 errors**, p50 latency **328.3 ms**.
+  - Achieved the highest recall at 1% FPR among all local dense encoders, balancing strong accuracy with 328 ms local throughput.
 
 ## Phase 5 · Frontier LLMs
 
