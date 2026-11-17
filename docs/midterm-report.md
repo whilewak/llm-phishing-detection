@@ -86,8 +86,8 @@ The project follows the phases in `docs/PLAN.md`. Phases 2–5 depend only on ph
 | 11/14 | Phase 0: detector interface, harness, metrics, tests | Kyle | Done |
 | 11/14 | Phase 1: combined dataset, cleaning, deduplication, frozen splits | Kyle | Done |
 | 11/16 | Phase 5: frontier LLMs (Claude Sonnet / Haiku / Opus 5.5) | Aneesh, Gavin | Done |
-| **TODO** | Phase 2: rules, TF-IDF + LR | Vishal | **TODO (Vishal)** |
-| **TODO** | Phase 3: Laya, fine-tuned ModernBERT and DeBERTa-v3 | Vishal | **TODO (Vishal)** |
+| 11/16 | Phase 2: rules, TF-IDF + LR | Vishal | Done |
+| 11/16 | Phase 3: Laya, fine-tuned ModernBERT and DeBERTa-v3 | Vishal | Done |
 | **TODO** | Phase 4: Qwen ~4B, zero- and few-shot | Ronit | **TODO (Ronit)** |
 | 11/18 | Mid-term presentation | All | — |
 | **TODO** (before 11/30) | Phase 6: cascade, tier choice, hand-off thresholds, accuracy–cost plots | All | Planned |
@@ -120,22 +120,34 @@ Table 2 is the cross-model comparison; rows for phases 2–4 are filled in as th
 
 | Phase | Model | Recall @ 1% FPR | Latency (p50) | $ / 1M emails |
 | --- | --- | --- | --- | --- |
-| 2 | Rules | **TODO (Vishal)** | | |
-| 2 | TF-IDF + LR | **TODO (Vishal)** | | |
-| 3 | Laya (System 1) | **TODO (Vishal)** | | |
-| 3 | ModernBERT / DeBERTa-v3 | **TODO (Vishal)** | | |
+| 2 | Rules | 0.055 | 0.4 ms | $0.05 |
+| 2 | TF-IDF + LR | 0.937 | 0.5 ms | $0.10 |
+| 3 | Laya (System 1) | 0.802 | 1,477 ms | $15.00 |
+| 3 | ModernBERT-base | 0.820 | 199.5 ms | $2.50 |
+| 3 | DeBERTa-v3-base | 0.882 | 328.3 ms | $3.50 |
 | 4 | Qwen ~4B | **TODO (Ronit)** | | |
 | 5 | Claude Sonnet 5.5 (zero-shot) | **0.979** | 1.7 s | $1,638 |
 | 5 | Claude Opus 5.5 (zero-shot) | 0.976 | 1.9 s | $3,277 |
 | 5 | Claude Haiku 5.5 (few-shot) | 0.898 | 1.0 s | $120 |
 
-*Table 2: All models on the test LLM subsample (2,500 emails, 1,118 phishing).*
+*Table 2: All models on the test LLM subsample (2,500 emails, 1,118 phishing). Local model costs represent amortized cloud inference GPU compute.*
 
-> **TODO (Vishal):** phase 2 and 3 setup, results and observations.
->
+### C. Baselines and Encoders (phases 2–3)
+
+- **Handwritten Rules (Phase 2):** Scans for urgency/coercion language, credential harvesting patterns, financial pressure, suspicious URL patterns (raw IPs, URL shorteners, high-risk TLDs), and sender spoofing cues.
+  - Achieves **5.5% Recall @ 1% FPR** (0.4 ms latency). Regex rules fail to generalize to subtle phishing or paraphrased lures, proving that static signature matching cannot serve as a standalone detector.
+- **TF-IDF + Logistic Regression (Phase 2):** Trained on 119,755 training emails using 50,000 unigram/bigram features.
+  - While it achieves **93.7% Recall @ 1% FPR** on the in-distribution `test_llm` split (and 95.4% on the full 25.6k test split), cross-source evaluation exposes severe lexical shortcut overfitting: recall collapses to **33.8% on unseen SpamAssassin** emails and **54.6% on CEAS-08**. It relies on corpus-specific vocabulary artifacts rather than semantic attack intent.
+- **Laya Multi-Signal System 1 (Phase 3):** An ensemble of specialized semantic feature extractors combined via logistic regression fit on validation data.
+  - Achieves **80.2% Recall @ 1% FPR** (95% CI: 66.9%–87.9%, PR-AUC 0.9832, 1,477 ms latency). Unlike TF-IDF, Laya demonstrates strong generalization across attack vectors, maintaining **80.0% recall on SpamAssassin** (0.998 PR-AUC) and 91.9% on Nigerian Fraud.
+- **ModernBERT-base (Phase 3):** Fine-tuned for 2 epochs on balanced training samples with native 8k context and rotary positional embeddings.
+  - Achieves **82.0% Recall @ 1% FPR** (95% CI: 74.5%–89.1%, PR-AUC 0.9893, 199.5 ms latency). ModernBERT achieves the highest PR-AUC among all local models while running 7.4× faster than Laya locally.
+- **DeBERTa-v3-base (Phase 3):** Fine-tuned for 2 epochs with explicit FP32 casting to stabilize disentangled relative position attention gradients.
+  - Achieves **88.2% Recall @ 1% FPR** (95% CI: 84.3%–91.4%, PR-AUC 0.9874, 328.3 ms latency, 0 errors). DeBERTa-v3 is the strongest local model evaluated, coming within 1.6% of Claude Haiku 5.5 (89.8%) while costing ~$3.50 per million emails compared to $120 for Haiku. It detects **87.7% of true phishing** (Nazario + Nigerian Fraud) and **65.0% on SpamAssassin**.
+
 > **TODO (Ronit):** phase 4 setup, zero- vs. few-shot results and observations.
 
-### C. Frontier LLMs (phase 5)
+### D. Frontier LLMs (phase 5)
 
 
 - *Models and prompt:* Claude Sonnet 5.5, Haiku 5.5 and Opus 5.5, called through Anthropic's API with one shared prompt (also to be used for Qwen). The prompt marks the email as untrusted data.
@@ -165,15 +177,16 @@ Observations:
 - **Base rate matters.** Precision is about 0.99 on the test sample, where 45% of emails are phishing. Re-weighted to a realistic 1% phishing rate, precision drops to 0.51–0.58: about every other flag would be a false alarm. This is why we report recall at a fixed low false-positive rate rather than accuracy.
 - **Scores are coarse.** Claude's 0–100 scores cluster on a few values (e.g. 5 and 95), so recall at a fixed FPR moves in steps. Calibration error is low (ECE 0.03–0.04).
 
-### D. Potential risks
+### E. Potential risks
 
 - *Data contamination and age:* the public corpora are old and probably in LLM training data, which may inflate LLM scores and limit transfer to modern phishing.
-- *Source shortcuts:* models may learn which corpus an email came from (e.g. Enron addresses, tokenised Ling text) rather than whether it is phishing. Header stripping and deduplication reduce this; a cross-source test (train without one corpus) will measure it.
+- *Source shortcuts:* models may learn which corpus an email came from (e.g. Enron addresses, tokenised Ling text) rather than whether it is phishing. Header stripping and deduplication reduce this; our Phase 2 cross-source evaluation demonstrated that TF-IDF collapses from 93.7% down to 33.8% on unseen SpamAssassin emails, verifying that lexical models exploit source artifacts.
 - *Spam labelled as phishing:* the dataset partly measures spam detection.
 - *Small LLM validation sample:* it gives only ~14 false positives at a 1% FPR, so LLM thresholds are noisy.
-- **TODO (Vishal / Ronit):** risks from phases 2–4 (e.g. fine-tuning large encoders on a 16 GB laptop).
+- *Hardware gradient stability during local fine-tuning:* DeBERTa-v3's disentangled attention gradients overflowed in FP16 on Apple Silicon MPS, requiring explicit FP32 parameter casting and a conservative learning rate (1e-5) to prevent NaN divergence. Un-fused MPS operations also created execution bottlenecks, requiring long wall-clock training times (~8 hours) compared to standard multihead attention models like ModernBERT (~25 min).
+- **TODO (Ronit):** risks from phase 4 (Qwen ~4B fine-tuning / quantization on edge hardware).
 
-### E. Backup plan
+### F. Backup plan
 
 - If results look too good to trust (near-perfect, models hard to tell apart), we replace the test set with newer phishing (recent Nazario years, honeypot mail) plus a small hand-checked synthetic set that no LLM has seen; every model reruns unchanged on the new splits.
 - If fine-tuning does not fit on our laptops, we fall back to base-size encoders or rent a cloud GPU.
@@ -191,7 +204,7 @@ Observations:
 
 ## VIII. Conclusion
 
-We have defined the problem (the accuracy–latency–cost trade-off in phishing detection), built a shared benchmark with a frozen 171,081-email dataset, and completed the frontier-LLM tier. Claude Sonnet 5.5 sets the bar at 97.9% recall at a 1% false-positive rate for about $1,600 per million emails. Opus adds nothing at twice the cost, and safety refusals are a measurable weakness of Haiku and Opus. **[TODO (Vishal, Ronit): one sentence each on phases 2–4.]** Next, we finish the cheaper tiers and build the cascade to test whether it keeps ≥95% of Sonnet's recall while sending ≤10% of emails to it.
+We have defined the problem (the accuracy–latency–cost trade-off in phishing detection), built a shared benchmark with a frozen 171,081-email dataset, and completed the frontier-LLM tier. Claude Sonnet 5.5 sets the bar at 97.9% recall at a 1% false-positive rate for about $1,600 per million emails. Opus adds nothing at twice the cost, and safety refusals are a measurable weakness of Haiku and Opus. Fine-tuned dense encoders (DeBERTa-v3 and ModernBERT) achieve up to 88.2% recall at 1% FPR locally within 330 ms at negligible compute cost, establishing strong candidates for the cascade's local filtering tiers. **[TODO (Ronit): one sentence on Phase 4 Qwen ~4B.]** Next, we finish the cheaper tiers and build the cascade to test whether it keeps ≥95% of Sonnet's recall while sending ≤10% of emails to it.
 
 ## References
 
