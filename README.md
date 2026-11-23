@@ -12,7 +12,7 @@ The full project plan is in [docs/PLAN.md](docs/PLAN.md).
 | :--- | :--- | :--- |
 | 1 · Cheap baselines | Handwritten rules, TF-IDF + logistic regression | Local CPU |
 | 2 · Encoders / System 1 | Laya (ModernBERT-large System 1 decision model), fine-tuned ModernBERT and DeBERTa-v3 | Local GPU (Apple MPS) |
-| 3 · Small language model | Qwen ~4B, prompted | Local (MLX) |
+| 3 · Small language model | Qwen3.5-4B (4-bit), prompted | Local (MLX) |
 | 4 · Frontier LLM | Claude Sonnet 5.5 and Haiku 5.5 | API (Anthropic) |
 
 Each model is also evaluated on its own. The cascade escalates only uncertain emails to the next tier; each tier's model is chosen on validation data. Target: keep ≥95% of the best single model's recall (at 1% false-positive rate) while sending ≤10% of emails to the top tier.
@@ -23,7 +23,7 @@ All models are scored on the same frozen splits of a combined public phishing da
 
 ## Status
 
-Phases 0 and 1 are done: the shared `Detector` interface, one evaluation harness with the plan's metrics, a Laya detector, and frozen splits of a combined public dataset (`data/splits/champa2023-v1`: 171,081 deduplicated emails from 9 corpora; see the plan's Dataset section). No benchmark results exist yet; Phases 2–5 (the models) are next.
+Phases 0–5 are complete. Rules, TF-IDF + logistic regression, Laya, ModernBERT, DeBERTa-v3, Qwen3.5-4B, and Claude variants have results on the frozen dataset. Qwen zero-shot and four-shot reach 67.6% and 84.2% recall at 1% FPR on the LLM subsample; see [progress](docs/progress.md) for the other models, confidence intervals, and limitations. Phase 6 (cascade and report) remains.
 
 The 7 sample emails in `data/benchmark_emails.json` are a smoke test only: Laya's signal weights were hand-picked on these same emails, so its results on them are not evidence of accuracy.
 
@@ -31,7 +31,7 @@ The 7 sample emails in `data/benchmark_emails.json` are a smoke test only: Laya'
 | :--- | :--- |
 | `src/phishbench/types.py` | `Email`, `Prediction`, `TrainingCost` and the `Detector` interface |
 | `src/phishbench/eval/` | Harness, metrics (recall at fixed false-positive rate, PR-AUC, calibration, bootstrap CIs), environment capture |
-| `src/phishbench/detectors/` | One module per model; currently `laya.py` |
+| `src/phishbench/detectors/` | One module per model, including Laya, encoders, Qwen and Claude |
 | `src/phishbench/data/` | Email loader, cleaning, deduplication, split building and verified split loading |
 | `data/splits/` | Frozen split id lists and manifests (the emails themselves are rebuilt locally, see below) |
 | `configs/models/` | One TOML config per model |
@@ -75,6 +75,49 @@ python -m unittest
 ```
 
 ---
+
+## Phase 4 · Qwen on MLX
+
+Qwen3.5-4B (4-bit, exact checkpoint revision pinned in the configs) has zero-shot
+and four-shot detectors. Run from the repository root on Apple Silicon:
+
+```bash
+uv venv .venv --python 3.12
+source .venv/bin/activate
+pip install -e ".[data,qwen]"
+python scripts/download_data.py
+python scripts/build_splits.py --verify
+HF_HOME=data/models/huggingface python scripts/evaluate_qwen.py
+```
+
+The runner evaluates both variants on unchanged `val_llm` and `test_llm`, writes
+standard results JSON, and reports per-source metrics, truncation, MLX peak
+memory, and cache use. `--mode zero` or `--mode few` resumes one variant.
+Model weights and response caches stay under git-ignored `data/models/` and
+`data/cache/`. Cached predictions retain original inference latency; cached
+rerun wall throughput is explicitly labelled as replay speed.
+
+Qwen uses its recorded task text in `detectors/prompts.py`; Claude uses `src/phishbench/prompts.py`. The prompt wording and few-shot pools differ, so comparisons include this prompt difference. The
+model scores the next token with thinking disabled: `A` means phishing, `B`
+means legitimate, and the score is `P(A | A or B)`. Both unconditional token
+log probabilities and their combined mass are retained. Four demonstrations
+(two per class) are selected deterministically from training, without validation
+or test example selection. Each demonstration uses at most 256 tokens; the
+complete prompt uses at most 8,192 tokens. Only the target email is truncated
+to fit after instructions and demonstrations. No model fitting occurs.
+
+The frozen validation subsample is retained for comparability. Its 1,382
+legitimate emails allow only about 14 false positives at 1%, so the chosen
+operating threshold remains noisy. Results are preliminary, and this limitation
+must carry into the cascade and report.
+
+```bash
+# Unit tests need no MLX or model download.
+python -m unittest
+# Explicit real-model integration test (downloads the pinned model if needed):
+HF_HOME=data/models/huggingface PHISHBENCH_QWEN_INTEGRATION=1 \
+  python -m unittest tests.test_qwen.QwenIntegrationTest
+```
 
 ## Continuing the phases
 
@@ -144,6 +187,6 @@ python scripts/evaluate.py --model configs/models/<name>.toml --splits data/spli
 | :--- | :--- |
 | 2 · Baselines | Handwritten rules must output a 0–1 score (a weighted count of triggered rules), not just yes/no. TF-IDF + LR needs scikit-learn as a new extra. The cross-source test isn't scripted yet: it retrains TF-IDF + LR (and one encoder in Phase 3) once per held-out source. |
 | 3 · Encoders | Fit Laya's signal weights on `val`; the per-email signals are already saved in each prediction's `details`. Check whether laya supports fine-tuning. DeBERTa-v3 reads only 512 tokens. Fine-tuning large models may not fit a 16 GB M4. Laya warns that some of its confidences are uncalibrated. |
-| 4 · SLM | Qwen ~4B via MLX, scored from the probability of the "phishing" answer token. `val_llm` gives only ~14 false positives at 1%; consider a larger validation subsample for Qwen, since it runs locally. |
+| 4 · SLM | Complete: Qwen3.5-4B zero-shot and four-shot via MLX. See Phase 4 above and `docs/progress.md`. |
 | 5 · Frontier LLMs | Built: `detectors/claude.py` (shared base `detectors/llm_base.py`, prompt in `prompts.py`), 4 configs in `configs/models/claude-*.toml`. Needs `ANTHROPIC_API_KEY`. Responses are cached in `data/cache/llm/`, so reruns are free; each config has a cost cap. Run order and budget: [docs/phase5-plan.md](docs/phase5-plan.md). |
 | 6 · Cascade and report | Build the cascade as a `Detector` that wraps the tier detectors, so it goes through the same harness. Choose each tier's model and the hand-off thresholds on `val_llm`. |

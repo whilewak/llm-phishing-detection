@@ -1,8 +1,8 @@
-"""The one task prompt every LLM gets (Claude, GPT and, in Phase 4, Qwen).
+"""Prompt and frozen few-shot pool for Claude and future API LLMs.
 
-Only the answer format differs between models: a 0-100 JSON risk score, or a
-single answer token scored from logprobs. Wording may be revised only from
-validation outputs (`val_llm`), never from `test_llm`.
+The Phase 4 Qwen benchmark used a separate recorded prompt in
+`phishbench.detectors.prompts`; its results cannot be reinterpreted as using
+this wording. Prompt revisions may use validation outputs (`val_llm`) only.
 """
 
 from __future__ import annotations

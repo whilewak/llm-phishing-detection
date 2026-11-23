@@ -1,6 +1,6 @@
 # Progress
 
-As of 2026-11-14. Phases 0 and 1 of [PLAN.md](PLAN.md) are done; no model has been benchmarked yet. Phases 0 and 1 are not committed yet (last commit: `bb00745`, the plan and README).
+As of 2026-11-22. Phases 0–5 are complete and benchmarked on the frozen splits. Phase 6 (cascade and report) has not started.
 
 | Phase | Status | Gate |
 | --- | --- | --- |
@@ -9,7 +9,7 @@ As of 2026-11-14. Phases 0 and 1 of [PLAN.md](PLAN.md) are done; no model has be
 | 1 · Combined dataset and splits | Done | Met: splits frozen and hashed, dataset version recorded, rebuild verified |
 | 2 · Baselines (rules, TF-IDF + LR) | Done | Met: rules and TF-IDF+LR benchmarked on test_llm, full test, and cross-source |
 | 3 · Encoders (ModernBERT, DeBERTa-v3, Laya) | Done | Met: all 3 encoder models benchmarked on test_llm, Laya calibrated on validation |
-| 4 · SLM (Qwen ~4B) | Not started | |
+| 4 · SLM (Qwen3.5-4B) | Done | Met: zero-shot and four-shot scored on frozen validation/test LLM splits |
 | 5 · Frontier LLMs (Claude Sonnet 5.5, Haiku 5.5) | Done (PR #2, draft) | Met: all 4 configs scored on `test_llm`, thresholds from `val_llm` |
 | 6 · Cascade and report | Not started | |
 
@@ -96,15 +96,46 @@ Implemented and benchmarked both Phase 2 detectors on `test_llm` (2,500 emails),
   - Results (`test_llm`): **88.2% Recall @ 1% FPR** (95% CI: 84.3%–91.4%), **PR-AUC 0.987**, **0 errors**, p50 latency **328.3 ms**.
   - Achieved the highest recall at 1% FPR among all local dense encoders, balancing strong accuracy with 328 ms local throughput.
 
+## Phase 4 · SLM
+
+- Added Qwen3.5-4B 4-bit MLX detector, pinned to revision `0e7ffd5c629ef7719d4cbc04069232580bfa9d9c`, with zero-shot and four-shot configs.
+- Shared task text, deterministic balanced train-only demonstrations, next-token scores `P(A | A or B)` (A = phishing), thinking disabled, float32 log-softmax, 8,192-token total cap, and persistent response caching. Raw answer log probabilities and mass, truncation, and example IDs are retained.
+- Real zero-shot and few-shot integration checks pass on this machine (Apple M3, 16 GB); benchmarks must be labelled with this hardware rather than the POC's M4.
+- Retained frozen `val_llm` for comparability after revisiting validation size. Its 1,382 negatives give about 14 false positives at 1%; threshold uncertainty remains a limitation.
+- `scripts/evaluate_qwen.py` runs both variants through the shared harness, preserves original inference latencies on cache replay, and records MLX peak memory and cache use.
+- **Gate met:** both variants scored on the unchanged 2,500-email `val_llm` and 2,500-email `test_llm`; test IDs and both content fingerprints checked against the frozen manifest. All 10,000 validation/test predictions completed without errors. No prompt or example selection was changed after seeing test results.
+- Results: [zero-shot](../results/qwen3.5-4b-0shot_20261116T125505Z.json) and [four-shot](../results/qwen3.5-4b-4shot_20261116T154514Z.json). These are preliminary results on the combined dataset.
+
+| Measure | Zero-shot | Four-shot |
+| --- | ---: | ---: |
+| Test recall at 1% FPR | 67.62% | 84.17% |
+| 95% bootstrap CI | 63.97–77.98% | 79.96–87.57% |
+| PR-AUC | 0.9724 | 0.9790 |
+| Recall at validation-chosen threshold | 77.82% | 85.69% |
+| FPR at validation-chosen threshold | 1.59% | 1.23% |
+| ECE | 0.1120 | 0.0429 |
+| Score tie share | 99.80% | 99.84% |
+| Test inputs truncated | 9 / 2,500 (0.36%) | 11 / 2,500 (0.44%) |
+| p50 / p95 latency | 1.146 / 6.904 s | 1.168 / 6.077 s |
+| Throughput (batch size 1) | 0.453 emails/s | 0.483 emails/s |
+| MLX peak memory | 3,324.6 MB | 3,387.3 MB |
+| Training / marginal inference dollars | $0 / $0 | $0 / $0 |
+| Test failures / response cache hits | 0 / 0 | 0 / 0 |
+
+- Four-shot demonstrations (two per class, selected by the pinned seed): `spamassassin:5207`, `trec06:3416`, `trec07:14431`, `trec07:47666`. Their IDs are checked to belong to training and recorded in every prediction. Qwen and Claude use different task text and few-shot pools; their comparison includes this prompt difference.
+- Headline recall at 1% FPR describes the test ranking curve. It is separate from performance at the threshold chosen on validation; that threshold does not guarantee a 1% FPR on unseen test mail. Scores with ties move together, without interpolation.
+- The shared harness's raw 0.1% FPR metric is retained but marked `reportable: false` for these subsample runs; the subsample is too small to support it.
+- **Timing conditions:** Apple M3, 16 GB, with memory pressure observed during the zero-shot test. Idle-sleep prevention was attached near zero-shot prediction 4,714 and remained active for the rest of both runs; it ended with the benchmark process. Treat timings as preliminary local observations. GPU figures are MLX process lifetime peaks; both variants ran sequentially in one process. Neither result used response cache replay; prompt KV caching was enabled in both.
+
 ## Phase 5 · Frontier LLMs
 
 Branch `phase-5-frontier-llms`. Plan and sources: [phase5-plan.md](phase5-plan.md).
 
 - **Models:** Claude Sonnet 5.5 ($2/$10 per 1M tokens) and Claude Haiku 5.5 ($0.10/$0.50), through Anthropic's API. OpenAI and Gemini were dropped (no API credit).
 - **Configs (4):** Sonnet and Haiku, each zero- and few-shot.
-- **Shared prompt** (`src/phishbench/prompts.py`): one set of task instructions for every LLM (Qwen too), the email marked as untrusted data, bodies capped at 32,000 characters (~8k tokens).
+- **Shared prompt** (`src/phishbench/prompts.py`): Claude task instructions and answer formatting; Qwen uses its separately recorded Phase 4 prompt. Claude marks email as untrusted data and caps bodies at 32,000 characters (~8k tokens).
 - **Few-shot pool:** 8 train emails (4 phishing incl. 1 Nazario and 1 Nigerian Fraud, 4 legitimate), frozen in `configs/prompts/fewshot-champa2023-v1.json` by `scripts/build_fewshot.py`. Fixed rather than chosen on `val_llm`, which is too small to compare pools.
-- **Detectors:** `llm_base.py` (concurrency, response cache in `data/cache/llm/`, cost accounting, per-run cost cap, JSON and logprob scoring; the logprob scorer is for Qwen) and `claude.py`. Refusals and unparseable output are errors; throttling and server errors are errors too but are not cached, so a rerun retries them. No refusal fallback, since it would answer with a different model.
+- **Detectors:** `llm_base.py` (concurrency, response cache in `data/cache/llm/`, cost accounting, per-run cost cap, JSON and optional logprob scoring; Qwen uses its own MLX token scorer) and `claude.py`. Refusals and unparseable output are errors; throttling and server errors are errors too but are not cached, so a rerun retries them. No refusal fallback, since it would answer with a different model.
 - **Temperature:** current Claude models reject it, so Claude runs with thinking off at effort `low`. Reproducibility comes from the response cache.
 - **Budget:** about $27 for all 4 configs; caps sum to $55.
 
@@ -129,18 +160,18 @@ To rerun (needs `ANTHROPIC_API_KEY`; cached responses are reused for free): see 
 
 ## Tests
 
-51 unit tests, all passing, covering metrics, harness, rules, TF-IDF, Laya calibration, and encoder training/inference.
+84 tests passed after excluding the Laya model-download integration, with two optional integrations skipped (Claude API and Qwen GPU). Qwen’s real-model integration passed separately on Apple GPU. The default full suite needs Laya model weights available to run its integration test.
 
 ## Known issues to carry forward
 
 - **Few true-phishing emails in the test LLM subsample:** 57 (20 Nazario, 37 Nigerian), so that recall has a wide confidence interval for Qwen and Claude. The full test split has about 590.
-- **Small validation LLM subsample:** about 14 false positives at 1%, so Qwen's and Claude's thresholds will be noisy. Revisit before Phase 4.
+- **Small validation LLM subsample:** about 14 false positives at 1%, so Qwen's and Claude's thresholds will be noisy. Retained for Phase 4; threshold uncertainty is documented in its results.
 - **Possible source shortcuts:** sender addresses (e.g. `@ENRON.com`) and the tokenised text of Enron and Ling may let models recognise the source; the cross-source test is meant to catch this.
 - **Laya calibration:** its checkpoint warning matters for the cascade's hand-offs.
 - **Safety refusals on phishing emails:** Haiku 5.5 declines 3.5–8% of phishing emails in `test_llm` (category `bio`), and Opus 5.5 declines 7 of 20 Nazario credential-phishing emails (category `cyber`); Sonnet 5.5 declined none. They count as misses, so Haiku's recall partly measures refusals. Not fixable by prompting without changing the shared prompt; noted for the cascade (a refusal could escalate to the next tier instead).
-- **0–100 scores tie heavily:** nearly every LLM score shares its value with another email (scores cluster at a few values like 5 and 95), so recall at 1% FPR moves in steps. Qwen's logprob scores in Phase 4 will not have this problem.
-- **Untracked smoke-test result:** `results/laya-english_20261114T080908Z.json` (7 sample emails) may not be worth committing.
+- **0–100 scores tie heavily:** nearly every LLM score shares its value with another email (scores cluster at a few values like 5 and 95), so recall at 1% FPR moves in steps. Qwen also has a high tie share (about 99.8%) in its saved results.
+- **Smoke-test result:** `results/laya-english_20261114T080908Z.json` (7 sample emails) is committed and retained only as a smoke test.
 
 ## Next
 
-Complete DeBERTa-v3 evaluation, then proceed to Phase 4 (SLM / Qwen ~4B).
+Proceed to Phase 6 (cascade and report).

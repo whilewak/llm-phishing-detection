@@ -8,3 +8,4 @@ data/processed/
 data/cache/
 checkpoints/
 .env
+data/models/
