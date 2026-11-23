@@ -14,7 +14,7 @@
 | Traditional ML | TF-IDF + logistic regression | — | — | Yes | Local CPU |
 | Fine-tuned encoders | ModernBERT, DeBERTa-v3 | — | — | Yes | Local GPU (MPS) |
 | System 1 decision model | Laya | Yes | — | If the library supports it (checked in Phase 3) | Local GPU (MPS) |
-| Small language model | Qwen ~4B (latest version pinned at Phase 4 start), prompted | Yes | Yes | — | Local (MLX, for answer-token probabilities) |
+| Small language model | Qwen3.5-4B (4-bit MLX checkpoint pinned in Phase 4), prompted | Yes | Yes | — | Local (MLX, for answer-token probabilities) |
 | Frontier LLMs | Current Claude Sonnet and Haiku | Yes | Yes | — | API |
 | Cascade | Four tiers, escalating only uncertain emails. Each tier's model is the best on validation among: Tier 1 rules or TF-IDF + LR → Tier 2 Laya, ModernBERT or DeBERTa-v3 → Tier 3 Qwen ~4B → Tier 4 Claude Sonnet or Haiku | — | — | Tier choice and thresholds tuned on validation | Mixed |
 
@@ -146,7 +146,7 @@ flowchart TD
 | 1 · Combined dataset and splits | Choose the combined set against the requirements above; map to the schema, strip headers, dedupe. Build and freeze the splits and the test and validation LLM subsamples, with manifest hashes. | Splits frozen and hashed; dataset version recorded |
 | 2 · Baselines | Handwritten rules, TF-IDF + LR | Every model scored on the LLM subsample; non-LLM models also on the full test and cross-source splits (Phases 2–5) |
 | 3 · Encoders | Fine-tuned ModernBERT and DeBERTa-v3; Laya. Fit Laya's signal weights on the validation split (replaces the hand-picked weights). Check whether the laya library supports fine-tuning; if it does, add a Laya variant fine-tuned on the training split, otherwise note it. | ″ |
-| 4 · SLM | Qwen ~4B, prompted, zero- and few-shot (MLX) | ″ |
+| 4 · SLM | Qwen3.5-4B, prompted, zero- and four-shot (MLX; completed, see progress) | ″ |
 | 5 · Frontier LLMs | Claude Sonnet and Haiku, zero- and few-shot, ~2–3k subsample | ″ |
 | 6 · Cascade and report | Pick each tier's model on validation (Laya may not make the cascade; it is still compared on its own), then tune hand-offs on validation; Pareto charts of accuracy, latency and cost. Write up results, limits and the recommended setup. | Report reviewed; every result reproducible from configs and manifests |
 

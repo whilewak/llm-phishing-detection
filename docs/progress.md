@@ -1,6 +1,6 @@
 # Progress
 
-As of 2026-11-14. Phases 0 and 1 of [PLAN.md](PLAN.md) are done; no model has been benchmarked yet. Phases 0 and 1 are not committed yet (last commit: `bb00745`, the plan and README).
+As of 2026-11-16. Phases 0 and 1 of [PLAN.md](PLAN.md) are done and committed. Phase 4 is complete on `phase-4-qwen`: zero-shot and four-shot benchmarks are saved and verified. Phases 2, 3 and 5 remain unstarted.
 
 | Phase | Status | Gate |
 | --- | --- | --- |
@@ -9,7 +9,7 @@ As of 2026-11-14. Phases 0 and 1 of [PLAN.md](PLAN.md) are done; no model has be
 | 1 · Combined dataset and splits | Done | Met: splits frozen and hashed, dataset version recorded, rebuild verified |
 | 2 · Baselines (rules, TF-IDF + LR) | Not started | |
 | 3 · Encoders (ModernBERT, DeBERTa-v3, Laya) | Not started | |
-| 4 · SLM (Qwen ~4B) | Not started | |
+| 4 · SLM (Qwen ~4B) | Done | Met: zero/four-shot runs scored on frozen validation/test LLM splits; results retained |
 | 5 · Frontier LLMs (Claude Sonnet, Haiku) | Not started | |
 | 6 · Cascade and report | Not started | |
 
@@ -63,17 +63,49 @@ Laya also warned that its checkpoint has invalid calibration settings for some a
 - `scripts/build_splits.py` builds the splits and refuses to overwrite a frozen set; `--verify` rebuilds and checks against the committed splits (verified). Loading a split checks its ids and content against the manifest.
 - The harness now reports recall and false-positive rate per source and for the "true phishing" group; the CLI loads frozen splits with `--splits`.
 
+## Phase 4 · SLM
+
+- Added Qwen3.5-4B 4-bit MLX detector, pinned to revision `0e7ffd5c629ef7719d4cbc04069232580bfa9d9c`, with zero-shot and four-shot configs.
+- Shared task text, deterministic balanced train-only demonstrations, next-token scores `P(A | A or B)` (A = phishing), thinking disabled, float32 log-softmax, 8,192-token total cap, and persistent response caching. Raw answer log probabilities and mass, truncation, and example IDs are retained.
+- Real zero-shot and few-shot integration checks pass on this machine (Apple M3, 16 GB); benchmarks must be labelled with this hardware rather than the POC's M4.
+- Retained frozen `val_llm` for comparability after revisiting validation size. Its 1,382 negatives give about 14 false positives at 1%; threshold uncertainty remains a limitation.
+- `scripts/evaluate_qwen.py` runs both variants through the shared harness, preserves original inference latencies on cache replay, and records MLX peak memory and cache use.
+- **Gate met:** both variants scored on the unchanged 2,500-email `val_llm` and 2,500-email `test_llm`; test IDs and both content fingerprints checked against the frozen manifest. All 10,000 validation/test predictions completed without errors. No prompt or example selection was changed after seeing test results.
+- Results: [zero-shot](../results/qwen3.5-4b-0shot_20261116T125505Z.json) and [four-shot](../results/qwen3.5-4b-4shot_20261116T154514Z.json). These are preliminary results on the combined dataset.
+
+| Measure | Zero-shot | Four-shot |
+| --- | ---: | ---: |
+| Test recall at 1% FPR | 67.62% | 84.17% |
+| 95% bootstrap CI | 63.97–77.98% | 79.96–87.57% |
+| PR-AUC | 0.9724 | 0.9790 |
+| Recall at validation-chosen threshold | 77.82% | 85.69% |
+| FPR at validation-chosen threshold | 1.59% | 1.23% |
+| ECE | 0.1120 | 0.0429 |
+| Score tie share | 99.80% | 99.84% |
+| Test inputs truncated | 9 / 2,500 (0.36%) | 11 / 2,500 (0.44%) |
+| p50 / p95 latency | 1.146 / 6.904 s | 1.168 / 6.077 s |
+| Throughput (batch size 1) | 0.453 emails/s | 0.483 emails/s |
+| MLX peak memory | 3,324.6 MB | 3,387.3 MB |
+| Training / marginal inference dollars | $0 / $0 | $0 / $0 |
+| Test failures / response cache hits | 0 / 0 | 0 / 0 |
+
+- Four-shot demonstrations (two per class, selected by the pinned seed): `spamassassin:5207`, `trec06:3416`, `trec07:14431`, `trec07:47666`. Their IDs are checked to belong to training and recorded in every prediction. The shared selector and task text are available for Phase 5 to reuse.
+- Headline recall at 1% FPR describes the test ranking curve. It is separate from performance at the threshold chosen on validation; that threshold does not guarantee a 1% FPR on unseen test mail. Scores with ties move together, without interpolation.
+- The shared harness's raw 0.1% FPR metric is retained but marked `reportable: false` for these subsample runs; the subsample is too small to support it.
+- **Timing conditions:** Apple M3, 16 GB, with memory pressure observed during the zero-shot test. Idle-sleep prevention was attached near zero-shot prediction 4,714 and remained active for the rest of both runs; it ended with the benchmark process. Treat timings as preliminary local observations. GPU figures are MLX process lifetime peaks; both variants ran sequentially in one process. Neither result used response cache replay; prompt KV caching was enabled in both.
+
 ## Tests
 
-43 unit tests, all passing, including the real-Laya integration test. They cover metrics, the harness (with stub detectors), the loader, Laya response handling, cleaning, deduplication, and split building and verification.
+52 tests discovered after the Phase 4 additions: 50 pass in the local environment; the Laya integration and opt-in Qwen integration tests skip by default. The Qwen integration test also passed separately with `PHISHBENCH_QWEN_INTEGRATION=1`, exercising real zero-shot and few-shot inference. Coverage includes metrics, the harness, loading, Laya responses, cleaning, deduplication, split verification, Qwen scoring, truncation, caching, and demonstration isolation.
 
 ## Known issues to carry forward
 
 - **Few true-phishing emails in the test LLM subsample:** 57 (20 Nazario, 37 Nigerian), so that recall has a wide confidence interval for Qwen and Claude. The full test split has about 590.
-- **Small validation LLM subsample:** about 14 false positives at 1%, so Qwen's and Claude's thresholds will be noisy. Revisit before Phase 4.
+- **Small validation LLM subsample:** about 14 false positives at 1%, so thresholds are noisy. Retained for Phase 4 with this uncertainty documented; revisit for Phase 5 and cascade threshold selection.
 - **Possible source shortcuts:** sender addresses (e.g. `@ENRON.com`) and the tokenised text of Enron and Ling may let models recognise the source; the cross-source test is meant to catch this.
+- **Qwen score ties and calibration:** nearly all test emails share a score with another email. Together with the small validation subsample, this limits fine threshold placement. Keep the raw log probabilities, tie-group metrics and ECE when building the cascade. Local timing measurements also reflect memory pressure and are not controlled hardware comparisons.
 - **Laya calibration:** its checkpoint warning matters for the cascade's hand-offs.
-- **Untracked smoke-test result:** `results/laya-english_20261114T080908Z.json` (7 sample emails) may not be worth committing.
+- **Committed smoke-test result:** `results/laya-english_20261114T080908Z.json` (7 sample emails) is retained only as a smoke test.
 
 ## Next
 
