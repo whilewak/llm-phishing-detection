@@ -7,7 +7,7 @@ model = "mlx-community/Qwen3.5-4B-4bit"
 revision = "0e7ffd5c629ef7719d4cbc04069232580bfa9d9c"
 n_shots = 0
 max_input_tokens = 8192
-cache_dir = "data/cache/qwen"
+cache_dir = "data/cache/qwen-shared-v1"
 
 [eval]
 warmup = 3

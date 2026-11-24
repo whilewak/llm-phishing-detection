@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run Phase 4 zero/few-shot evaluations on the unchanged frozen LLM splits.
+"""Run corrected Qwen zero/eight-shot evaluations on the frozen LLM splits.
 
 HF_HOME=data/models/huggingface python scripts/evaluate_qwen.py
 Use --mode zero or --mode few to resume just one variant. Cache hits preserve
@@ -49,6 +49,7 @@ def summarize(result):
     hits = sum(d.get('cache_hit', False) for d in details)
     result['qwen'] = {
         'scoring': 'P(A | A or B); A = phishing, B = legitimate; float32 log-softmax',
+        'prompt_version': 'shared-v1 (Claude task and email format; Qwen A/B answers)',
         'thinking': False, 'temperature': 0, 'n_shots': result['config']['detector']['params']['n_shots'],
         'example_ids': details[0]['example_ids'] if details else [],
         'truncation_share': sum(d['truncated'] for d in details) / len(details) if details else None,

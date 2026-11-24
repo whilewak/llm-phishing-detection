@@ -11,16 +11,18 @@ import hashlib
 import json
 import math
 import time
+from collections.abc import Mapping
 from dataclasses import asdict
 from importlib import metadata
 from pathlib import Path
 from typing import Sequence
 
-from phishbench.detectors.prompts import TASK, ANSWER_FORMAT, email_text, select_examples
+from phishbench import prompts
 from phishbench.types import Email, Prediction, TrainingCost
 
 MODEL = "mlx-community/Qwen3.5-4B-4bit"
 REVISION = "0e7ffd5c629ef7719d4cbc04069232580bfa9d9c"
+ANSWER_FORMAT = "Reply with exactly A for phishing or B for legitimate."
 
 
 class MLXBackend:
@@ -35,15 +37,10 @@ class MLXBackend:
         if any(len(ids) != 1 for ids in self.answer_ids):
             raise ValueError("A and B must each encode as one answer token")
 
-    def encode(self, text):
-        return self.tokenizer.encode(text, add_special_tokens=False)
-
-    def decode(self, tokens):
-        return self.tokenizer.decode(tokens)
-
     def render(self, messages):
-        return self.tokenizer.apply_chat_template(messages, tokenize=True,
+        tokens = self.tokenizer.apply_chat_template(messages, tokenize=True,
                     add_generation_prompt=True, enable_thinking=False)
+        return tokens["input_ids"] if isinstance(tokens, Mapping) else tokens
 
     def score(self, tokens, prefix_length=0):
         from mlx_lm.generate import generate_step
@@ -73,17 +70,23 @@ class MLXBackend:
 
 class QwenDetector:
     def __init__(self, model: str = MODEL, revision: str = REVISION, n_shots: int = 0,
-                 seed: int = 20261116, max_input_tokens: int = 8192,
-                 example_tokens: int = 256, cache_dir: str | None = "data/cache/qwen",
+                 few_shot: str | None = None, split_dir: str | None = None,
+                 max_input_tokens: int = 8192,
+                 cache_dir: str | None = "data/cache/qwen-shared-v1",
                  backend=None):
-        if n_shots < 0 or n_shots % 2 or max_input_tokens < 256 or example_tokens < 1:
+        if n_shots not in (0, 8) or max_input_tokens < 256:
             raise ValueError("invalid shot count or token budget")
+        if n_shots == 8 and (not few_shot or not split_dir):
+            raise ValueError("eight-shot mode requires the frozen few-shot file and split directory")
+        if n_shots == 0 and few_shot:
+            raise ValueError("zero-shot mode cannot include few-shot examples")
         if len(revision) != 40 or any(c not in '0123456789abcdef' for c in revision):
             raise ValueError("revision must be an immutable 40-character commit hash")
-        self.name = f"qwen3.5-4b-{n_shots}shot"
+        self.name = f"qwen3.5-4b-{n_shots}shot-shared-v1"
         self.model, self.revision = model, revision
-        self.n_shots, self.seed = n_shots, seed
-        self.max_input_tokens, self.example_tokens = max_input_tokens, example_tokens
+        self.n_shots = n_shots
+        self.few_shot, self.split_dir = few_shot, split_dir
+        self.max_input_tokens = max_input_tokens
         self.cache_dir = Path(cache_dir) if cache_dir else None
         self.runtime = {}
         for package in ("mlx", "mlx-lm", "transformers", "tokenizers"):
@@ -98,9 +101,21 @@ class QwenDetector:
     def fit(self, train: Sequence[Email], val: Sequence[Email]) -> TrainingCost:
         if {e.id for e in train} & {e.id for e in val}:
             raise ValueError("training and validation overlap")
-        self.examples = select_examples(train, self.n_shots, self.seed)
+        if self.n_shots:
+            examples = prompts.load_fewshot(self.few_shot, self.split_dir)
+            if len(examples) != 8 or sum(e.is_phishing for e in examples) != 4:
+                raise ValueError("frozen few-shot pool must contain four examples per class")
+            train_by_id = {e.id: e for e in train}
+            if any(train_by_id.get(e.id) != e for e in examples):
+                raise ValueError("few-shot examples must match the supplied training split")
+            if {e.id for e in examples} & {e.id for e in val}:
+                raise ValueError("few-shot examples overlap validation")
+            self.examples = examples
+        else:
+            self.examples = []
         self.fitted = True
-        return TrainingCost(hardware="Apple Silicon MLX (prompting only)")
+        return TrainingCost(hardware="Apple Silicon MLX (prompting only)",
+                            n_train_emails=len(self.examples))
 
     def _backend(self):
         if self.backend is None:
@@ -109,32 +124,44 @@ class QwenDetector:
 
     def _tokens(self, email):
         backend = self._backend()
-        messages = [{"role": "system", "content": TASK + ANSWER_FORMAT}]
-        for example in self.examples:
-            text = backend.decode(backend.encode(email_text(example))[:self.example_tokens])
-            messages.extend([{"role": "user", "content": text},
-                             {"role": "assistant", "content": "A" if example.is_phishing else "B"}])
-        text = email_text(email)
-        content_tokens = backend.encode(text)
+        parts = [prompts.TASK_INSTRUCTIONS, ANSWER_FORMAT]
+        if self.examples:
+            parts.append("Examples:")
+            for i, example in enumerate(self.examples, 1):
+                example_text, _ = prompts.render_email(example)
+                answer = "A" if example.is_phishing else "B"
+                parts.append(f"Example {i}:\n{example_text}\nAnswer: {answer}")
+        messages = [{"role": "system", "content": "\n\n".join(parts)}]
+        text, truncated = prompts.render_email(email)
         def render(value):
             return backend.render(messages + [{"role": "user", "content": value}])
+        empty = render("")
         tokens = render(text)
         original = len(tokens)
-        # Retain instructions, demonstrations and assistant prefix. Only the final
-        # email is truncated. Re-render to account for tokenizer boundary changes.
-        while len(tokens) > self.max_input_tokens:
-            budget = len(content_tokens) - (len(tokens) - self.max_input_tokens) - 1
-            if budget <= 0:
-                raise ValueError("instructions and demonstrations exceed context budget")
-            content_tokens = content_tokens[:budget]
-            tokens = render(backend.decode(content_tokens))
-        empty = render("")
+        # Keep Claude's email structure, examples and URLs intact. If Qwen's
+        # tokenizer needs more room, reduce only the target email's body cap.
+        if len(tokens) > self.max_input_tokens:
+            low, high = 0, min(len(email.body), prompts.MAX_INPUT_CHARS)
+            best_text = None
+            while low <= high:
+                cap = (low + high) // 2
+                candidate, _ = prompts.render_email(email, cap)
+                candidate_tokens = render(candidate)
+                if len(candidate_tokens) <= self.max_input_tokens:
+                    best_text = candidate
+                    low = cap + 1
+                else:
+                    high = cap - 1
+            if best_text is None:
+                raise ValueError("instructions, examples and email headers exceed context budget")
+            tokens = render(best_text)
+            truncated = True
         prefix_length = 0
         for a, b in zip(tokens, empty):
             if a != b:
                 break
             prefix_length += 1
-        return tokens, original, min(prefix_length, len(tokens)-1)
+        return tokens, original, min(prefix_length, len(tokens)-1), truncated
 
     def predict(self, emails: Sequence[Email]) -> list[Prediction]:
         if not self.fitted:
@@ -146,11 +173,12 @@ class QwenDetector:
     def _predict_one(self, email):
         start = time.perf_counter()
         try:
-            tokens, original, prefix_length = self._tokens(email)
+            tokens, original, prefix_length, truncated = self._tokens(email)
             identity = {"model": self.model, "revision": self.revision, "tokens": tokens,
                         "runtime": self.runtime, "prefix_length": prefix_length,
                         "example_ids": [e.id for e in self.examples],
-                        "scoring": "conditional-A-B-float32-v2"}
+                        "prompt_version": prompts.PROMPT_VERSION,
+                        "scoring": "conditional-A-B-float32-shared-v1"}
             key = hashlib.sha256(json.dumps(identity, sort_keys=True).encode()).hexdigest()
             path = self.cache_dir / f"{key}.json" if self.cache_dir else None
             if path and path.exists():
@@ -166,7 +194,7 @@ class QwenDetector:
                 details={**extra, "answer_logprobs": {"A_phishing": a, "B_legitimate": b},
                          "answer_probability_mass": math.exp(a)+math.exp(b),
                          "input_tokens": len(tokens), "original_input_tokens": original,
-                         "truncated": original > len(tokens), "cache_hit": False,
+                         "truncated": truncated, "cache_hit": False,
                          "example_ids": [e.id for e in self.examples], "revision": self.revision})
             if path:
                 path.parent.mkdir(parents=True, exist_ok=True)

@@ -1,15 +1,15 @@
 [detector]
 class = "phishbench.detectors.qwen:QwenDetector"
-data_allowed = ["train: deterministic balanced demonstrations", "validation: threshold"]
+data_allowed = ["train: Claude's frozen eight demonstrations", "validation: threshold"]
 
 [detector.params]
 model = "mlx-community/Qwen3.5-4B-4bit"
 revision = "0e7ffd5c629ef7719d4cbc04069232580bfa9d9c"
-n_shots = 4
-seed = 20261116
-example_tokens = 256
+n_shots = 8
+few_shot = "configs/prompts/fewshot-champa2023-v1.json"
+split_dir = "data/splits/champa2023-v1"
 max_input_tokens = 8192
-cache_dir = "data/cache/qwen"
+cache_dir = "data/cache/qwen-shared-v1"
 
 [eval]
 warmup = 3

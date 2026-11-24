@@ -1,8 +1,8 @@
-"""Prompt and frozen few-shot pool for Claude and future API LLMs.
+"""Shared prompt and frozen few-shot pool for Claude and corrected Qwen runs.
 
-The Phase 4 Qwen benchmark used a separate recorded prompt in
-`phishbench.detectors.prompts`; its results cannot be reinterpreted as using
-this wording. Prompt revisions may use validation outputs (`val_llm`) only.
+The original Phase 4 Qwen results used different wording and examples; they
+cannot be reinterpreted as using this prompt. Prompt revisions may use
+validation outputs (`val_llm`) only.
 """
 
 from __future__ import annotations

@@ -147,7 +147,7 @@ flowchart TD
 | 1 · Combined dataset and splits | Choose the combined set against the requirements above; map to the schema, strip headers, dedupe. Build and freeze the splits and the test and validation LLM subsamples, with manifest hashes. | Splits frozen and hashed; dataset version recorded |
 | 2 · Baselines | Handwritten rules, TF-IDF + LR | Every model scored on the LLM subsample; non-LLM models also on the full test and cross-source splits (Phases 2–5) |
 | 3 · Encoders | Fine-tuned ModernBERT and DeBERTa-v3; Laya. Fit Laya's signal weights on the validation split (replaces the hand-picked weights). Check whether the laya library supports fine-tuning; if it does, add a Laya variant fine-tuned on the training split, otherwise note it. | ″ |
-| 4 · SLM | Qwen3.5-4B, prompted, zero- and four-shot (MLX; completed) | ″ |
+| 4 · SLM | Qwen3.5-4B, prompted, corrected zero- and eight-shot comparison (MLX; completed) | ″ |
 | 5 · Frontier LLMs | Claude Sonnet 5.5 and Haiku 5.5, zero- and few-shot, on the LLM subsamples. Details: [phase5-plan.md](phase5-plan.md) | ″ |
 | 6 · Cascade and report | Pick each tier's model on validation (Laya may not make the cascade; it is still compared on its own), then tune hand-offs on validation; Pareto charts of accuracy, latency and cost. Write up results, limits and the recommended setup. | Report reviewed; every result reproducible from configs and manifests |
 

@@ -23,7 +23,7 @@ All models are scored on the same frozen splits of a combined public phishing da
 
 ## Status
 
-Phases 0–5 are complete. Rules, TF-IDF + logistic regression, Laya, ModernBERT, DeBERTa-v3, Qwen3.5-4B, and Claude variants have results on the frozen dataset. Qwen zero-shot and four-shot reach 67.6% and 84.2% recall at 1% FPR on the LLM subsample; see [progress](docs/progress.md) for the other models, confidence intervals, and limitations. Phase 6 (cascade and report) remains.
+Phases 0–5 are complete. Rules, TF-IDF + logistic regression, Laya, ModernBERT, DeBERTa-v3, Qwen3.5-4B, and Claude variants have results on the frozen dataset. In the corrected comparison using Claude's task wording and example pool, Qwen zero-shot and eight-shot reach 71.1% and 70.8% recall at 1% FPR on the LLM subsample. The earlier zero-shot/four-shot results used a different prompt; see [progress](docs/progress.md) for both runs and their limitations. Phase 6 (cascade and report) remains.
 
 The 7 sample emails in `data/benchmark_emails.json` are a smoke test only: Laya's signal weights were hand-picked on these same emails, so its results on them are not evidence of accuracy.
 
@@ -79,15 +79,17 @@ python -m unittest
 ## Phase 4 · Qwen on MLX
 
 Qwen3.5-4B (4-bit, exact checkpoint revision pinned in the configs) has zero-shot
-and four-shot detectors. Run from the repository root on Apple Silicon:
+and eight-shot results from the corrected comparison with Claude. The saved
+zero-shot and four-shot results used the earlier prompt and remain historical.
+To reproduce the corrected comparison, use Apple Silicon from the repository root:
 
 ```bash
 uv venv .venv --python 3.12
 source .venv/bin/activate
-pip install -e ".[data,qwen]"
+uv pip install --python .venv/bin/python -e ".[data,qwen]"
 python scripts/download_data.py
 python scripts/build_splits.py --verify
-HF_HOME=data/models/huggingface python scripts/evaluate_qwen.py
+caffeinate -i env HF_HOME=data/models/huggingface python scripts/evaluate_qwen.py
 ```
 
 The runner evaluates both variants on unchanged `val_llm` and `test_llm`, writes
@@ -97,14 +99,14 @@ Model weights and response caches stay under git-ignored `data/models/` and
 `data/cache/`. Cached predictions retain original inference latency; cached
 rerun wall throughput is explicitly labelled as replay speed.
 
-Qwen uses its recorded task text in `detectors/prompts.py`; Claude uses `src/phishbench/prompts.py`. The prompt wording and few-shot pools differ, so comparisons include this prompt difference. The
-model scores the next token with thinking disabled: `A` means phishing, `B`
-means legitimate, and the score is `P(A | A or B)`. Both unconditional token
-log probabilities and their combined mass are retained. Four demonstrations
-(two per class) are selected deterministically from training, without validation
-or test example selection. Each demonstration uses at most 256 tokens; the
-complete prompt uses at most 8,192 tokens. Only the target email is truncated
-to fit after instructions and demonstrations. No model fitting occurs.
+Qwen now uses Claude's task wording, `<email>` presentation, and frozen eight
+training examples through `src/phishbench/prompts.py`. Its answer remains `A`
+for phishing or `B` for legitimate, scored as `P(A | A or B)` from next-token
+probabilities with thinking disabled. The shared 32,000-character body cap and
+Qwen's 8,192-token total cap apply; if needed, only the target body is shortened
+further. The corrected [zero-shot](results/qwen3.5-4b-0shot-shared-v1_20261123T113259Z.json)
+and [eight-shot](results/qwen3.5-4b-8shot-shared-v1_20261123T141151Z.json)
+results are separate from the earlier Qwen results. No model fitting occurs.
 
 The frozen validation subsample is retained for comparability. Its 1,382
 legitimate emails allow only about 14 false positives at 1%, so the chosen
@@ -187,6 +189,6 @@ python scripts/evaluate.py --model configs/models/<name>.toml --splits data/spli
 | :--- | :--- |
 | 2 · Baselines | Handwritten rules must output a 0–1 score (a weighted count of triggered rules), not just yes/no. TF-IDF + LR needs scikit-learn as a new extra. The cross-source test isn't scripted yet: it retrains TF-IDF + LR (and one encoder in Phase 3) once per held-out source. |
 | 3 · Encoders | Fit Laya's signal weights on `val`; the per-email signals are already saved in each prediction's `details`. Check whether laya supports fine-tuning. DeBERTa-v3 reads only 512 tokens. Fine-tuning large models may not fit a 16 GB M4. Laya warns that some of its confidences are uncalibrated. |
-| 4 · SLM | Complete: Qwen3.5-4B zero-shot and four-shot via MLX. See Phase 4 above and `docs/progress.md`. |
+| 4 · SLM | Complete: Qwen3.5-4B zero-shot and eight-shot corrected comparison via MLX; earlier zero-shot/four-shot results retained. See Phase 4 above and `docs/progress.md`. |
 | 5 · Frontier LLMs | Built: `detectors/claude.py` (shared base `detectors/llm_base.py`, prompt in `prompts.py`), 4 configs in `configs/models/claude-*.toml`. Needs `ANTHROPIC_API_KEY`. Responses are cached in `data/cache/llm/`, so reruns are free; each config has a cost cap. Run order and budget: [docs/phase5-plan.md](docs/phase5-plan.md). |
 | 6 · Cascade and report | Build the cascade as a `Detector` that wraps the tier detectors, so it goes through the same harness. Choose each tier's model and the hand-off thresholds on `val_llm`. |
