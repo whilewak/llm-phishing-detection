@@ -1,0 +1,205 @@
+{
+ "note": "Label audit of the replacement emails by Claude subagents on 2026-11-24: two reads each, mixed with untouched emails, blind to detector scores and to which emails were replacements. Round 1 covered the 9 first replacements; round 2 the two that were rewritten again. An LLM review, not a human hand-check.",
+ "emails": [
+  {
+   "id": "syn-chatgpt-015-r1",
+   "status": "label_doubt_one",
+   "reviews": [
+    {
+     "reviewer": "C1",
+     "verdict": "ok",
+     "reason": "Sender claims to be Finance Operations at Merefield Health Group but writes from a personal mailbox on an odd lookalike domain and pushes a replacement invoice attachment with a soft deadline. Weak: the domain mismatch is the only pointable element and the tone is otherwise that of a normal colleague.",
+     "evidence": "m.ellison@merefield-health-documents.example; \"I've attached the updated copy as Invoice_Westbridge_Nov24.pdf ... this should replace the version I sent over last week\""
+    },
+    {
+     "reviewer": "C2",
+     "verdict": "ambiguous",
+     "reason": "Reads as an ordinary friendly colleague email with an updated invoice attached; there is no pressure beyond a mild Friday deadline, no payment or credential request. The only cue is the sender domain merefield-health-documents.example versus the signed organisation Merefield Health Group, which a reader cannot confirm is a lookalike from the text alone.",
+     "evidence": "m.ellison@merefield-health-documents.example; \"I've attached the updated copy as Invoice_Westbridge_Nov24.pdf ... Could you have a look when you get a chance\""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-037-r1",
+   "status": "label_doubt_one",
+   "reviews": [
+    {
+     "reviewer": "C1",
+     "verdict": "ok",
+     "reason": "Claims to be Alderwick Bank but the sender domain is unrelated to a bank domain and it pushes a named statement attachment. Subtle: no urgency and it says no action is required, so the domain is the only giveaway.",
+     "evidence": "notices@alderwick-document-review.example; \"Please open the attached document, Alderwick_Statement_November.pdf\""
+    },
+    {
+     "reviewer": "C2",
+     "verdict": "ambiguous",
+     "reason": "Calm statement-ready notice that explicitly says no action is required, with no threat, link, credential or payment request. The only cue is the sender domain alderwick-document-review.example, which does not match a bank-style domain for Alderwick Bank, plus the statement being sent as an attachment; a reader could go either way.",
+     "evidence": "notices@alderwick-document-review.example; \"Please open the attached document, Alderwick_Statement_November.pdf ... No action is required if the statement is accurate.\""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-062-r1",
+   "status": "label_doubt_one",
+   "reviews": [
+    {
+     "reviewer": "C1",
+     "verdict": "ok",
+     "reason": "Claims to be Bellmont Bank but is sent from a hyphenated lookalike domain and pushes an unsolicited named attachment with an acknowledgment deadline. Subtle: the domain is the only giveaway, the body text is otherwise benign.",
+     "evidence": "client.records@bellmont-bank-documents.example; \"Please find the attached file, Whitmore_Annual_Account_Review.pdf\""
+    },
+    {
+     "reviewer": "C2",
+     "verdict": "ambiguous",
+     "reason": "Polite, personalised, routine annual-review letter with no threat, no credential or payment request and a relaxed deadline; nothing in the body is fraudulent. The only cue is the sender domain bellmont-bank-documents.example versus the claimed Bellmont Bank, which could equally be read as a bank's document-services domain.",
+     "evidence": "client.records@bellmont-bank-documents.example; \"Please find the attached file, Whitmore_Annual_Account_Review.pdf, and review the information at your earliest convenience.\""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-033-r1",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "C1",
+     "verdict": "ok",
+     "reason": "BEC request to pay a vendor using changed bank details with cutoff pressure. No organisation is named in the body, so the fraud element is the request itself rather than a domain mismatch.",
+     "evidence": "\"process the remaining payment for Apex Office Supplies using the new bank details I sent last week? The old account is closed now and we need it cleared before the cutoff\""
+    },
+    {
+     "reviewer": "C2",
+     "verdict": "ok",
+     "reason": "BEC asking a colleague to pay a vendor using changed bank details because the old account is closed, with cutoff pressure. No organisation is named in the body to compare with meridiantrust-bank.example, but the changed-bank-details payment request is the fraudulent element.",
+     "evidence": "process the remaining payment for Apex Office Supplies using the new bank details I sent last week? The old account is closed now"
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-040-r1",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "C1",
+     "verdict": "ok",
+     "reason": "Classic gift-card BEC request: buy gift cards and send the codes by email.",
+     "evidence": "\"Can you grab a couple of gift cards for the client dinner tomorrow? ... Just send me the codes when you have them\""
+    },
+    {
+     "reviewer": "C2",
+     "verdict": "ok",
+     "reason": "Textbook gift-card BEC: a colleague/boss asks the reader to buy gift cards and send back the codes. No organisation is named so the domain oakridge-ledger.example cannot be compared, but the request itself is the fraudulent element.",
+     "evidence": "Can you grab a couple of gift cards ... Just send me the codes when you have them"
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-073-r1",
+   "status": "label_doubt_both",
+   "reviews": [
+    {
+     "reviewer": "C1",
+     "verdict": "ambiguous",
+     "reason": "Labelled phishing but the only possible giveaway is the hyphenated sender domain, which is plausible for a real vendor support/customer-success mailbox; the body has no urgency, threat, credential or payment request and reads like a routine account-manager email.",
+     "evidence": "lena.ortiz@vividstream-support.example (org: VividStream); \"Everything looks normal ... I have attached the file VividStream_Q3_Usage_Summary.xlsx\""
+    },
+    {
+     "reviewer": "C2",
+     "verdict": "ambiguous",
+     "reason": "Reads as a normal customer-success email with a usage spreadsheet; no urgency, no credential or payment request, and it even says everything looks normal. The only cue is the sender domain vividstream-support.example versus VividStream, which is plausible for a vendor support domain.",
+     "evidence": "lena.ortiz@vividstream-support.example; \"I have attached the file VividStream_Q3_Usage_Summary.xlsx ... Let me know if anything looks off\""
+    }
+   ],
+   "superseded_by": "syn-grok-073-r2"
+  },
+  {
+   "id": "syn-grok-075-r1",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "C1",
+     "verdict": "ok",
+     "reason": "Supplier-side BEC: asks Accounts Payable to redirect an outstanding invoice payment to new bank details, with late-fee pressure, from a hyphenated domain.",
+     "evidence": "r.lang@pulsegrid-finance.example; \"request that the outstanding invoice for contract 4821 be redirected to the updated banking coordinates ... The previous beneficiary account has been decommissioned\""
+    },
+    {
+     "reviewer": "C2",
+     "verdict": "ok",
+     "reason": "Supplier-impersonation BEC asking Accounts Payable to redirect an outstanding invoice to new bank details, with late-fee pressure; sender domain pulsegrid-finance.example is a suffixed variant of the claimed organisation PulseGrid. The new details are not actually stated in the text, which is a minor weakness.",
+     "evidence": "request that the outstanding invoice for contract 4821 be redirected to the updated banking coordinates"
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-085-r1",
+   "status": "label_doubt_both",
+   "reviews": [
+    {
+     "reviewer": "C1",
+     "verdict": "ambiguous",
+     "reason": "Labelled phishing but nothing in the text gives it away: no organisation is named to compare the sender domain against, no urgency or threat, no credential or payment request; it reads as an ordinary colleague email with a packing list.",
+     "evidence": "chris.nguyen@rapidroute-ops.example; \"I attached the file Portland_Load_Packing_List_v2.pdf ... Can you open it and make sure the weights match what you have in the system?\""
+    },
+    {
+     "reviewer": "C2",
+     "verdict": "ambiguous",
+     "reason": "Indistinguishable from a normal colleague email about a packing list: no organisation is named, so the sender domain rapidroute-ops.example cannot be judged a mismatch, and there is no threat, credential or payment request. The only phishing-like element is the request to open the attachment.",
+     "evidence": "I attached the file Portland_Load_Packing_List_v2.pdf ... Can you open it and make sure the weights match what you have in the system?"
+    }
+   ],
+   "superseded_by": "syn-grok-085-r2"
+  },
+  {
+   "id": "syn-grok-144-r1",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "C1",
+     "verdict": "ok",
+     "reason": "Lookalike sender domain for AeroVista Airlines plus 24-hour threat pushing the reader to open a named attachment.",
+     "evidence": "support@aerovista-airlines-secure.example; \"Open Booking_Confirmation_Update.pdf immediatly to verify your details and avoid cancellation of your flight\""
+    },
+    {
+     "reviewer": "C2",
+     "verdict": "ok",
+     "reason": "Claims AeroVista Airlines from aerovista-airlines-secure.example, generic greeting, spelling error and a 24-hour threat of losing seat and fees unless the named attachment is opened.",
+     "evidence": "Open Booking_Confirmation_Update.pdf immediatly to verify your details and avoid cancellation of your flight."
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-073-r2",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "D1",
+     "verdict": "ok",
+     "reason": "Sender domain lumenpath-docs.example does not match the company domain lumenpath.example given in the signature, and the reader is pushed to open a .docx and enable editing (macro lure).",
+     "evidence": "just open the file and enable editing"
+    },
+    {
+     "reviewer": "D2",
+     "verdict": "ok",
+     "reason": "Unsolicited .docx with an instruction to enable editing, sent from lumenpath-docs.example while the signature gives the company domain as lumenpath.example (mismatch).",
+     "evidence": "maya@lumenpath-docs.example vs signature \"lumenpath.example\"; \"just open the file and enable editing\""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-085-r2",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "D1",
+     "verdict": "ok",
+     "reason": "Sender domain oakridge-logistics-docs.example does not match the signature domain oakridge-logistics.example; the attachment asks for enabling content and the work password under deadline pressure.",
+     "evidence": "Open the file and enable content to view the full scan; it will ask for your work password to unlock the annotations."
+    },
+    {
+     "reviewer": "D2",
+     "verdict": "ok",
+     "reason": "Attachment lure that asks the reader to enable content and enter their work password under deadline pressure; sender oakridge-logistics-docs.example does not match the signature domain oakridge-logistics.example.",
+     "evidence": "alex@oakridge-logistics-docs.example vs \"oakridge-logistics.example\"; \"Open the file and enable content to view the full scan; it will ask for your work password to unlock the annotations.\""
+    }
+   ]
+  }
+ ]
+}

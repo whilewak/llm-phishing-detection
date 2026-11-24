@@ -1,0 +1,1000 @@
+{
+  "transfer_to_synthetic": {
+    "synthetic-v1": {
+      "tfidf-lr -> deberta-v3-base -> claude-sonnet-5-5-zeroshot": {
+        "thresholds": [
+          {
+            "low": 0.04562162941790192,
+            "high": 0.7689257496433818
+          },
+          {
+            "low": 0.05673714124437036,
+            "high": 0.9685178189442075
+          }
+        ],
+        "last_threshold": 0.42,
+        "recall": 0.66,
+        "false_positive_rate": 0.08,
+        "exit_share": [
+          0.42,
+          0.26,
+          0.32
+        ],
+        "top_tier_share": 0.32,
+        "latency_ms_mean": 597.0120269507606,
+        "latency_ms_p50": 25.670978231428307,
+        "latency_ms_p95": 2233.5829043577287,
+        "usd_per_million_emails": 306.15866666666665
+      },
+      "tfidf-lr -> claude-sonnet-5-5-zeroshot": {
+        "thresholds": [
+          {
+            "low": 0.1396866354653904,
+            "high": 0.7689257496433818
+          }
+        ],
+        "last_threshold": 0.25,
+        "recall": 0.8333333333333334,
+        "false_positive_rate": 0.12666666666666668,
+        "exit_share": [
+          0.5866666666666667,
+          0.41333333333333333
+        ],
+        "top_tier_share": 0.41333333333333333,
+        "latency_ms_mean": 789.9818607031193,
+        "latency_ms_p50": 0.08224332996178418,
+        "latency_ms_p95": 2651.328607281176,
+        "usd_per_million_emails": 386.7066666666667
+      },
+      "deberta-v3-base -> claude-sonnet-5-5-zeroshot": {
+        "thresholds": [
+          {
+            "low": 0.1483660932655992,
+            "high": 0.9128186605716575
+          }
+        ],
+        "last_threshold": 0.35,
+        "recall": 0.41333333333333333,
+        "false_positive_rate": 0.02666666666666667,
+        "exit_share": [
+          0.7533333333333333,
+          0.24666666666666667
+        ],
+        "top_tier_share": 0.24666666666666667,
+        "latency_ms_mean": 684.9338665232548,
+        "latency_ms_p50": 58.501281249846215,
+        "latency_ms_p95": 2038.042446383953,
+        "usd_per_million_emails": 236.572
+      },
+      "claude-sonnet-5-5-zeroshot alone": {
+        "thresholds": [],
+        "last_threshold": 0.25,
+        "recall": 1.0,
+        "false_positive_rate": 0.11333333333333333,
+        "exit_share": [
+          1.0
+        ],
+        "top_tier_share": 1.0
+      }
+    },
+    "synthetic-old": {
+      "tfidf-lr -> deberta-v3-base -> claude-sonnet-5-5-zeroshot": {
+        "thresholds": [
+          {
+            "low": 0.04562162941790192,
+            "high": 0.7689257496433818
+          },
+          {
+            "low": 0.05673714124437036,
+            "high": 0.9685178189442075
+          }
+        ],
+        "last_threshold": 0.42,
+        "recall": 0.6666666666666666,
+        "false_positive_rate": 0.08,
+        "exit_share": [
+          0.41333333333333333,
+          0.26,
+          0.32666666666666666
+        ],
+        "top_tier_share": 0.32666666666666666,
+        "latency_ms_mean": 627.2298662111856,
+        "latency_ms_p50": 30.973909455242392,
+        "latency_ms_p95": 2248.198935649626,
+        "usd_per_million_emails": 309.7933333333333
+      },
+      "tfidf-lr -> claude-sonnet-5-5-zeroshot": {
+        "thresholds": [
+          {
+            "low": 0.1396866354653904,
+            "high": 0.7689257496433818
+          }
+        ],
+        "last_threshold": 0.25,
+        "recall": 0.84,
+        "false_positive_rate": 0.12666666666666668,
+        "exit_share": [
+          0.58,
+          0.42
+        ],
+        "top_tier_share": 0.42,
+        "latency_ms_mean": 817.3864697297782,
+        "latency_ms_p50": 0.08135583004332148,
+        "latency_ms_p95": 2723.905897868465,
+        "usd_per_million_emails": 389.5613333333334
+      },
+      "deberta-v3-base -> claude-sonnet-5-5-zeroshot": {
+        "thresholds": [
+          {
+            "low": 0.1483660932655992,
+            "high": 0.9128186605716575
+          }
+        ],
+        "last_threshold": 0.35,
+        "recall": 0.4066666666666667,
+        "false_positive_rate": 0.02666666666666667,
+        "exit_share": [
+          0.7566666666666667,
+          0.24333333333333335
+        ],
+        "top_tier_share": 0.24333333333333335,
+        "latency_ms_mean": 480.9926522231156,
+        "latency_ms_p50": 64.74260674985999,
+        "latency_ms_p95": 2020.7130602191685,
+        "usd_per_million_emails": 234.288
+      },
+      "claude-sonnet-5-5-zeroshot alone": {
+        "thresholds": [],
+        "last_threshold": 0.25,
+        "recall": 0.9866666666666667,
+        "false_positive_rate": 0.11333333333333333,
+        "exit_share": [
+          1.0
+        ],
+        "top_tier_share": 1.0
+      }
+    }
+  },
+  "rule": "all choices on val_llm; cascade FPR <= 1%; <= 10% of emails to the top tier",
+  "tier_selection": {
+    "1 \u00b7 cheap baseline": {
+      "val_recall_at_1pct_fpr": {
+        "rules": 0.03667262969588551,
+        "tfidf-lr": 0.9347048300536672
+      },
+      "chosen": "tfidf-lr",
+      "rule": "cheapest within 1% of the best validation recall"
+    },
+    "2 \u00b7 encoder / System 1": {
+      "val_recall_at_1pct_fpr": {
+        "modernbert-base": 0.8559928443649374,
+        "deberta-v3-base": 0.8899821109123435
+      },
+      "chosen": "deberta-v3-base",
+      "rule": "cheapest within 1% of the best validation recall"
+    },
+    "3 \u00b7 small language model": {
+      "val_recall_at_1pct_fpr": {},
+      "chosen": null,
+      "rule": "cheapest within 1% of the best validation recall"
+    },
+    "4 \u00b7 frontier LLM": {
+      "val_recall_at_1pct_fpr": {
+        "claude-haiku-5-5-zeroshot": 0.8237924865831843,
+        "claude-haiku-5-5-fewshot": 0.9042933810375671,
+        "claude-sonnet-5-5-zeroshot": 0.9776386404293381,
+        "claude-sonnet-5-5-fewshot": 0.9803220035778175
+      },
+      "chosen": "claude-sonnet-5-5-zeroshot",
+      "rule": "cheapest within 1% of the best validation recall"
+    }
+  },
+  "tiers": [
+    "tfidf-lr",
+    "deberta-v3-base",
+    "claude-sonnet-5-5-zeroshot"
+  ],
+  "chosen": {
+    "val": {
+      "thresholds": [
+        {
+          "low": 0.04562162941790192,
+          "high": 0.7689257496433818
+        },
+        {
+          "low": 0.05673714124437036,
+          "high": 0.9685178189442075
+        }
+      ],
+      "last_threshold": 0.42,
+      "recall": 0.9883720930232558,
+      "false_positive_rate": 0.009406657018813314,
+      "exit_share": [
+        0.8012,
+        0.1084,
+        0.0904
+      ],
+      "top_tier_share": 0.0904,
+      "latency_ms_mean": 193.7301854034893,
+      "latency_ms_p50": 0.14944499998819083,
+      "latency_ms_p95": 1826.5997869605883,
+      "usd_per_million_emails": 157.51392000000004
+    },
+    "test": {
+      "thresholds": [
+        {
+          "low": 0.04562162941790192,
+          "high": 0.7689257496433818
+        },
+        {
+          "low": 0.05673714124437036,
+          "high": 0.9685178189442075
+        }
+      ],
+      "last_threshold": 0.42,
+      "recall": 0.9856887298747764,
+      "false_positive_rate": 0.011577424023154847,
+      "exit_share": [
+        0.804,
+        0.1112,
+        0.0848
+      ],
+      "top_tier_share": 0.0848,
+      "latency_ms_mean": 227.91600067220276,
+      "latency_ms_p50": 0.1412233299924992,
+      "latency_ms_p95": 1730.4231720968926,
+      "usd_per_million_emails": 149.02016
+    }
+  },
+  "reference_single_model": {
+    "model": "claude-sonnet-5-5-zeroshot",
+    "val_recall_at_1pct_fpr": 0.9776386404293381,
+    "val_threshold": 0.25,
+    "test_at_val_threshold": {
+      "thresholds": [],
+      "last_threshold": 0.25,
+      "recall": 0.9794275491949911,
+      "false_positive_rate": 0.009406657018813314,
+      "exit_share": [
+        1.0
+      ],
+      "top_tier_share": 1.0
+    }
+  },
+  "recall_kept_vs_reference": {
+    "val": 1.010978956999085,
+    "test": 1.006392694063927
+  },
+  "curve_by_top_tier_cap": {
+    "0.0": {
+      "val": {
+        "thresholds": [
+          {
+            "low": 0.7689257496433818,
+            "high": 0.8669409010351942
+          },
+          {
+            "low": null,
+            "high": 0.02411289691925049
+          }
+        ],
+        "last_threshold": 0.01,
+        "recall": 0.9230769230769231,
+        "false_positive_rate": 0.007959479015918957,
+        "exit_share": [
+          0.9668,
+          0.0332,
+          0.0
+        ],
+        "top_tier_share": 0.0,
+        "latency_ms_mean": 3.3053184488471743,
+        "latency_ms_p50": 0.1310199999716133,
+        "latency_ms_p95": 0.25369499999214895,
+        "usd_per_million_emails": 0.0
+      },
+      "test": {
+        "thresholds": [
+          {
+            "low": 0.7689257496433818,
+            "high": 0.8669409010351942
+          },
+          {
+            "low": null,
+            "high": 0.02411289691925049
+          }
+        ],
+        "last_threshold": 0.01,
+        "recall": 0.924865831842576,
+        "false_positive_rate": 0.007959479015918957,
+        "exit_share": [
+          0.9688,
+          0.0312,
+          0.0
+        ],
+        "top_tier_share": 0.0,
+        "latency_ms_mean": 3.5476800392443693,
+        "latency_ms_p50": 0.13563250002334826,
+        "latency_ms_p95": 0.16863042008480988,
+        "usd_per_million_emails": 0.0
+      }
+    },
+    "0.01": {
+      "val": {
+        "thresholds": [
+          {
+            "low": 0.5159658338468314,
+            "high": 0.7689257496433818
+          },
+          {
+            "low": 0.05673714124437036,
+            "high": 0.831076800206613
+          }
+        ],
+        "last_threshold": 0.25,
+        "recall": 0.9776386404293381,
+        "false_positive_rate": 0.009406657018813314,
+        "exit_share": [
+          0.9668,
+          0.0232,
+          0.01
+        ],
+        "top_tier_share": 0.01,
+        "latency_ms_mean": 24.28948449045638,
+        "latency_ms_p50": 0.1310199999716133,
+        "latency_ms_p95": 0.25369499999214895,
+        "usd_per_million_emails": 11.042399999999999
+      },
+      "test": {
+        "thresholds": [
+          {
+            "low": 0.5159658338468314,
+            "high": 0.7689257496433818
+          },
+          {
+            "low": 0.05673714124437036,
+            "high": 0.831076800206613
+          }
+        ],
+        "last_threshold": 0.25,
+        "recall": 0.9695885509838998,
+        "false_positive_rate": 0.011577424023154847,
+        "exit_share": [
+          0.9672,
+          0.0216,
+          0.0112
+        ],
+        "top_tier_share": 0.0112,
+        "latency_ms_mean": 25.268872393222047,
+        "latency_ms_p50": 0.13563250002334826,
+        "latency_ms_p95": 0.16863042008480988,
+        "usd_per_million_emails": 23.68144
+      }
+    },
+    "0.02": {
+      "val": {
+        "thresholds": [
+          {
+            "low": 0.5159658338468314,
+            "high": 0.7689257496433818
+          },
+          {
+            "low": 0.05673714124437036,
+            "high": 0.831076800206613
+          }
+        ],
+        "last_threshold": 0.25,
+        "recall": 0.9776386404293381,
+        "false_positive_rate": 0.009406657018813314,
+        "exit_share": [
+          0.9668,
+          0.0232,
+          0.01
+        ],
+        "top_tier_share": 0.01,
+        "latency_ms_mean": 24.28948449045638,
+        "latency_ms_p50": 0.1310199999716133,
+        "latency_ms_p95": 0.25369499999214895,
+        "usd_per_million_emails": 11.042399999999999
+      },
+      "test": {
+        "thresholds": [
+          {
+            "low": 0.5159658338468314,
+            "high": 0.7689257496433818
+          },
+          {
+            "low": 0.05673714124437036,
+            "high": 0.831076800206613
+          }
+        ],
+        "last_threshold": 0.25,
+        "recall": 0.9695885509838998,
+        "false_positive_rate": 0.011577424023154847,
+        "exit_share": [
+          0.9672,
+          0.0216,
+          0.0112
+        ],
+        "top_tier_share": 0.0112,
+        "latency_ms_mean": 25.268872393222047,
+        "latency_ms_p50": 0.13563250002334826,
+        "latency_ms_p95": 0.16863042008480988,
+        "usd_per_million_emails": 23.68144
+      }
+    },
+    "0.03": {
+      "val": {
+        "thresholds": [
+          {
+            "low": 0.24265478380954214,
+            "high": 0.7689257496433818
+          },
+          {
+            "low": 0.1483660932655992,
+            "high": 0.9477231521030952
+          }
+        ],
+        "last_threshold": 0.25,
+        "recall": 0.9794275491949911,
+        "false_positive_rate": 0.009406657018813314,
+        "exit_share": [
+          0.9336,
+          0.0372,
+          0.0292
+        ],
+        "top_tier_share": 0.0292,
+        "latency_ms_mean": 65.93839978196374,
+        "latency_ms_p50": 0.13131250001606531,
+        "latency_ms_p95": 93.14295234803464,
+        "usd_per_million_emails": 49.42495999999999
+      },
+      "test": {
+        "thresholds": [
+          {
+            "low": 0.24265478380954214,
+            "high": 0.7689257496433818
+          },
+          {
+            "low": 0.1483660932655992,
+            "high": 0.9477231521030952
+          }
+        ],
+        "last_threshold": 0.25,
+        "recall": 0.983005366726297,
+        "false_positive_rate": 0.010130246020260492,
+        "exit_share": [
+          0.9336,
+          0.0396,
+          0.0268
+        ],
+        "top_tier_share": 0.0268,
+        "latency_ms_mean": 57.45545037621559,
+        "latency_ms_p50": 0.1363620899792295,
+        "latency_ms_p95": 108.85157408650412,
+        "usd_per_million_emails": 42.66576
+      }
+    },
+    "0.05": {
+      "val": {
+        "thresholds": [
+          {
+            "low": 0.24265478380954214,
+            "high": 0.7689257496433818
+          },
+          {
+            "low": 0.05673714124437036,
+            "high": 0.9477231521030952
+          }
+        ],
+        "last_threshold": 0.25,
+        "recall": 0.9838998211091234,
+        "false_positive_rate": 0.009406657018813314,
+        "exit_share": [
+          0.9336,
+          0.026,
+          0.0404
+        ],
+        "top_tier_share": 0.0404,
+        "latency_ms_mean": 87.4073178487848,
+        "latency_ms_p50": 0.13131250001606531,
+        "latency_ms_p95": 94.18978000179771,
+        "usd_per_million_emails": 63.7168
+      },
+      "test": {
+        "thresholds": [
+          {
+            "low": 0.24265478380954214,
+            "high": 0.7689257496433818
+          },
+          {
+            "low": 0.05673714124437036,
+            "high": 0.9477231521030952
+          }
+        ],
+        "last_threshold": 0.25,
+        "recall": 0.9838998211091234,
+        "false_positive_rate": 0.010130246020260492,
+        "exit_share": [
+          0.9336,
+          0.0304,
+          0.036
+        ],
+        "top_tier_share": 0.036,
+        "latency_ms_mean": 73.32602816072685,
+        "latency_ms_p50": 0.1363620899792295,
+        "latency_ms_p95": 110.58804846517887,
+        "usd_per_million_emails": 55.820800000000006
+      }
+    },
+    "0.075": {
+      "val": {
+        "thresholds": [
+          {
+            "low": 0.04562162941790192,
+            "high": 0.7689257496433818
+          },
+          {
+            "low": 0.07683692286754476,
+            "high": 0.9685178189442075
+          }
+        ],
+        "last_threshold": 0.42,
+        "recall": 0.9865831842576028,
+        "false_positive_rate": 0.009406657018813314,
+        "exit_share": [
+          0.8012,
+          0.1252,
+          0.0736
+        ],
+        "top_tier_share": 0.0736,
+        "latency_ms_mean": 159.17725306949652,
+        "latency_ms_p50": 0.14944499998819083,
+        "latency_ms_p95": 1654.9312113747874,
+        "usd_per_million_emails": 134.66816000000003
+      },
+      "test": {
+        "thresholds": [
+          {
+            "low": 0.04562162941790192,
+            "high": 0.7689257496433818
+          },
+          {
+            "low": 0.07683692286754476,
+            "high": 0.9685178189442075
+          }
+        ],
+        "last_threshold": 0.42,
+        "recall": 0.9856887298747764,
+        "false_positive_rate": 0.011577424023154847,
+        "exit_share": [
+          0.804,
+          0.1224,
+          0.0736
+        ],
+        "top_tier_share": 0.0736,
+        "latency_ms_mean": 207.7217076726316,
+        "latency_ms_p50": 0.1412233299924992,
+        "latency_ms_p95": 1658.9489766124748,
+        "usd_per_million_emails": 133.81632
+      }
+    },
+    "0.1": {
+      "val": {
+        "thresholds": [
+          {
+            "low": 0.04562162941790192,
+            "high": 0.7689257496433818
+          },
+          {
+            "low": 0.05673714124437036,
+            "high": 0.9685178189442075
+          }
+        ],
+        "last_threshold": 0.42,
+        "recall": 0.9883720930232558,
+        "false_positive_rate": 0.009406657018813314,
+        "exit_share": [
+          0.8012,
+          0.1084,
+          0.0904
+        ],
+        "top_tier_share": 0.0904,
+        "latency_ms_mean": 193.7301854034893,
+        "latency_ms_p50": 0.14944499998819083,
+        "latency_ms_p95": 1826.5997869605883,
+        "usd_per_million_emails": 157.51392000000004
+      },
+      "test": {
+        "thresholds": [
+          {
+            "low": 0.04562162941790192,
+            "high": 0.7689257496433818
+          },
+          {
+            "low": 0.05673714124437036,
+            "high": 0.9685178189442075
+          }
+        ],
+        "last_threshold": 0.42,
+        "recall": 0.9856887298747764,
+        "false_positive_rate": 0.011577424023154847,
+        "exit_share": [
+          0.804,
+          0.1112,
+          0.0848
+        ],
+        "top_tier_share": 0.0848,
+        "latency_ms_mean": 227.91600067220276,
+        "latency_ms_p50": 0.1412233299924992,
+        "latency_ms_p95": 1730.4231720968926,
+        "usd_per_million_emails": 149.02016
+      }
+    },
+    "0.15": {
+      "val": {
+        "thresholds": [
+          {
+            "low": 0.04562162941790192,
+            "high": 0.7689257496433818
+          },
+          {
+            "low": 0.05673714124437036,
+            "high": 0.9685178189442075
+          }
+        ],
+        "last_threshold": 0.42,
+        "recall": 0.9883720930232558,
+        "false_positive_rate": 0.009406657018813314,
+        "exit_share": [
+          0.8012,
+          0.1084,
+          0.0904
+        ],
+        "top_tier_share": 0.0904,
+        "latency_ms_mean": 193.7301854034893,
+        "latency_ms_p50": 0.14944499998819083,
+        "latency_ms_p95": 1826.5997869605883,
+        "usd_per_million_emails": 157.51392000000004
+      },
+      "test": {
+        "thresholds": [
+          {
+            "low": 0.04562162941790192,
+            "high": 0.7689257496433818
+          },
+          {
+            "low": 0.05673714124437036,
+            "high": 0.9685178189442075
+          }
+        ],
+        "last_threshold": 0.42,
+        "recall": 0.9856887298747764,
+        "false_positive_rate": 0.011577424023154847,
+        "exit_share": [
+          0.804,
+          0.1112,
+          0.0848
+        ],
+        "top_tier_share": 0.0848,
+        "latency_ms_mean": 227.91600067220276,
+        "latency_ms_p50": 0.1412233299924992,
+        "latency_ms_p95": 1730.4231720968926,
+        "usd_per_million_emails": 149.02016
+      }
+    },
+    "0.2": {
+      "val": {
+        "thresholds": [
+          {
+            "low": 0.04562162941790192,
+            "high": 0.7689257496433818
+          },
+          {
+            "low": 0.05673714124437036,
+            "high": 0.9685178189442075
+          }
+        ],
+        "last_threshold": 0.42,
+        "recall": 0.9883720930232558,
+        "false_positive_rate": 0.009406657018813314,
+        "exit_share": [
+          0.8012,
+          0.1084,
+          0.0904
+        ],
+        "top_tier_share": 0.0904,
+        "latency_ms_mean": 193.7301854034893,
+        "latency_ms_p50": 0.14944499998819083,
+        "latency_ms_p95": 1826.5997869605883,
+        "usd_per_million_emails": 157.51392000000004
+      },
+      "test": {
+        "thresholds": [
+          {
+            "low": 0.04562162941790192,
+            "high": 0.7689257496433818
+          },
+          {
+            "low": 0.05673714124437036,
+            "high": 0.9685178189442075
+          }
+        ],
+        "last_threshold": 0.42,
+        "recall": 0.9856887298747764,
+        "false_positive_rate": 0.011577424023154847,
+        "exit_share": [
+          0.804,
+          0.1112,
+          0.0848
+        ],
+        "top_tier_share": 0.0848,
+        "latency_ms_mean": 227.91600067220276,
+        "latency_ms_p50": 0.1412233299924992,
+        "latency_ms_p95": 1730.4231720968926,
+        "usd_per_million_emails": 149.02016
+      }
+    },
+    "0.3": {
+      "val": {
+        "thresholds": [
+          {
+            "low": 0.04562162941790192,
+            "high": 0.7689257496433818
+          },
+          {
+            "low": 0.05673714124437036,
+            "high": 0.9685178189442075
+          }
+        ],
+        "last_threshold": 0.42,
+        "recall": 0.9883720930232558,
+        "false_positive_rate": 0.009406657018813314,
+        "exit_share": [
+          0.8012,
+          0.1084,
+          0.0904
+        ],
+        "top_tier_share": 0.0904,
+        "latency_ms_mean": 193.7301854034893,
+        "latency_ms_p50": 0.14944499998819083,
+        "latency_ms_p95": 1826.5997869605883,
+        "usd_per_million_emails": 157.51392000000004
+      },
+      "test": {
+        "thresholds": [
+          {
+            "low": 0.04562162941790192,
+            "high": 0.7689257496433818
+          },
+          {
+            "low": 0.05673714124437036,
+            "high": 0.9685178189442075
+          }
+        ],
+        "last_threshold": 0.42,
+        "recall": 0.9856887298747764,
+        "false_positive_rate": 0.011577424023154847,
+        "exit_share": [
+          0.804,
+          0.1112,
+          0.0848
+        ],
+        "top_tier_share": 0.0848,
+        "latency_ms_mean": 227.91600067220276,
+        "latency_ms_p50": 0.1412233299924992,
+        "latency_ms_p95": 1730.4231720968926,
+        "usd_per_million_emails": 149.02016
+      }
+    },
+    "0.5": {
+      "val": {
+        "thresholds": [
+          {
+            "low": 0.04562162941790192,
+            "high": 0.7689257496433818
+          },
+          {
+            "low": 0.05673714124437036,
+            "high": 0.9685178189442075
+          }
+        ],
+        "last_threshold": 0.42,
+        "recall": 0.9883720930232558,
+        "false_positive_rate": 0.009406657018813314,
+        "exit_share": [
+          0.8012,
+          0.1084,
+          0.0904
+        ],
+        "top_tier_share": 0.0904,
+        "latency_ms_mean": 193.7301854034893,
+        "latency_ms_p50": 0.14944499998819083,
+        "latency_ms_p95": 1826.5997869605883,
+        "usd_per_million_emails": 157.51392000000004
+      },
+      "test": {
+        "thresholds": [
+          {
+            "low": 0.04562162941790192,
+            "high": 0.7689257496433818
+          },
+          {
+            "low": 0.05673714124437036,
+            "high": 0.9685178189442075
+          }
+        ],
+        "last_threshold": 0.42,
+        "recall": 0.9856887298747764,
+        "false_positive_rate": 0.011577424023154847,
+        "exit_share": [
+          0.804,
+          0.1112,
+          0.0848
+        ],
+        "top_tier_share": 0.0848,
+        "latency_ms_mean": 227.91600067220276,
+        "latency_ms_p50": 0.1412233299924992,
+        "latency_ms_p95": 1730.4231720968926,
+        "usd_per_million_emails": 149.02016
+      }
+    },
+    "1.0": {
+      "val": {
+        "thresholds": [
+          {
+            "low": 0.04562162941790192,
+            "high": 0.7689257496433818
+          },
+          {
+            "low": 0.05673714124437036,
+            "high": 0.9685178189442075
+          }
+        ],
+        "last_threshold": 0.42,
+        "recall": 0.9883720930232558,
+        "false_positive_rate": 0.009406657018813314,
+        "exit_share": [
+          0.8012,
+          0.1084,
+          0.0904
+        ],
+        "top_tier_share": 0.0904,
+        "latency_ms_mean": 193.7301854034893,
+        "latency_ms_p50": 0.14944499998819083,
+        "latency_ms_p95": 1826.5997869605883,
+        "usd_per_million_emails": 157.51392000000004
+      },
+      "test": {
+        "thresholds": [
+          {
+            "low": 0.04562162941790192,
+            "high": 0.7689257496433818
+          },
+          {
+            "low": 0.05673714124437036,
+            "high": 0.9685178189442075
+          }
+        ],
+        "last_threshold": 0.42,
+        "recall": 0.9856887298747764,
+        "false_positive_rate": 0.011577424023154847,
+        "exit_share": [
+          0.804,
+          0.1112,
+          0.0848
+        ],
+        "top_tier_share": 0.0848,
+        "latency_ms_mean": 227.91600067220276,
+        "latency_ms_p50": 0.1412233299924992,
+        "latency_ms_p95": 1730.4231720968926,
+        "usd_per_million_emails": 149.02016
+      }
+    }
+  },
+  "ablations_at_target": {
+    "tfidf-lr -> claude-sonnet-5-5-zeroshot": {
+      "val": {
+        "thresholds": [
+          {
+            "low": 0.1396866354653904,
+            "high": 0.7689257496433818
+          }
+        ],
+        "last_threshold": 0.25,
+        "recall": 0.9856887298747764,
+        "false_positive_rate": 0.009406657018813314,
+        "exit_share": [
+          0.9008,
+          0.0992
+        ],
+        "top_tier_share": 0.0992,
+        "latency_ms_mean": 195.93768270385334,
+        "latency_ms_p50": 0.13131250001606531,
+        "latency_ms_p95": 1806.0736322684802,
+        "usd_per_million_emails": 151.83168
+      },
+      "test": {
+        "thresholds": [
+          {
+            "low": 0.1396866354653904,
+            "high": 0.7689257496433818
+          }
+        ],
+        "last_threshold": 0.25,
+        "recall": 0.9901610017889088,
+        "false_positive_rate": 0.009406657018813314,
+        "exit_share": [
+          0.9012,
+          0.0988
+        ],
+        "top_tier_share": 0.0988,
+        "latency_ms_mean": 252.80573853238602,
+        "latency_ms_p50": 0.1363620899792295,
+        "latency_ms_p95": 1712.0177651766983,
+        "usd_per_million_emails": 150.04336
+      }
+    },
+    "deberta-v3-base -> claude-sonnet-5-5-zeroshot": {
+      "val": {
+        "thresholds": [
+          {
+            "low": 0.1483660932655992,
+            "high": 0.9128186605716575
+          }
+        ],
+        "last_threshold": 0.35,
+        "recall": 0.9686940966010733,
+        "false_positive_rate": 0.009406657018813314,
+        "exit_share": [
+          0.9004,
+          0.0996
+        ],
+        "top_tier_share": 0.0996,
+        "latency_ms_mean": 297.0227035831893,
+        "latency_ms_p50": 94.71875390590867,
+        "latency_ms_p95": 1917.515716090747,
+        "usd_per_million_emails": 178.65823999999998
+      },
+      "test": {
+        "thresholds": [
+          {
+            "low": 0.1483660932655992,
+            "high": 0.9128186605716575
+          }
+        ],
+        "last_threshold": 0.35,
+        "recall": 0.9713774597495528,
+        "false_positive_rate": 0.013024602026049204,
+        "exit_share": [
+          0.9152,
+          0.0848
+        ],
+        "top_tier_share": 0.0848,
+        "latency_ms_mean": 314.7797988159233,
+        "latency_ms_p50": 109.84697918684105,
+        "latency_ms_p95": 1723.684194075349,
+        "usd_per_million_emails": 171.84575999999998
+      }
+    }
+  },
+  "score_files": {
+    "tfidf-lr": [
+      "results/scores/tfidf-lr__synthetic-old.json",
+      "results/scores/tfidf-lr__synthetic.json",
+      "results/scores/tfidf-lr__test_llm.json",
+      "results/scores/tfidf-lr__val_llm.json"
+    ],
+    "deberta-v3-base": [
+      "results/scores/deberta-v3-base__synthetic-old.json",
+      "results/scores/deberta-v3-base__synthetic.json",
+      "results/scores/deberta-v3-base__test_llm.json",
+      "results/scores/deberta-v3-base__val_llm.json"
+    ],
+    "claude-sonnet-5-5-zeroshot": [
+      "results/scores/claude-sonnet-5-5-zeroshot__synthetic-old.json",
+      "results/scores/claude-sonnet-5-5-zeroshot__synthetic.json",
+      "results/scores/claude-sonnet-5-5-zeroshot__test_llm.json",
+      "results/scores/claude-sonnet-5-5-zeroshot__val_llm.json"
+    ]
+  }
+}

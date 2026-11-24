@@ -14,6 +14,7 @@ dependencies = []
 data = ["numpy>=1.26"]
 qwen = ["mlx-lm==0.32.2", "mlx==0.32.4", "transformers==5.23.0", "huggingface-hub==2.4.0"]
 baselines = ["scikit-learn>=1.4"]
+report = ["numpy>=1.26", "matplotlib>=3.8"]  # cascade tuning and figures
 encoders = ["sentencepiece", "tiktoken"]
 llm = [
     "anthropic>=2.8",

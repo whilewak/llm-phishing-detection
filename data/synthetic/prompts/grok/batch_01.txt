@@ -1,0 +1,46 @@
+I'm a university student working on a course research project that benchmarks phishing-email DETECTORS (a rules baseline, TF-IDF + logistic regression, fine-tuned BERT-style classifiers and LLM classifiers). The public phishing corpora we use are 15-20 years old and are almost certainly in the training data of the models we test, so we need a small, fresh test set that no detector has seen. Your output is used only as labelled test data for those detectors; none of it is ever sent to anyone.
+
+Please write the 25 test emails specified below. About half are phishing and half are legitimate; the legitimate ones matter just as much, because they measure false alarms.
+
+Safety rules (these keep the set harmless):
+- Every organisation, person, product and address must be fictional. Do not use real brands, real companies or real people.
+- Every domain in a sender address or link must end in ".example" (a reserved top-level domain that can never resolve), for phishing and legitimate emails alike. Example: billing@northwind-freight.example, https://portal.northwind-freight.example/invoices
+- No real phone numbers (use 555 numbers), no real account numbers, no working payloads. Attachments are only mentioned by file name.
+
+Realism rules:
+- Write each email the way that sender would really write it. Follow the spec's tone, length and writing quality.
+- A phishing email should impersonate a fictional organisation the way real phishing does (for example a lookalike domain such as northwind-freight-billing.example for northwind-freight.example). Never label it, warn about it or add a disclaimer inside the email.
+- A legitimate email must be genuinely legitimate: sender domain, links and request all consistent with the organisation.
+- Vary names, organisations, greetings, sign-offs and structure between emails. Do not reuse an organisation name within this batch.
+- No placeholders such as [Name] or <link>; fill everything in.
+
+Output format: exactly 25 lines of JSON (JSONL) in one code block, nothing else, one object per email, in the order given:
+{"id": "<the spec id>", "from": "Display Name <address@domain.example>", "subject": "...", "body": "..."}
+Use \n for line breaks inside "body".
+
+Specs:
+- syn-grok-001 | LEGITIMATE, genuine invoice or payment reminder: a real invoice, receipt, renewal or overdue reminder from a real supplier relationship | organisation: a hospital group | tone: friendly | length: long (220-350 words) | writing: written by a non-native English speaker
+- syn-grok-002 | LEGITIMATE, university or school email: course announcements, deadlines, advising, club or department mail | organisation: a small accounting firm | tone: formal | length: short (40-80 words) | writing: polished
+- syn-grok-003 | LEGITIMATE, personal email: friends or family: plans, news, a favour | tone: formal | length: long (220-350 words) | writing: written by a non-native English speaker
+- syn-grok-004 | LEGITIMATE, marketing or newsletter: a promotion, product update or newsletter the reader signed up for, with offers and deadlines | organisation: a telecom provider | tone: friendly | length: medium (100-180 words) | writing: polished
+- syn-grok-005 | LEGITIMATE, urgent request from a manager: a real boss or colleague asking for something quickly (a file, a report, an approval, a call); pressure but nothing fraudulent | organisation: a logistics company | tone: casual | length: long (220-350 words) | writing: written by a non-native English speaker
+- syn-grok-006 | PHISHING, advance-fee fraud: promises money (inheritance, prize, grant, refund, job) in return for a fee or personal details | organisation: an airline | tone: bureaucratic | length: long (220-350 words) | writing: polished | how detectable: moderate (one or two red flags)
+- syn-grok-007 | LEGITIMATE, HR or IT administrative notice: benefits enrolment, policy acknowledgement, mandatory training, system maintenance, device update | organisation: a university | tone: casual | length: short (40-80 words) | writing: polished
+- syn-grok-008 | PHISHING, malicious attachment: pushes the reader to open an attached or linked document (invoice, scan, voicemail, shared file); name the attachment in the text | organisation: a logistics company | tone: terse | length: long (220-350 words) | writing: polished | how detectable: subtle (well written, plausible, only the request or the sender domain gives it away)
+- syn-grok-009 | PHISHING, delivery scam: a fake parcel, customs fee or missed-delivery notice asking for a small payment or personal details | organisation: a hospital group | tone: friendly | length: short (40-80 words) | writing: polished | how detectable: subtle (well written, plausible, only the request or the sender domain gives it away)
+- syn-grok-010 | LEGITIMATE, genuine security notice: a real password reset, new-sign-in alert or MFA notice from the organisation's own domain; may contain urgency and a link | organisation: a manufacturing company | tone: casual | length: medium (100-180 words) | writing: polished
+- syn-grok-011 | PHISHING, credential theft: asks the reader to sign in, verify or reset an account through a link to a fake login page | organisation: a software (SaaS) company | tone: friendly | length: medium (100-180 words) | writing: written by a non-native English speaker | how detectable: obvious (several classic red flags)
+- syn-grok-012 | LEGITIMATE, customer support reply: a support agent answering a ticket the reader opened | organisation: a city government office | tone: casual | length: medium (100-180 words) | writing: written by a non-native English speaker
+- syn-grok-013 | LEGITIMATE, genuine invoice or payment reminder: a real invoice, receipt, renewal or overdue reminder from a real supplier relationship | organisation: a small accounting firm | tone: friendly | length: short (40-80 words) | writing: written by a non-native English speaker
+- syn-grok-014 | LEGITIMATE, university or school email: course announcements, deadlines, advising, club or department mail | organisation: a telecom provider | tone: casual | length: long (220-350 words) | writing: polished
+- syn-grok-015 | LEGITIMATE, marketing or newsletter: a promotion, product update or newsletter the reader signed up for, with offers and deadlines | organisation: a hospital group | tone: formal | length: long (220-350 words) | writing: written by a non-native English speaker
+- syn-grok-016 | LEGITIMATE, genuine invoice or payment reminder: a real invoice, receipt, renewal or overdue reminder from a real supplier relationship | organisation: a hospital group | tone: friendly | length: medium (100-180 words) | writing: polished
+- syn-grok-017 | LEGITIMATE, ordinary work thread: colleagues discussing a project, a document or a decision | organisation: an online retailer | tone: casual | length: medium (100-180 words) | writing: polished
+- syn-grok-018 | LEGITIMATE, personal email: friends or family: plans, news, a favour | tone: bureaucratic | length: short (40-80 words) | writing: polished
+- syn-grok-019 | PHISHING, CEO fraud / business email compromise: impersonates an executive, colleague or supplier to get a payment, gift cards, or changed bank details; usually no link | organisation: a retail bank | tone: friendly | length: short (40-80 words) | writing: polished | how detectable: obvious (several classic red flags)
+- syn-grok-020 | PHISHING, invoice fraud: a fake invoice, overdue notice or payment-details change from a supposed vendor | organisation: a city government office | tone: formal | length: medium (100-180 words) | writing: written by a non-native English speaker | how detectable: obvious (several classic red flags)
+- syn-grok-021 | LEGITIMATE, genuine security notice: a real password reset, new-sign-in alert or MFA notice from the organisation's own domain; may contain urgency and a link | organisation: a city government office | tone: bureaucratic | length: medium (100-180 words) | writing: written by a non-native English speaker
+- syn-grok-022 | PHISHING, delivery scam: a fake parcel, customs fee or missed-delivery notice asking for a small payment or personal details | organisation: a city government office | tone: bureaucratic | length: medium (100-180 words) | writing: a few typos or awkward phrases | how detectable: obvious (several classic red flags)
+- syn-grok-023 | LEGITIMATE, urgent request from a manager: a real boss or colleague asking for something quickly (a file, a report, an approval, a call); pressure but nothing fraudulent | organisation: a small accounting firm | tone: casual | length: long (220-350 words) | writing: polished
+- syn-grok-024 | PHISHING, delivery scam: a fake parcel, customs fee or missed-delivery notice asking for a small payment or personal details | organisation: a small accounting firm | tone: formal | length: medium (100-180 words) | writing: polished | how detectable: subtle (well written, plausible, only the request or the sender domain gives it away)
+- syn-grok-025 | LEGITIMATE, genuine delivery notification: a real shipping, tracking or missed-delivery email from a carrier or shop | organisation: a city government office | tone: terse | length: long (220-350 words) | writing: written by a non-native English speaker

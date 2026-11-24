@@ -50,6 +50,8 @@ class TransformerEncoderDetector:
         eval_batch_size: int = 32,
         max_train_samples: int | None = None,
         gradient_accumulation_steps: int = 4,
+        revision: str | None = None,
+        pretrained: bool = False,
     ):
         self.model_name = model_name_or_path
         self.name = name or Path(model_name_or_path).name.lower()
@@ -62,6 +64,10 @@ class TransformerEncoderDetector:
         self.eval_batch_size = eval_batch_size
         self.max_train_samples = max_train_samples
         self.gradient_accumulation_steps = gradient_accumulation_steps
+        # `pretrained`: the weights are already fine-tuned (e.g. published on
+        # Hugging Face), so fit() only loads them. `revision` pins the commit.
+        self.revision = revision
+        self.pretrained = pretrained
 
         self.tokenizer: Any = None
         self.model: Any = None
@@ -75,14 +81,15 @@ class TransformerEncoderDetector:
         from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
         model_path = str(self.checkpoint_dir) if (self.checkpoint_dir and self.checkpoint_dir.exists()) else self.model_name
-        self.tokenizer = AutoTokenizer.from_pretrained(model_path)
-        self.model = AutoModelForSequenceClassification.from_pretrained(model_path, num_labels=2).float()
+        kwargs = {"revision": self.revision} if (self.revision and model_path == self.model_name) else {}
+        self.tokenizer = AutoTokenizer.from_pretrained(model_path, **kwargs)
+        self.model = AutoModelForSequenceClassification.from_pretrained(model_path, num_labels=2, **kwargs).float()
         self.model.to(self.device)
         self.model.eval()
         self._is_loaded = True
 
     def fit(self, train: Sequence[Email], val: Sequence[Email]) -> TrainingCost:
-        if not train:
+        if not train or self.pretrained:
             self._ensure_model()
             return TrainingCost(hardware=self.device)
 

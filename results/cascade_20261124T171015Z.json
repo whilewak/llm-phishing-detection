@@ -1,0 +1,4420 @@
+{
+  "model": "cascade",
+  "timestamp": "2026-11-24T17:10:15+00:00",
+  "config": {
+    "path": "configs/models/cascade.toml",
+    "detector": {
+      "class": "phishbench.detectors.cascade:CascadeDetector",
+      "data_allowed": [
+        "val_llm: tier choice, hand-off thresholds, final threshold"
+      ],
+      "params": {
+        "name": "cascade",
+        "tiers": [
+          {
+            "class": "phishbench.detectors.replay:ReplayDetector",
+            "low": 0.04562162941790192,
+            "high": 0.7689257496433818,
+            "params": {
+              "name": "tfidf-lr",
+              "score_files": [
+                "results/scores/tfidf-lr__synthetic-old.json",
+                "results/scores/tfidf-lr__synthetic.json",
+                "results/scores/tfidf-lr__test_llm.json",
+                "results/scores/tfidf-lr__val_llm.json"
+              ]
+            }
+          },
+          {
+            "class": "phishbench.detectors.replay:ReplayDetector",
+            "low": 0.05673714124437036,
+            "high": 0.9685178189442075,
+            "params": {
+              "name": "deberta-v3-base",
+              "score_files": [
+                "results/scores/deberta-v3-base__synthetic-old.json",
+                "results/scores/deberta-v3-base__synthetic.json",
+                "results/scores/deberta-v3-base__test_llm.json",
+                "results/scores/deberta-v3-base__val_llm.json"
+              ]
+            }
+          },
+          {
+            "class": "phishbench.detectors.replay:ReplayDetector",
+            "params": {
+              "name": "claude-sonnet-5-5-zeroshot",
+              "score_files": [
+                "results/scores/claude-sonnet-5-5-zeroshot__synthetic-old.json",
+                "results/scores/claude-sonnet-5-5-zeroshot__synthetic.json",
+                "results/scores/claude-sonnet-5-5-zeroshot__test_llm.json",
+                "results/scores/claude-sonnet-5-5-zeroshot__val_llm.json"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "eval": {
+      "warmup": 0,
+      "batch_size": 2500
+    },
+    "data_ref": {
+      "splits": "data/splits/champa2023-v1",
+      "version": "champa2023-v1",
+      "test_splits": "data/splits/synthetic-v1",
+      "test_version": "synthetic-v1",
+      "test": "synthetic",
+      "val": "val_llm",
+      "train": null
+    }
+  },
+  "data": {
+    "train": {
+      "n": 0,
+      "labels": {},
+      "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "val": {
+      "n": 2500,
+      "labels": {
+        "phishing": 1118,
+        "legitimate": 1382
+      },
+      "fingerprint": "f23a630eaa22f64cda9aeb71c407a88a3763fa8bdbf6d5ebe692f8f36bb8e5ae"
+    },
+    "test": {
+      "n": 300,
+      "labels": {
+        "phishing": 150,
+        "legitimate": 150
+      },
+      "fingerprint": "e7b81672743dde7c17a082e4d70cab6779af1ef98acdc29ef480141a6c21d173"
+    }
+  },
+  "threshold": {
+    "value": 0.47333333333333333,
+    "chosen_on": "validation, recall at 1% false-positive rate"
+  },
+  "errors": {
+    "count": 0,
+    "rate": 0.0,
+    "examples": [],
+    "rule": "always counted wrong: a miss if phishing, a false positive if not"
+  },
+  "score_ties": {
+    "tie_share": 0.30333333333333334
+  },
+  "calibration": {
+    "ece": 0.2945140882174546
+  },
+  "speed": {
+    "latency_ms_p50": 25.670978231428307,
+    "latency_ms_p95": 2233.3883575844084,
+    "latency_ms_mean": 597.0120269507606,
+    "throughput_per_s": 538599.6485594858,
+    "batch_size": 2500,
+    "warmup_calls": 0
+  },
+  "inference_cost_usd": {
+    "total": 0.0918476,
+    "per_million_emails": 306.15866666666665
+  },
+  "training_cost": {
+    "wall_clock_s": 0.0,
+    "peak_memory_mb": 0.0,
+    "hardware": "",
+    "cost_usd": 0.0,
+    "n_train_emails": 0
+  },
+  "resources": {
+    "peak_rss_mb": 1574.96875,
+    "gpu": null
+  },
+  "environment": {
+    "python": "3.15.2",
+    "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "processor": "arm",
+    "packages": {
+      "laya": "0.5.2",
+      "torch": "2.15.0",
+      "transformers": "5.24.0",
+      "anthropic": "2.8.0",
+      "pydantic": "2.14.3"
+    },
+    "git_commit": "d14f8768a37d5ce2e31d223e01468247dd99c3bf-dirty"
+  },
+  "detection": {
+    "headline_recall_at_fpr": {
+      "max_fpr": 0.01,
+      "recall": 0.24666666666666667,
+      "ci95": [
+        0.04081632653061224,
+        0.3448275862068966
+      ],
+      "threshold": 0.961126452076544
+    },
+    "secondary_recall_at_fpr": {
+      "max_fpr": 0.001,
+      "recall": 0.06666666666666667,
+      "ci95": [
+        0.033112582781456956,
+        0.30344827586206896
+      ],
+      "threshold": 0.9855470360662659
+    },
+    "pr_auc": 0.8202629575262714,
+    "at_chosen_threshold": {
+      "threshold": 0.47333333333333333,
+      "tp": 99,
+      "fp": 12,
+      "tn": 138,
+      "fn": 51,
+      "precision": 0.8918918918918919,
+      "recall": 0.66,
+      "f1": 0.7586206896551725,
+      "false_positive_rate": 0.08,
+      "precision_at_0.01_prevalence": 0.07692307692307693
+    },
+    "by_source": {
+      "chatgpt": {
+        "n_phishing": 75,
+        "n_not_phishing": 75,
+        "at_chosen_threshold": {
+          "recall": 0.6266666666666667,
+          "false_positive_rate": 0.02666666666666667
+        },
+        "at_headline_threshold": {
+          "recall": 0.17333333333333334,
+          "false_positive_rate": 0.0
+        }
+      },
+      "grok": {
+        "n_phishing": 75,
+        "n_not_phishing": 75,
+        "at_chosen_threshold": {
+          "recall": 0.6933333333333334,
+          "false_positive_rate": 0.13333333333333333
+        },
+        "at_headline_threshold": {
+          "recall": 0.32,
+          "false_positive_rate": 0.013333333333333334
+        }
+      },
+      "true_phishing": {
+        "n_phishing": 150,
+        "n_not_phishing": 150,
+        "at_chosen_threshold": {
+          "recall": 0.66,
+          "false_positive_rate": 0.08
+        },
+        "at_headline_threshold": {
+          "recall": 0.24666666666666667,
+          "false_positive_rate": 0.006666666666666667
+        }
+      }
+    }
+  },
+  "predictions": [
+    {
+      "id": "syn-chatgpt-001",
+      "label": "phishing",
+      "score": 0.6566666666666666,
+      "model_label": null,
+      "latency_ms": 2233.3883575844084,
+      "cost_usd": 0.003002,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.97
+      }
+    },
+    {
+      "id": "syn-chatgpt-002",
+      "label": "legitimate",
+      "score": 0.4066666666666667,
+      "model_label": null,
+      "latency_ms": 2391.608233585066,
+      "cost_usd": 0.002858,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.22
+      }
+    },
+    {
+      "id": "syn-chatgpt-003",
+      "label": "legitimate",
+      "score": 0.012259966494290784,
+      "model_label": "legitimate",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.03677989948287235
+      }
+    },
+    {
+      "id": "syn-chatgpt-004",
+      "label": "phishing",
+      "score": 0.013312133649984995,
+      "model_label": "legitimate",
+      "latency_ms": 58.583524579808,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.03993640094995499
+      }
+    },
+    {
+      "id": "syn-chatgpt-005",
+      "label": "legitimate",
+      "score": 0.0003418874815840633,
+      "model_label": "legitimate",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.0010256624447521898
+      }
+    },
+    {
+      "id": "syn-chatgpt-006",
+      "label": "phishing",
+      "score": 0.016797486692667007,
+      "model_label": "legitimate",
+      "latency_ms": 58.583524579808,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.05039246007800102
+      }
+    },
+    {
+      "id": "syn-chatgpt-007",
+      "label": "phishing",
+      "score": 0.013583167145649592,
+      "model_label": "legitimate",
+      "latency_ms": 58.583524579808,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.040749501436948776
+      }
+    },
+    {
+      "id": "syn-chatgpt-008",
+      "label": "phishing",
+      "score": 0.01392545054356257,
+      "model_label": "legitimate",
+      "latency_ms": 58.583524579808,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.041776351630687714
+      }
+    },
+    {
+      "id": "syn-chatgpt-009",
+      "label": "legitimate",
+      "score": 0.014572478830814362,
+      "model_label": "legitimate",
+      "latency_ms": 58.583524579808,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.043717436492443085
+      }
+    },
+    {
+      "id": "syn-chatgpt-010",
+      "label": "phishing",
+      "score": 0.961126452076544,
+      "model_label": "phishing",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.8833793562296323
+      }
+    },
+    {
+      "id": "syn-chatgpt-011",
+      "label": "legitimate",
+      "score": 0.01493408220156185,
+      "model_label": "legitimate",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.04480224660468555
+      }
+    },
+    {
+      "id": "syn-chatgpt-012",
+      "label": "phishing",
+      "score": 0.013507496565580368,
+      "model_label": "legitimate",
+      "latency_ms": 58.583524579808,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.040522489696741104
+      }
+    },
+    {
+      "id": "syn-chatgpt-013",
+      "label": "phishing",
+      "score": 0.6566666666666666,
+      "model_label": null,
+      "latency_ms": 1758.5653155907494,
+      "cost_usd": 0.002192,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.97
+      }
+    },
+    {
+      "id": "syn-chatgpt-014",
+      "label": "legitimate",
+      "score": 0.01254284604702134,
+      "model_label": "legitimate",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.03762853814106402
+      }
+    },
+    {
+      "id": "syn-chatgpt-015-r1",
+      "label": "phishing",
+      "score": 0.0008402496059903205,
+      "model_label": "legitimate",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.0025207488179709615
+      }
+    },
+    {
+      "id": "syn-chatgpt-016",
+      "label": "legitimate",
+      "score": 0.0006723660193405346,
+      "model_label": "legitimate",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.0020170980580216037
+      }
+    },
+    {
+      "id": "syn-chatgpt-017",
+      "label": "legitimate",
+      "score": 0.37333333333333335,
+      "model_label": null,
+      "latency_ms": 2125.049654135728,
+      "cost_usd": 0.0007612000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.12
+      }
+    },
+    {
+      "id": "syn-chatgpt-018",
+      "label": "legitimate",
+      "score": 0.37333333333333335,
+      "model_label": null,
+      "latency_ms": 1371.8690711426461,
+      "cost_usd": 0.0014612,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.12
+      }
+    },
+    {
+      "id": "syn-chatgpt-019",
+      "label": "legitimate",
+      "score": 0.3466666666666667,
+      "model_label": null,
+      "latency_ms": 1755.1470301437803,
+      "cost_usd": 0.0006532,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.04
+      }
+    },
+    {
+      "id": "syn-chatgpt-020",
+      "label": "legitimate",
+      "score": 0.0017636530482494223,
+      "model_label": "legitimate",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.005290959144748267
+      }
+    },
+    {
+      "id": "syn-chatgpt-021",
+      "label": "legitimate",
+      "score": 0.015232603996992111,
+      "model_label": "legitimate",
+      "latency_ms": 63.612113142517046,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.045697811990976334
+      }
+    },
+    {
+      "id": "syn-chatgpt-022",
+      "label": "phishing",
+      "score": 0.013203207403421402,
+      "model_label": "legitimate",
+      "latency_ms": 63.612113142517046,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.039609622210264206
+      }
+    },
+    {
+      "id": "syn-chatgpt-023",
+      "label": "legitimate",
+      "score": 0.003652882541426601,
+      "model_label": "legitimate",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.010958647624279803
+      }
+    },
+    {
+      "id": "syn-chatgpt-024",
+      "label": "phishing",
+      "score": 0.66,
+      "model_label": null,
+      "latency_ms": 8139.364863137962,
+      "cost_usd": 0.0012952,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.98
+      }
+    },
+    {
+      "id": "syn-chatgpt-025",
+      "label": "legitimate",
+      "score": 0.0038355382084684655,
+      "model_label": "legitimate",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.011506614625405396
+      }
+    },
+    {
+      "id": "syn-chatgpt-026",
+      "label": "phishing",
+      "score": 0.6566666666666666,
+      "model_label": null,
+      "latency_ms": 2224.672821135391,
+      "cost_usd": 0.0014032,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.97
+      }
+    },
+    {
+      "id": "syn-chatgpt-027",
+      "label": "legitimate",
+      "score": 0.008734761919808104,
+      "model_label": "legitimate",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.026204285759424312
+      }
+    },
+    {
+      "id": "syn-chatgpt-028",
+      "label": "phishing",
+      "score": 0.014708148936430613,
+      "model_label": "legitimate",
+      "latency_ms": 63.612113142517046,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.04412444680929184
+      }
+    },
+    {
+      "id": "syn-chatgpt-029",
+      "label": "phishing",
+      "score": 0.9819082226767564,
+      "model_label": "phishing",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.9457246680302692
+      }
+    },
+    {
+      "id": "syn-chatgpt-030",
+      "label": "phishing",
+      "score": 0.012757919728755951,
+      "model_label": "legitimate",
+      "latency_ms": 63.612113142517046,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.03827375918626785
+      }
+    },
+    {
+      "id": "syn-chatgpt-031",
+      "label": "legitimate",
+      "score": 0.37333333333333335,
+      "model_label": null,
+      "latency_ms": 1740.0213631368388,
+      "cost_usd": 0.0006852000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.12
+      }
+    },
+    {
+      "id": "syn-chatgpt-032",
+      "label": "legitimate",
+      "score": 0.3466666666666667,
+      "model_label": null,
+      "latency_ms": 2877.293863133309,
+      "cost_usd": 0.0014592000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.04
+      }
+    },
+    {
+      "id": "syn-chatgpt-033",
+      "label": "legitimate",
+      "score": 0.013816892764097186,
+      "model_label": "legitimate",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.04145067829229156
+      }
+    },
+    {
+      "id": "syn-chatgpt-034",
+      "label": "legitimate",
+      "score": 0.005853423544400114,
+      "model_label": "legitimate",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.017560270633200342
+      }
+    },
+    {
+      "id": "syn-chatgpt-035",
+      "label": "legitimate",
+      "score": 0.01780683050553004,
+      "model_label": "legitimate",
+      "latency_ms": 66.3130037679366,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.05342049151659012
+      }
+    },
+    {
+      "id": "syn-chatgpt-036",
+      "label": "legitimate",
+      "score": 0.37333333333333335,
+      "model_label": null,
+      "latency_ms": 3053.455670767653,
+      "cost_usd": 0.0007132000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.12
+      }
+    },
+    {
+      "id": "syn-chatgpt-037-r1",
+      "label": "phishing",
+      "score": 0.5733333333333334,
+      "model_label": null,
+      "latency_ms": 1081.5477537649713,
+      "cost_usd": 0.0008112000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.72
+      }
+    },
+    {
+      "id": "syn-chatgpt-038",
+      "label": "legitimate",
+      "score": 0.014155251535787927,
+      "model_label": "legitimate",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.04246575460736378
+      }
+    },
+    {
+      "id": "syn-chatgpt-039",
+      "label": "phishing",
+      "score": 0.9396761163872989,
+      "model_label": "phishing",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.8190283491618966
+      }
+    },
+    {
+      "id": "syn-chatgpt-040",
+      "label": "legitimate",
+      "score": 0.0038216132088843666,
+      "model_label": "legitimate",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.0114648396266531
+      }
+    },
+    {
+      "id": "syn-chatgpt-041",
+      "label": "legitimate",
+      "score": 0.005966414972887148,
+      "model_label": "legitimate",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.017899244918661444
+      }
+    },
+    {
+      "id": "syn-chatgpt-042",
+      "label": "legitimate",
+      "score": 0.3433333333333333,
+      "model_label": null,
+      "latency_ms": 2443.556669760801,
+      "cost_usd": 0.0005872000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.03
+      }
+    },
+    {
+      "id": "syn-chatgpt-043",
+      "label": "phishing",
+      "score": 0.6533333333333333,
+      "model_label": null,
+      "latency_ms": 2161.0746707698127,
+      "cost_usd": 0.0007052,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.96
+      }
+    },
+    {
+      "id": "syn-chatgpt-044",
+      "label": "legitimate",
+      "score": 0.012240410578900006,
+      "model_label": "legitimate",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.03672123173670002
+      }
+    },
+    {
+      "id": "syn-chatgpt-045",
+      "label": "phishing",
+      "score": 0.012191607306400934,
+      "model_label": "legitimate",
+      "latency_ms": 66.3130037679366,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.036574821919202805
+      }
+    },
+    {
+      "id": "syn-chatgpt-046",
+      "label": "legitimate",
+      "score": 0.004277346316392334,
+      "model_label": "legitimate",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.012832038949177001
+      }
+    },
+    {
+      "id": "syn-chatgpt-047",
+      "label": "phishing",
+      "score": 0.9920341203056323,
+      "model_label": "phishing",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.976102360916897
+      }
+    },
+    {
+      "id": "syn-chatgpt-048",
+      "label": "phishing",
+      "score": 0.6533333333333333,
+      "model_label": null,
+      "latency_ms": 1911.5512957756437,
+      "cost_usd": 0.0014712,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.96
+      }
+    },
+    {
+      "id": "syn-chatgpt-049",
+      "label": "legitimate",
+      "score": 0.013084175686041514,
+      "model_label": "legitimate",
+      "latency_ms": 77.53727458075446,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.03925252705812454
+      }
+    },
+    {
+      "id": "syn-chatgpt-050",
+      "label": "legitimate",
+      "score": 0.00514225394740575,
+      "model_label": "legitimate",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.01542676184221725
+      }
+    },
+    {
+      "id": "syn-chatgpt-051",
+      "label": "phishing",
+      "score": 0.9860047754320534,
+      "model_label": "phishing",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.9580143262961603
+      }
+    },
+    {
+      "id": "syn-chatgpt-052",
+      "label": "phishing",
+      "score": 0.6566666666666666,
+      "model_label": null,
+      "latency_ms": 1511.0878995725216,
+      "cost_usd": 0.0006272000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.97
+      }
+    },
+    {
+      "id": "syn-chatgpt-053",
+      "label": "legitimate",
+      "score": 0.01093936436106382,
+      "model_label": "legitimate",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.03281809308319146
+      }
+    },
+    {
+      "id": "syn-chatgpt-054",
+      "label": "phishing",
+      "score": 0.6533333333333333,
+      "model_label": null,
+      "latency_ms": 1432.1598995844397,
+      "cost_usd": 0.0011012,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.96
+      }
+    },
+    {
+      "id": "syn-chatgpt-055",
+      "label": "phishing",
+      "score": 0.01703792189558347,
+      "model_label": "legitimate",
+      "latency_ms": 77.53727458075446,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.05111376568675041
+      }
+    },
+    {
+      "id": "syn-chatgpt-056",
+      "label": "phishing",
+      "score": 0.013647940009832382,
+      "model_label": "legitimate",
+      "latency_ms": 77.53727458075446,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.04094382002949715
+      }
+    },
+    {
+      "id": "syn-chatgpt-057",
+      "label": "legitimate",
+      "score": 0.012056148300568262,
+      "model_label": "legitimate",
+      "latency_ms": 77.53727458075446,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.03616844490170479
+      }
+    },
+    {
+      "id": "syn-chatgpt-058",
+      "label": "legitimate",
+      "score": 0.013727003087600073,
+      "model_label": "legitimate",
+      "latency_ms": 77.53727458075446,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.04118100926280022
+      }
+    },
+    {
+      "id": "syn-chatgpt-059",
+      "label": "legitimate",
+      "score": 0.015475487957398096,
+      "model_label": "legitimate",
+      "latency_ms": 77.53727458075446,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.04642646387219429
+      }
+    },
+    {
+      "id": "syn-chatgpt-060",
+      "label": "phishing",
+      "score": 0.6433333333333334,
+      "model_label": null,
+      "latency_ms": 3301.609232581177,
+      "cost_usd": 0.0011132,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.93
+      }
+    },
+    {
+      "id": "syn-chatgpt-061",
+      "label": "legitimate",
+      "score": 0.00035594635889050303,
+      "model_label": "legitimate",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.001067839076671509
+      }
+    },
+    {
+      "id": "syn-chatgpt-062-r1",
+      "label": "phishing",
+      "score": 0.01674174889922142,
+      "model_label": "legitimate",
+      "latency_ms": 77.53727458075446,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.05022524669766426
+      }
+    },
+    {
+      "id": "syn-chatgpt-063",
+      "label": "phishing",
+      "score": 0.01710344726840655,
+      "model_label": "legitimate",
+      "latency_ms": 77.53727458075446,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.05131034180521965
+      }
+    },
+    {
+      "id": "syn-chatgpt-064",
+      "label": "phishing",
+      "score": 0.66,
+      "model_label": null,
+      "latency_ms": 1746.515316579098,
+      "cost_usd": 0.0005392000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.98
+      }
+    },
+    {
+      "id": "syn-chatgpt-065",
+      "label": "legitimate",
+      "score": 0.00013622876100138234,
+      "model_label": "legitimate",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.00040868628300414704
+      }
+    },
+    {
+      "id": "syn-chatgpt-066",
+      "label": "legitimate",
+      "score": 0.37333333333333335,
+      "model_label": null,
+      "latency_ms": 1691.9045710779756,
+      "cost_usd": 0.0007752000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.12
+      }
+    },
+    {
+      "id": "syn-chatgpt-067",
+      "label": "legitimate",
+      "score": 0.37333333333333335,
+      "model_label": null,
+      "latency_ms": 1439.5590710733813,
+      "cost_usd": 0.0008032,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.12
+      }
+    },
+    {
+      "id": "syn-chatgpt-068",
+      "label": "phishing",
+      "score": 0.01643963282306989,
+      "model_label": "legitimate",
+      "latency_ms": 55.34711308027909,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.04931889846920967
+      }
+    },
+    {
+      "id": "syn-chatgpt-069",
+      "label": "legitimate",
+      "score": 0.014858581125736237,
+      "model_label": "legitimate",
+      "latency_ms": 55.34711308027909,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.04457574337720871
+      }
+    },
+    {
+      "id": "syn-chatgpt-070",
+      "label": "phishing",
+      "score": 0.6533333333333333,
+      "model_label": null,
+      "latency_ms": 1531.7103210796631,
+      "cost_usd": 0.0012032,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.96
+      }
+    },
+    {
+      "id": "syn-chatgpt-071",
+      "label": "phishing",
+      "score": 0.9738305980945595,
+      "model_label": "phishing",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.9214917942836786
+      }
+    },
+    {
+      "id": "syn-chatgpt-072",
+      "label": "phishing",
+      "score": 0.6566666666666666,
+      "model_label": null,
+      "latency_ms": 1430.0076550822268,
+      "cost_usd": 0.0006832,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.97
+      }
+    },
+    {
+      "id": "syn-chatgpt-073",
+      "label": "legitimate",
+      "score": 0.37333333333333335,
+      "model_label": null,
+      "latency_ms": 1490.060821084262,
+      "cost_usd": 0.0006772000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.12
+      }
+    },
+    {
+      "id": "syn-chatgpt-074",
+      "label": "phishing",
+      "score": 0.6533333333333333,
+      "model_label": null,
+      "latency_ms": 1373.9316550741933,
+      "cost_usd": 0.0013212,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.96
+      }
+    },
+    {
+      "id": "syn-chatgpt-075",
+      "label": "phishing",
+      "score": 0.6533333333333333,
+      "model_label": null,
+      "latency_ms": 1369.5886540768697,
+      "cost_usd": 0.0014532,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.96
+      }
+    },
+    {
+      "id": "syn-chatgpt-076",
+      "label": "legitimate",
+      "score": 0.008939348207699375,
+      "model_label": "legitimate",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.026818044623098124
+      }
+    },
+    {
+      "id": "syn-chatgpt-077",
+      "label": "phishing",
+      "score": 0.9639993114242099,
+      "model_label": "phishing",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.8919979342726297
+      }
+    },
+    {
+      "id": "syn-chatgpt-078",
+      "label": "phishing",
+      "score": 0.6533333333333333,
+      "model_label": null,
+      "latency_ms": 1871.9134040835343,
+      "cost_usd": 0.0006012000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.96
+      }
+    },
+    {
+      "id": "syn-chatgpt-079",
+      "label": "phishing",
+      "score": 0.01746145263314247,
+      "model_label": "legitimate",
+      "latency_ms": 55.34711308027909,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.052384357899427414
+      }
+    },
+    {
+      "id": "syn-chatgpt-080",
+      "label": "phishing",
+      "score": 0.9516497670969679,
+      "model_label": "phishing",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.854949301290904
+      }
+    },
+    {
+      "id": "syn-chatgpt-081",
+      "label": "legitimate",
+      "score": 0.008027684106234998,
+      "model_label": "legitimate",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.024083052318704994
+      }
+    },
+    {
+      "id": "syn-chatgpt-082",
+      "label": "phishing",
+      "score": 0.6533333333333333,
+      "model_label": null,
+      "latency_ms": 1884.6978083889553,
+      "cost_usd": 0.0014812,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.96
+      }
+    },
+    {
+      "id": "syn-chatgpt-083",
+      "label": "legitimate",
+      "score": 0.003087279104093609,
+      "model_label": "legitimate",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.009261837312280826
+      }
+    },
+    {
+      "id": "syn-chatgpt-084",
+      "label": "legitimate",
+      "score": 0.9537222451916656,
+      "model_label": "phishing",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.8611667355749967
+      }
+    },
+    {
+      "id": "syn-chatgpt-085",
+      "label": "phishing",
+      "score": 0.6533333333333333,
+      "model_label": null,
+      "latency_ms": 1972.1106413922826,
+      "cost_usd": 0.0013512,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.96
+      }
+    },
+    {
+      "id": "syn-chatgpt-086",
+      "label": "phishing",
+      "score": 0.01207326352596283,
+      "model_label": "legitimate",
+      "latency_ms": 69.06405839217769,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.03621979057788849
+      }
+    },
+    {
+      "id": "syn-chatgpt-087",
+      "label": "legitimate",
+      "score": 0.0014562324402846046,
+      "model_label": "legitimate",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.0043686973208538135
+      }
+    },
+    {
+      "id": "syn-chatgpt-088",
+      "label": "legitimate",
+      "score": 0.012530511866013208,
+      "model_label": "legitimate",
+      "latency_ms": 69.06405839217769,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.03759153559803963
+      }
+    },
+    {
+      "id": "syn-chatgpt-089",
+      "label": "phishing",
+      "score": 0.9622742879775964,
+      "model_label": "phishing",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.8868228639327893
+      }
+    },
+    {
+      "id": "syn-chatgpt-090",
+      "label": "phishing",
+      "score": 0.9870792693658715,
+      "model_label": "phishing",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.9612378080976146
+      }
+    },
+    {
+      "id": "syn-chatgpt-091",
+      "label": "phishing",
+      "score": 0.6433333333333334,
+      "model_label": null,
+      "latency_ms": 1246.0022673909407,
+      "cost_usd": 0.0010252,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.93
+      }
+    },
+    {
+      "id": "syn-chatgpt-092",
+      "label": "legitimate",
+      "score": 0.009085242182885396,
+      "model_label": "legitimate",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.027255726548656187
+      }
+    },
+    {
+      "id": "syn-chatgpt-093",
+      "label": "legitimate",
+      "score": 0.00048101829020992656,
+      "model_label": "legitimate",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.0014430548706297797
+      }
+    },
+    {
+      "id": "syn-chatgpt-094",
+      "label": "legitimate",
+      "score": 0.37333333333333335,
+      "model_label": null,
+      "latency_ms": 2026.6058503908425,
+      "cost_usd": 0.0006772000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.12
+      }
+    },
+    {
+      "id": "syn-chatgpt-095",
+      "label": "legitimate",
+      "score": 0.0005233699405959247,
+      "model_label": "legitimate",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.001570109821787774
+      }
+    },
+    {
+      "id": "syn-chatgpt-096",
+      "label": "phishing",
+      "score": 0.6566666666666666,
+      "model_label": null,
+      "latency_ms": 1664.986267394488,
+      "cost_usd": 0.0008332000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.97
+      }
+    },
+    {
+      "id": "syn-chatgpt-097",
+      "label": "legitimate",
+      "score": 0.004337816396905468,
+      "model_label": "legitimate",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.013013449190716404
+      }
+    },
+    {
+      "id": "syn-chatgpt-098",
+      "label": "legitimate",
+      "score": 0.0009204877276145579,
+      "model_label": "legitimate",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.002761463182843674
+      }
+    },
+    {
+      "id": "syn-chatgpt-099",
+      "label": "legitimate",
+      "score": 0.946209475874602,
+      "model_label": "phishing",
+      "latency_ms": 0.08224332996178418,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.838628427623806
+      }
+    },
+    {
+      "id": "syn-chatgpt-100",
+      "label": "legitimate",
+      "score": 0.36000000000000004,
+      "model_label": null,
+      "latency_ms": 1431.2319855067472,
+      "cost_usd": 0.0008512000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.08
+      }
+    },
+    {
+      "id": "syn-chatgpt-101",
+      "label": "phishing",
+      "score": 0.0007742352498498546,
+      "model_label": "legitimate",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.002322705749549564
+      }
+    },
+    {
+      "id": "syn-chatgpt-102",
+      "label": "phishing",
+      "score": 0.6533333333333333,
+      "model_label": null,
+      "latency_ms": 1644.1514905069198,
+      "cost_usd": 0.0011252,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.96
+      }
+    },
+    {
+      "id": "syn-chatgpt-103",
+      "label": "phishing",
+      "score": 0.011506307870149612,
+      "model_label": "legitimate",
+      "latency_ms": 55.87236551727983,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.03451892361044884
+      }
+    },
+    {
+      "id": "syn-chatgpt-104",
+      "label": "phishing",
+      "score": 0.9894314604691307,
+      "model_label": "phishing",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.9682943814073922
+      }
+    },
+    {
+      "id": "syn-chatgpt-105",
+      "label": "phishing",
+      "score": 0.6466666666666666,
+      "model_label": null,
+      "latency_ms": 1462.7956565287604,
+      "cost_usd": 0.0007352000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.94
+      }
+    },
+    {
+      "id": "syn-chatgpt-106",
+      "label": "phishing",
+      "score": 0.6566666666666666,
+      "model_label": null,
+      "latency_ms": 1417.2692405169073,
+      "cost_usd": 0.0018072000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.97
+      }
+    },
+    {
+      "id": "syn-chatgpt-107",
+      "label": "phishing",
+      "score": 0.016786144425471623,
+      "model_label": "legitimate",
+      "latency_ms": 55.87236551727983,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.05035843327641487
+      }
+    },
+    {
+      "id": "syn-chatgpt-108",
+      "label": "phishing",
+      "score": 0.011187534779310226,
+      "model_label": "legitimate",
+      "latency_ms": 55.87236551727983,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.03356260433793068
+      }
+    },
+    {
+      "id": "syn-chatgpt-109",
+      "label": "legitimate",
+      "score": 0.00027483258673828586,
+      "model_label": "legitimate",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.0008244977602148576
+      }
+    },
+    {
+      "id": "syn-chatgpt-110",
+      "label": "legitimate",
+      "score": 0.015540113051732382,
+      "model_label": "legitimate",
+      "latency_ms": 55.87236551727983,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.046620339155197144
+      }
+    },
+    {
+      "id": "syn-chatgpt-111",
+      "label": "phishing",
+      "score": 0.9299450414458482,
+      "model_label": "phishing",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.7898351243375445
+      }
+    },
+    {
+      "id": "syn-chatgpt-112",
+      "label": "legitimate",
+      "score": 0.006242927256366329,
+      "model_label": "legitimate",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.018728781769098986
+      }
+    },
+    {
+      "id": "syn-chatgpt-113",
+      "label": "legitimate",
+      "score": 0.37333333333333335,
+      "model_label": null,
+      "latency_ms": 1291.1263752699597,
+      "cost_usd": 0.0010972,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.12
+      }
+    },
+    {
+      "id": "syn-chatgpt-114",
+      "label": "legitimate",
+      "score": 0.00040725700035053135,
+      "model_label": "legitimate",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.0012217710010515941
+      }
+    },
+    {
+      "id": "syn-chatgpt-115",
+      "label": "legitimate",
+      "score": 0.36000000000000004,
+      "model_label": null,
+      "latency_ms": 1547.7258342667483,
+      "cost_usd": 0.0010632,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.08
+      }
+    },
+    {
+      "id": "syn-chatgpt-116",
+      "label": "phishing",
+      "score": 0.9348474268907335,
+      "model_label": "phishing",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.8045422806722006
+      }
+    },
+    {
+      "id": "syn-chatgpt-117",
+      "label": "legitimate",
+      "score": 0.0035301754484464397,
+      "model_label": "legitimate",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.010590526345339319
+      }
+    },
+    {
+      "id": "syn-chatgpt-118",
+      "label": "legitimate",
+      "score": 0.0014007912456326516,
+      "model_label": "legitimate",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.004202373736897955
+      }
+    },
+    {
+      "id": "syn-chatgpt-119",
+      "label": "legitimate",
+      "score": 0.3666666666666667,
+      "model_label": null,
+      "latency_ms": 1657.3940432659583,
+      "cost_usd": 0.0007832000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.1
+      }
+    },
+    {
+      "id": "syn-chatgpt-120",
+      "label": "phishing",
+      "score": 0.011188533157110214,
+      "model_label": "legitimate",
+      "latency_ms": 77.44320926722139,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.03356559947133064
+      }
+    },
+    {
+      "id": "syn-chatgpt-121",
+      "label": "legitimate",
+      "score": 0.008377457976901596,
+      "model_label": "legitimate",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.025132373930704787
+      }
+    },
+    {
+      "id": "syn-chatgpt-122",
+      "label": "phishing",
+      "score": 0.012059953381918299,
+      "model_label": "legitimate",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.036179860145754895
+      }
+    },
+    {
+      "id": "syn-chatgpt-123",
+      "label": "legitimate",
+      "score": 0.3433333333333333,
+      "model_label": null,
+      "latency_ms": 1944.703126262175,
+      "cost_usd": 0.0005292000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.03
+      }
+    },
+    {
+      "id": "syn-chatgpt-124",
+      "label": "legitimate",
+      "score": 0.01783348247408867,
+      "model_label": "legitimate",
+      "latency_ms": 77.44320926722139,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.053500447422266006
+      }
+    },
+    {
+      "id": "syn-chatgpt-125",
+      "label": "phishing",
+      "score": 0.9673472543066174,
+      "model_label": "phishing",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.9020417629198523
+      }
+    },
+    {
+      "id": "syn-chatgpt-126",
+      "label": "phishing",
+      "score": 0.9621500358677628,
+      "model_label": "phishing",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.8864501076032886
+      }
+    },
+    {
+      "id": "syn-chatgpt-127",
+      "label": "phishing",
+      "score": 0.9245529666826012,
+      "model_label": "phishing",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.7736589000478035
+      }
+    },
+    {
+      "id": "syn-chatgpt-128",
+      "label": "phishing",
+      "score": 0.66,
+      "model_label": null,
+      "latency_ms": 2325.036334260949,
+      "cost_usd": 0.0015272,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.98
+      }
+    },
+    {
+      "id": "syn-chatgpt-129",
+      "label": "phishing",
+      "score": 0.65,
+      "model_label": null,
+      "latency_ms": 2340.1989387635695,
+      "cost_usd": 0.0006372000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.95
+      }
+    },
+    {
+      "id": "syn-chatgpt-130",
+      "label": "legitimate",
+      "score": 0.004588964185463233,
+      "model_label": "legitimate",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.013766892556389701
+      }
+    },
+    {
+      "id": "syn-chatgpt-131",
+      "label": "legitimate",
+      "score": 0.018126533677180607,
+      "model_label": "legitimate",
+      "latency_ms": 56.795146767035476,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.054379601031541824
+      }
+    },
+    {
+      "id": "syn-chatgpt-132",
+      "label": "legitimate",
+      "score": 0.35333333333333333,
+      "model_label": null,
+      "latency_ms": 2704.8534807687247,
+      "cost_usd": 0.0011112000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.06
+      }
+    },
+    {
+      "id": "syn-chatgpt-133",
+      "label": "phishing",
+      "score": 0.01411511997381846,
+      "model_label": "legitimate",
+      "latency_ms": 56.795146767035476,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.04234535992145538
+      }
+    },
+    {
+      "id": "syn-chatgpt-134",
+      "label": "legitimate",
+      "score": 0.013224792977174124,
+      "model_label": "legitimate",
+      "latency_ms": 56.795146767035476,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.03967437893152237
+      }
+    },
+    {
+      "id": "syn-chatgpt-135",
+      "label": "legitimate",
+      "score": 0.01827772706747055,
+      "model_label": "legitimate",
+      "latency_ms": 56.795146767035476,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.05483318120241165
+      }
+    },
+    {
+      "id": "syn-chatgpt-136",
+      "label": "legitimate",
+      "score": 0.4066666666666667,
+      "model_label": null,
+      "latency_ms": 1758.682812767438,
+      "cost_usd": 0.0015172,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.22
+      }
+    },
+    {
+      "id": "syn-chatgpt-137",
+      "label": "phishing",
+      "score": 0.64,
+      "model_label": null,
+      "latency_ms": 1014.7554797582416,
+      "cost_usd": 0.0008792,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.92
+      }
+    },
+    {
+      "id": "syn-chatgpt-138",
+      "label": "phishing",
+      "score": 0.6533333333333333,
+      "model_label": null,
+      "latency_ms": 2700.453562763505,
+      "cost_usd": 0.0009372,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.96
+      }
+    },
+    {
+      "id": "syn-chatgpt-139",
+      "label": "legitimate",
+      "score": 0.01841120297710101,
+      "model_label": "legitimate",
+      "latency_ms": 56.795146767035476,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.055233608931303024
+      }
+    },
+    {
+      "id": "syn-chatgpt-140",
+      "label": "phishing",
+      "score": 0.012103952467441559,
+      "model_label": "legitimate",
+      "latency_ms": 56.795146767035476,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.036311857402324677
+      }
+    },
+    {
+      "id": "syn-chatgpt-141",
+      "label": "phishing",
+      "score": 0.9884017419423893,
+      "model_label": "phishing",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.9652052258271678
+      }
+    },
+    {
+      "id": "syn-chatgpt-142",
+      "label": "phishing",
+      "score": 0.66,
+      "model_label": null,
+      "latency_ms": 1794.1815637746913,
+      "cost_usd": 0.0010712,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.98
+      }
+    },
+    {
+      "id": "syn-chatgpt-143",
+      "label": "phishing",
+      "score": 0.9638962707316621,
+      "model_label": "phishing",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.8916888121949862
+      }
+    },
+    {
+      "id": "syn-chatgpt-144",
+      "label": "legitimate",
+      "score": 0.017877108107010525,
+      "model_label": "legitimate",
+      "latency_ms": 56.795146767035476,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.05363132432103157
+      }
+    },
+    {
+      "id": "syn-chatgpt-145",
+      "label": "phishing",
+      "score": 0.01274792104959488,
+      "model_label": "legitimate",
+      "latency_ms": 55.75957645451126,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.03824376314878464
+      }
+    },
+    {
+      "id": "syn-chatgpt-146",
+      "label": "phishing",
+      "score": 0.6533333333333333,
+      "model_label": null,
+      "latency_ms": 1656.2413264615316,
+      "cost_usd": 0.0006852000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.96
+      }
+    },
+    {
+      "id": "syn-chatgpt-147",
+      "label": "legitimate",
+      "score": 0.005302834049335223,
+      "model_label": "legitimate",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.015908502148005668
+      }
+    },
+    {
+      "id": "syn-chatgpt-148",
+      "label": "phishing",
+      "score": 0.014219161123037338,
+      "model_label": "legitimate",
+      "latency_ms": 55.75957645451126,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.042657483369112015
+      }
+    },
+    {
+      "id": "syn-chatgpt-149",
+      "label": "phishing",
+      "score": 0.013656304528315863,
+      "model_label": "legitimate",
+      "latency_ms": 55.75957645451126,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.040968913584947586
+      }
+    },
+    {
+      "id": "syn-chatgpt-150",
+      "label": "legitimate",
+      "score": 0.0001321824821701776,
+      "model_label": "legitimate",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.0003965474465105328
+      }
+    },
+    {
+      "id": "syn-grok-001",
+      "label": "legitimate",
+      "score": 0.54,
+      "model_label": null,
+      "latency_ms": 2079.9302014489513,
+      "cost_usd": 0.0012832,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.62
+      }
+    },
+    {
+      "id": "syn-grok-002",
+      "label": "legitimate",
+      "score": 0.017076489826043446,
+      "model_label": "legitimate",
+      "latency_ms": 55.75957645451126,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.05122946947813034
+      }
+    },
+    {
+      "id": "syn-grok-003",
+      "label": "legitimate",
+      "score": 0.4066666666666667,
+      "model_label": null,
+      "latency_ms": 971.7120354467625,
+      "cost_usd": 0.0011132,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.22
+      }
+    },
+    {
+      "id": "syn-grok-004",
+      "label": "legitimate",
+      "score": 0.4066666666666667,
+      "model_label": null,
+      "latency_ms": 1261.9338264481485,
+      "cost_usd": 0.0009252,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.22
+      }
+    },
+    {
+      "id": "syn-grok-005",
+      "label": "legitimate",
+      "score": 0.01074091469248136,
+      "model_label": "legitimate",
+      "latency_ms": 55.75957645451126,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.03222274407744408
+      }
+    },
+    {
+      "id": "syn-grok-006",
+      "label": "phishing",
+      "score": 0.9859099606802127,
+      "model_label": "phishing",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.9577298820406385
+      }
+    },
+    {
+      "id": "syn-grok-007",
+      "label": "legitimate",
+      "score": 0.00313198910236864,
+      "model_label": "legitimate",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.00939596730710592
+      }
+    },
+    {
+      "id": "syn-grok-008",
+      "label": "phishing",
+      "score": 0.007131130726068849,
+      "model_label": "legitimate",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.021393392178206547
+      }
+    },
+    {
+      "id": "syn-grok-009",
+      "label": "phishing",
+      "score": 0.9742436782851488,
+      "model_label": "phishing",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.9227310348554465
+      }
+    },
+    {
+      "id": "syn-grok-010",
+      "label": "legitimate",
+      "score": 0.015531705071528753,
+      "model_label": "legitimate",
+      "latency_ms": 55.75957645451126,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.04659511521458626
+      }
+    },
+    {
+      "id": "syn-grok-011",
+      "label": "phishing",
+      "score": 0.9632465041760726,
+      "model_label": "phishing",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.8897395125282177
+      }
+    },
+    {
+      "id": "syn-grok-012",
+      "label": "legitimate",
+      "score": 0.011866334825754166,
+      "model_label": "legitimate",
+      "latency_ms": 27.994352517998777,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.0355990044772625
+      }
+    },
+    {
+      "id": "syn-grok-013",
+      "label": "legitimate",
+      "score": 0.011801451444625854,
+      "model_label": "legitimate",
+      "latency_ms": 27.994352517998777,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.035404354333877563
+      }
+    },
+    {
+      "id": "syn-grok-014",
+      "label": "legitimate",
+      "score": 0.013289208037756963,
+      "model_label": "legitimate",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.03986762411327089
+      }
+    },
+    {
+      "id": "syn-grok-015",
+      "label": "legitimate",
+      "score": 0.37333333333333335,
+      "model_label": null,
+      "latency_ms": 1557.089685514802,
+      "cost_usd": 0.0011432,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.12
+      }
+    },
+    {
+      "id": "syn-grok-016",
+      "label": "legitimate",
+      "score": 0.3833333333333333,
+      "model_label": null,
+      "latency_ms": 1608.734977527638,
+      "cost_usd": 0.0007752000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.15
+      }
+    },
+    {
+      "id": "syn-grok-017",
+      "label": "legitimate",
+      "score": 0.011354217123876442,
+      "model_label": "legitimate",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.034062651371629324
+      }
+    },
+    {
+      "id": "syn-grok-018",
+      "label": "legitimate",
+      "score": 0.3466666666666667,
+      "model_label": null,
+      "latency_ms": 1587.4938945140457,
+      "cost_usd": 0.0005992,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.04
+      }
+    },
+    {
+      "id": "syn-grok-019",
+      "label": "phishing",
+      "score": 0.012408163398504257,
+      "model_label": "legitimate",
+      "latency_ms": 27.994352517998777,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.03722449019551277
+      }
+    },
+    {
+      "id": "syn-grok-020",
+      "label": "phishing",
+      "score": 0.9599388553785398,
+      "model_label": "phishing",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.8798165661356195
+      }
+    },
+    {
+      "id": "syn-grok-021",
+      "label": "legitimate",
+      "score": 0.5733333333333334,
+      "model_label": null,
+      "latency_ms": 1488.0603525176411,
+      "cost_usd": 0.0007792000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.72
+      }
+    },
+    {
+      "id": "syn-grok-022",
+      "label": "phishing",
+      "score": 0.975421289016862,
+      "model_label": "phishing",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.9262638670505859
+      }
+    },
+    {
+      "id": "syn-grok-023",
+      "label": "legitimate",
+      "score": 0.009995881468057632,
+      "model_label": "legitimate",
+      "latency_ms": 27.994352517998777,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.029987644404172897
+      }
+    },
+    {
+      "id": "syn-grok-024",
+      "label": "phishing",
+      "score": 0.6533333333333333,
+      "model_label": null,
+      "latency_ms": 1979.5813525066478,
+      "cost_usd": 0.0008632000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.96
+      }
+    },
+    {
+      "id": "syn-grok-025",
+      "label": "legitimate",
+      "score": 0.4066666666666667,
+      "model_label": null,
+      "latency_ms": 1339.7630195191596,
+      "cost_usd": 0.0011772,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.22
+      }
+    },
+    {
+      "id": "syn-grok-026",
+      "label": "phishing",
+      "score": 0.964089703744941,
+      "model_label": "phishing",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.892269111234823
+      }
+    },
+    {
+      "id": "syn-grok-027",
+      "label": "legitimate",
+      "score": 0.017163960884014767,
+      "model_label": "legitimate",
+      "latency_ms": 25.515719642135082,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.051491882652044296
+      }
+    },
+    {
+      "id": "syn-grok-028",
+      "label": "phishing",
+      "score": 0.9448735528763755,
+      "model_label": "phishing",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.8346206586291266
+      }
+    },
+    {
+      "id": "syn-grok-029",
+      "label": "phishing",
+      "score": 0.018822440256675083,
+      "model_label": "legitimate",
+      "latency_ms": 25.515719642135082,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.05646732077002525
+      }
+    },
+    {
+      "id": "syn-grok-030",
+      "label": "phishing",
+      "score": 0.978543657114313,
+      "model_label": "phishing",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.9356309713429394
+      }
+    },
+    {
+      "id": "syn-grok-031",
+      "label": "legitimate",
+      "score": 0.00948004805061716,
+      "model_label": "legitimate",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.028440144151851476
+      }
+    },
+    {
+      "id": "syn-grok-032",
+      "label": "phishing",
+      "score": 0.9855470360662659,
+      "model_label": "phishing",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.956641108198798
+      }
+    },
+    {
+      "id": "syn-grok-033-r1",
+      "label": "phishing",
+      "score": 0.012668036314666002,
+      "model_label": "legitimate",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.038004108943998006
+      }
+    },
+    {
+      "id": "syn-grok-034",
+      "label": "legitimate",
+      "score": 0.011318779240051905,
+      "model_label": "legitimate",
+      "latency_ms": 25.515719642135082,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.033956337720155716
+      }
+    },
+    {
+      "id": "syn-grok-035",
+      "label": "phishing",
+      "score": 0.9815467887866727,
+      "model_label": "phishing",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.9446403663600181
+      }
+    },
+    {
+      "id": "syn-grok-036",
+      "label": "legitimate",
+      "score": 0.015764857331911724,
+      "model_label": "legitimate",
+      "latency_ms": 25.515719642135082,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.04729457199573517
+      }
+    },
+    {
+      "id": "syn-grok-037",
+      "label": "phishing",
+      "score": 0.64,
+      "model_label": null,
+      "latency_ms": 1795.2727606367262,
+      "cost_usd": 0.0007892,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.92
+      }
+    },
+    {
+      "id": "syn-grok-038",
+      "label": "legitimate",
+      "score": 0.0037946972302493128,
+      "model_label": "legitimate",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.011384091690747939
+      }
+    },
+    {
+      "id": "syn-grok-039",
+      "label": "legitimate",
+      "score": 0.957447813828459,
+      "model_label": "phishing",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.872343441485377
+      }
+    },
+    {
+      "id": "syn-grok-040-r1",
+      "label": "phishing",
+      "score": 0.014251676698525747,
+      "model_label": "legitimate",
+      "latency_ms": 25.515719642135082,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.04275503009557724
+      }
+    },
+    {
+      "id": "syn-grok-041",
+      "label": "legitimate",
+      "score": 0.013950089613596598,
+      "model_label": "legitimate",
+      "latency_ms": 25.515719642135082,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.041850268840789795
+      }
+    },
+    {
+      "id": "syn-grok-042",
+      "label": "phishing",
+      "score": 0.011803836872180304,
+      "model_label": "legitimate",
+      "latency_ms": 25.515719642135082,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.03541151061654091
+      }
+    },
+    {
+      "id": "syn-grok-043",
+      "label": "legitimate",
+      "score": 0.010456926811404789,
+      "model_label": "legitimate",
+      "latency_ms": 0.06712332979077473,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.03137078043421437
+      }
+    },
+    {
+      "id": "syn-grok-044",
+      "label": "legitimate",
+      "score": 0.36000000000000004,
+      "model_label": null,
+      "latency_ms": 1618.5877922704094,
+      "cost_usd": 0.0005972000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.08
+      }
+    },
+    {
+      "id": "syn-grok-045",
+      "label": "legitimate",
+      "score": 0.01635698477427165,
+      "model_label": "legitimate",
+      "latency_ms": 27.50383426755434,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.04907095432281494
+      }
+    },
+    {
+      "id": "syn-grok-046",
+      "label": "phishing",
+      "score": 0.01176931212345759,
+      "model_label": "legitimate",
+      "latency_ms": 27.50383426755434,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.03530793637037277
+      }
+    },
+    {
+      "id": "syn-grok-047",
+      "label": "legitimate",
+      "score": 0.36000000000000004,
+      "model_label": null,
+      "latency_ms": 1783.5817922765273,
+      "cost_usd": 0.0006952000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.08
+      }
+    },
+    {
+      "id": "syn-grok-048",
+      "label": "phishing",
+      "score": 0.6266666666666666,
+      "model_label": null,
+      "latency_ms": 1267.4842092688777,
+      "cost_usd": 0.0008832,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.88
+      }
+    },
+    {
+      "id": "syn-grok-049",
+      "label": "legitimate",
+      "score": 0.5,
+      "model_label": null,
+      "latency_ms": 1675.7655012639589,
+      "cost_usd": 0.0006432,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.5
+      }
+    },
+    {
+      "id": "syn-grok-050",
+      "label": "legitimate",
+      "score": 0.37333333333333335,
+      "model_label": null,
+      "latency_ms": 1400.1427922790754,
+      "cost_usd": 0.0008332000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.12
+      }
+    },
+    {
+      "id": "syn-grok-051",
+      "label": "phishing",
+      "score": 0.012694937487443289,
+      "model_label": "legitimate",
+      "latency_ms": 27.490275107847992,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.038084812462329865
+      }
+    },
+    {
+      "id": "syn-grok-052",
+      "label": "legitimate",
+      "score": 0.0018322094888117378,
+      "model_label": "legitimate",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.005496628466435213
+      }
+    },
+    {
+      "id": "syn-grok-053",
+      "label": "phishing",
+      "score": 0.011300285657246908,
+      "model_label": "legitimate",
+      "latency_ms": 27.490275107847992,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.03390085697174072
+      }
+    },
+    {
+      "id": "syn-grok-054",
+      "label": "legitimate",
+      "score": 0.43333333333333335,
+      "model_label": null,
+      "latency_ms": 2009.7162751006545,
+      "cost_usd": 0.0010192,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.3
+      }
+    },
+    {
+      "id": "syn-grok-055",
+      "label": "legitimate",
+      "score": 0.016917628546555836,
+      "model_label": "legitimate",
+      "latency_ms": 27.490275107847992,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.05075288563966751
+      }
+    },
+    {
+      "id": "syn-grok-056",
+      "label": "phishing",
+      "score": 0.6466666666666666,
+      "model_label": null,
+      "latency_ms": 1633.5332751003443,
+      "cost_usd": 0.0006992000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.94
+      }
+    },
+    {
+      "id": "syn-grok-057",
+      "label": "phishing",
+      "score": 0.9473558912948605,
+      "model_label": "phishing",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.8420676738845815
+      }
+    },
+    {
+      "id": "syn-grok-058",
+      "label": "legitimate",
+      "score": 0.36000000000000004,
+      "model_label": null,
+      "latency_ms": 1352.1352341157035,
+      "cost_usd": 0.0007992,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.08
+      }
+    },
+    {
+      "id": "syn-grok-059",
+      "label": "legitimate",
+      "score": 0.47333333333333333,
+      "model_label": null,
+      "latency_ms": 3319.363141615977,
+      "cost_usd": 0.0006472,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.42
+      }
+    },
+    {
+      "id": "syn-grok-060",
+      "label": "legitimate",
+      "score": 0.0022904861441688283,
+      "model_label": "legitimate",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.006871458432506485
+      }
+    },
+    {
+      "id": "syn-grok-061",
+      "label": "legitimate",
+      "score": 0.48333333333333334,
+      "model_label": null,
+      "latency_ms": 1317.5688926074508,
+      "cost_usd": 0.0005552,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.45
+      }
+    },
+    {
+      "id": "syn-grok-062",
+      "label": "phishing",
+      "score": 0.010633299748102823,
+      "model_label": "legitimate",
+      "latency_ms": 19.99010060702858,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.03189989924430847
+      }
+    },
+    {
+      "id": "syn-grok-063",
+      "label": "phishing",
+      "score": 0.9778105046697257,
+      "model_label": "phishing",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.9334315140091773
+      }
+    },
+    {
+      "id": "syn-grok-064",
+      "label": "phishing",
+      "score": 0.013682148108879725,
+      "model_label": "legitimate",
+      "latency_ms": 19.99010060702858,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.041046444326639175
+      }
+    },
+    {
+      "id": "syn-grok-065",
+      "label": "legitimate",
+      "score": 0.3466666666666667,
+      "model_label": null,
+      "latency_ms": 3476.338475602315,
+      "cost_usd": 0.0005292000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.04
+      }
+    },
+    {
+      "id": "syn-grok-066",
+      "label": "phishing",
+      "score": 0.6066666666666666,
+      "model_label": null,
+      "latency_ms": 3587.176767608835,
+      "cost_usd": 0.0006432,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.82
+      }
+    },
+    {
+      "id": "syn-grok-067",
+      "label": "legitimate",
+      "score": 0.009091845336272041,
+      "model_label": "legitimate",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.02727553600881612
+      }
+    },
+    {
+      "id": "syn-grok-068",
+      "label": "phishing",
+      "score": 0.013855500340688007,
+      "model_label": "legitimate",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.04156650102206402
+      }
+    },
+    {
+      "id": "syn-grok-069",
+      "label": "legitimate",
+      "score": 0.008854165189813622,
+      "model_label": "legitimate",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.026562495569440868
+      }
+    },
+    {
+      "id": "syn-grok-070",
+      "label": "legitimate",
+      "score": 0.43333333333333335,
+      "model_label": null,
+      "latency_ms": 2036.3111006098188,
+      "cost_usd": 0.0008052000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.3
+      }
+    },
+    {
+      "id": "syn-grok-071",
+      "label": "legitimate",
+      "score": 0.37333333333333335,
+      "model_label": null,
+      "latency_ms": 1303.8118925995514,
+      "cost_usd": 0.0009592,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.12
+      }
+    },
+    {
+      "id": "syn-grok-072",
+      "label": "phishing",
+      "score": 0.6433333333333334,
+      "model_label": null,
+      "latency_ms": 1842.375850604949,
+      "cost_usd": 0.0006672000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.93
+      }
+    },
+    {
+      "id": "syn-grok-073-r2",
+      "label": "phishing",
+      "score": 0.012679945024588484,
+      "model_label": "legitimate",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.03803983507376545
+      }
+    },
+    {
+      "id": "syn-grok-074",
+      "label": "legitimate",
+      "score": 0.011523091544707617,
+      "model_label": "legitimate",
+      "latency_ms": 19.99010060702858,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.03456927463412285
+      }
+    },
+    {
+      "id": "syn-grok-075-r1",
+      "label": "phishing",
+      "score": 0.011684513340393702,
+      "model_label": "legitimate",
+      "latency_ms": 25.670978231428307,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.03505354002118111
+      }
+    },
+    {
+      "id": "syn-grok-076",
+      "label": "legitimate",
+      "score": 0.43333333333333335,
+      "model_label": null,
+      "latency_ms": 1303.166436225947,
+      "cost_usd": 0.0006672000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.3
+      }
+    },
+    {
+      "id": "syn-grok-077",
+      "label": "legitimate",
+      "score": 0.002261525099358349,
+      "model_label": "legitimate",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.0067845752980750474
+      }
+    },
+    {
+      "id": "syn-grok-078",
+      "label": "phishing",
+      "score": 0.9561834067992016,
+      "model_label": "phishing",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.8685502203976045
+      }
+    },
+    {
+      "id": "syn-grok-079",
+      "label": "legitimate",
+      "score": 0.43333333333333335,
+      "model_label": null,
+      "latency_ms": 1304.75506122988,
+      "cost_usd": 0.0006492000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.3
+      }
+    },
+    {
+      "id": "syn-grok-080",
+      "label": "phishing",
+      "score": 0.9388530548902767,
+      "model_label": "phishing",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.8165591646708301
+      }
+    },
+    {
+      "id": "syn-grok-081",
+      "label": "legitimate",
+      "score": 0.015104498714208603,
+      "model_label": "legitimate",
+      "latency_ms": 25.670978231428307,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.04531349614262581
+      }
+    },
+    {
+      "id": "syn-grok-082",
+      "label": "phishing",
+      "score": 0.6533333333333333,
+      "model_label": null,
+      "latency_ms": 1882.3980202194798,
+      "cost_usd": 0.0006052000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.96
+      }
+    },
+    {
+      "id": "syn-grok-083",
+      "label": "phishing",
+      "score": 0.9657535895661974,
+      "model_label": "phishing",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.8972607686985922
+      }
+    },
+    {
+      "id": "syn-grok-084",
+      "label": "legitimate",
+      "score": 0.9608354661839852,
+      "model_label": "phishing",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.8825063985519557
+      }
+    },
+    {
+      "id": "syn-grok-085-r2",
+      "label": "phishing",
+      "score": 0.01311389957305504,
+      "model_label": "legitimate",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.03934169871916512
+      }
+    },
+    {
+      "id": "syn-grok-086",
+      "label": "phishing",
+      "score": 0.9990906845072495,
+      "model_label": "phishing",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.9972720535217485
+      }
+    },
+    {
+      "id": "syn-grok-087",
+      "label": "phishing",
+      "score": 0.9452683745887663,
+      "model_label": "phishing",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.835805123766299
+      }
+    },
+    {
+      "id": "syn-grok-088",
+      "label": "legitimate",
+      "score": 0.3466666666666667,
+      "model_label": null,
+      "latency_ms": 1846.464770225648,
+      "cost_usd": 0.0005892,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.04
+      }
+    },
+    {
+      "id": "syn-grok-089",
+      "label": "phishing",
+      "score": 0.6466666666666666,
+      "model_label": null,
+      "latency_ms": 1516.2511032447946,
+      "cost_usd": 0.0005292000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.94
+      }
+    },
+    {
+      "id": "syn-grok-090",
+      "label": "phishing",
+      "score": 0.9775168797515037,
+      "model_label": "phishing",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.9325506392545111
+      }
+    },
+    {
+      "id": "syn-grok-091",
+      "label": "legitimate",
+      "score": 0.01741548130909602,
+      "model_label": "legitimate",
+      "latency_ms": 21.249097982799867,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.052246443927288055
+      }
+    },
+    {
+      "id": "syn-grok-092",
+      "label": "phishing",
+      "score": 0.9708633675782878,
+      "model_label": "phishing",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.9125901027348634
+      }
+    },
+    {
+      "id": "syn-grok-093",
+      "label": "phishing",
+      "score": 0.01675077776114146,
+      "model_label": "legitimate",
+      "latency_ms": 21.249097982799867,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.05025233328342438
+      }
+    },
+    {
+      "id": "syn-grok-094",
+      "label": "legitimate",
+      "score": 0.3833333333333333,
+      "model_label": null,
+      "latency_ms": 3050.9547649924934,
+      "cost_usd": 0.0008672,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.15
+      }
+    },
+    {
+      "id": "syn-grok-095",
+      "label": "phishing",
+      "score": 0.9829093157027322,
+      "model_label": "phishing",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.9487279471081965
+      }
+    },
+    {
+      "id": "syn-grok-096",
+      "label": "phishing",
+      "score": 0.9524586002291233,
+      "model_label": "phishing",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.85737580068737
+      }
+    },
+    {
+      "id": "syn-grok-097",
+      "label": "phishing",
+      "score": 0.01115395873785019,
+      "model_label": "legitimate",
+      "latency_ms": 21.249097982799867,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.03346187621355057
+      }
+    },
+    {
+      "id": "syn-grok-098",
+      "label": "legitimate",
+      "score": 0.012626764674981436,
+      "model_label": "legitimate",
+      "latency_ms": 21.249097982799867,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.037880294024944305
+      }
+    },
+    {
+      "id": "syn-grok-099",
+      "label": "phishing",
+      "score": 0.01644773284594218,
+      "model_label": "legitimate",
+      "latency_ms": 21.249097982799867,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.04934319853782654
+      }
+    },
+    {
+      "id": "syn-grok-100",
+      "label": "phishing",
+      "score": 0.9429248625498622,
+      "model_label": "phishing",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.8287745876495866
+      }
+    },
+    {
+      "id": "syn-grok-101",
+      "label": "phishing",
+      "score": 0.9735556429354686,
+      "model_label": "phishing",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.9206669288064055
+      }
+    },
+    {
+      "id": "syn-grok-102",
+      "label": "legitimate",
+      "score": 0.014147245635588964,
+      "model_label": "legitimate",
+      "latency_ms": 21.249097982799867,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.04244173690676689
+      }
+    },
+    {
+      "id": "syn-grok-103",
+      "label": "phishing",
+      "score": 0.009450698271393776,
+      "model_label": "legitimate",
+      "latency_ms": 21.249097982799867,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.028352094814181328
+      }
+    },
+    {
+      "id": "syn-grok-104",
+      "label": "phishing",
+      "score": 0.9363961533405517,
+      "model_label": "phishing",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.809188460021655
+      }
+    },
+    {
+      "id": "syn-grok-105",
+      "label": "legitimate",
+      "score": 0.014143587833498054,
+      "model_label": "legitimate",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.04243076350049416
+      }
+    },
+    {
+      "id": "syn-grok-106",
+      "label": "phishing",
+      "score": 0.9767906012626968,
+      "model_label": "phishing",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.9303718037880906
+      }
+    },
+    {
+      "id": "syn-grok-107",
+      "label": "legitimate",
+      "score": 0.011197971800963083,
+      "model_label": "legitimate",
+      "latency_ms": 20.598970420760452,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.03359391540288925
+      }
+    },
+    {
+      "id": "syn-grok-108",
+      "label": "legitimate",
+      "score": 0.36000000000000004,
+      "model_label": null,
+      "latency_ms": 1305.1135954100027,
+      "cost_usd": 0.0007052,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.08
+      }
+    },
+    {
+      "id": "syn-grok-109",
+      "label": "phishing",
+      "score": 0.6433333333333334,
+      "model_label": null,
+      "latency_ms": 1520.414554421077,
+      "cost_usd": 0.0009752000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.93
+      }
+    },
+    {
+      "id": "syn-grok-110",
+      "label": "legitimate",
+      "score": 0.011232508967320124,
+      "model_label": "legitimate",
+      "latency_ms": 20.598970420760452,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.03369752690196037
+      }
+    },
+    {
+      "id": "syn-grok-111",
+      "label": "legitimate",
+      "score": 0.36000000000000004,
+      "model_label": null,
+      "latency_ms": 1305.0117204200797,
+      "cost_usd": 0.0006072,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.08
+      }
+    },
+    {
+      "id": "syn-grok-112",
+      "label": "phishing",
+      "score": 0.6533333333333333,
+      "model_label": null,
+      "latency_ms": 2149.929928413112,
+      "cost_usd": 0.0009872000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.96
+      }
+    },
+    {
+      "id": "syn-grok-113",
+      "label": "legitimate",
+      "score": 0.017652342716852825,
+      "model_label": "legitimate",
+      "latency_ms": 20.598970420760452,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.05295702815055847
+      }
+    },
+    {
+      "id": "syn-grok-114",
+      "label": "phishing",
+      "score": 0.9250384291164088,
+      "model_label": "phishing",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.7751152873492262
+      }
+    },
+    {
+      "id": "syn-grok-115",
+      "label": "phishing",
+      "score": 0.9688313784167519,
+      "model_label": "phishing",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.9064941352502559
+      }
+    },
+    {
+      "id": "syn-grok-116",
+      "label": "legitimate",
+      "score": 0.00712853930850807,
+      "model_label": "legitimate",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.021385617925524212
+      }
+    },
+    {
+      "id": "syn-grok-117",
+      "label": "legitimate",
+      "score": 0.3433333333333333,
+      "model_label": null,
+      "latency_ms": 1297.8613454123115,
+      "cost_usd": 0.0005092,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.03
+      }
+    },
+    {
+      "id": "syn-grok-118",
+      "label": "phishing",
+      "score": 0.929693422131416,
+      "model_label": "phishing",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.7890802663942482
+      }
+    },
+    {
+      "id": "syn-grok-119",
+      "label": "phishing",
+      "score": 0.6433333333333334,
+      "model_label": null,
+      "latency_ms": 1297.8278874305397,
+      "cost_usd": 0.0005312,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.93
+      }
+    },
+    {
+      "id": "syn-grok-120",
+      "label": "phishing",
+      "score": 0.008561532651572966,
+      "model_label": "legitimate",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.025684597954718898
+      }
+    },
+    {
+      "id": "syn-grok-121",
+      "label": "legitimate",
+      "score": 0.3833333333333333,
+      "model_label": null,
+      "latency_ms": 1295.1744294203672,
+      "cost_usd": 0.0006172,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.15
+      }
+    },
+    {
+      "id": "syn-grok-122",
+      "label": "legitimate",
+      "score": 0.37333333333333335,
+      "model_label": null,
+      "latency_ms": 1425.6448454196652,
+      "cost_usd": 0.0005592,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.12
+      }
+    },
+    {
+      "id": "syn-grok-123",
+      "label": "legitimate",
+      "score": 0.008532423771534995,
+      "model_label": "legitimate",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.025597271314604986
+      }
+    },
+    {
+      "id": "syn-grok-124",
+      "label": "phishing",
+      "score": 0.6566666666666666,
+      "model_label": null,
+      "latency_ms": 1712.1978770554415,
+      "cost_usd": 0.0008912000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.97
+      }
+    },
+    {
+      "id": "syn-grok-125",
+      "label": "phishing",
+      "score": 0.9231356973246045,
+      "model_label": "phishing",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.7694070919738134
+      }
+    },
+    {
+      "id": "syn-grok-126",
+      "label": "legitimate",
+      "score": 0.006988127161913121,
+      "model_label": "legitimate",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.020964381485739363
+      }
+    },
+    {
+      "id": "syn-grok-127",
+      "label": "phishing",
+      "score": 0.9929035871638825,
+      "model_label": "phishing",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.9787107614916475
+      }
+    },
+    {
+      "id": "syn-grok-128",
+      "label": "legitimate",
+      "score": 0.37333333333333335,
+      "model_label": null,
+      "latency_ms": 1283.1223350329674,
+      "cost_usd": 0.0014412000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.12
+      }
+    },
+    {
+      "id": "syn-grok-129",
+      "label": "legitimate",
+      "score": 0.54,
+      "model_label": null,
+      "latency_ms": 1290.8239180358942,
+      "cost_usd": 0.0013752,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.62
+      }
+    },
+    {
+      "id": "syn-grok-130",
+      "label": "legitimate",
+      "score": 0.9854536246052858,
+      "model_label": "phishing",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.9563608738158574
+      }
+    },
+    {
+      "id": "syn-grok-131",
+      "label": "phishing",
+      "score": 0.9718904314590958,
+      "model_label": "phishing",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.9156712943772874
+      }
+    },
+    {
+      "id": "syn-grok-132",
+      "label": "legitimate",
+      "score": 0.35333333333333333,
+      "model_label": null,
+      "latency_ms": 2237.279293050815,
+      "cost_usd": 0.0013552,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.06
+      }
+    },
+    {
+      "id": "syn-grok-133",
+      "label": "phishing",
+      "score": 0.9734782337005751,
+      "model_label": "phishing",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.9204347011017251
+      }
+    },
+    {
+      "id": "syn-grok-134",
+      "label": "phishing",
+      "score": 0.6066666666666666,
+      "model_label": null,
+      "latency_ms": 1270.6466690541129,
+      "cost_usd": 0.0007572000000000001,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.82
+      }
+    },
+    {
+      "id": "syn-grok-135",
+      "label": "phishing",
+      "score": 0.9891694480565268,
+      "model_label": "phishing",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.9675083441695802
+      }
+    },
+    {
+      "id": "syn-grok-136",
+      "label": "phishing",
+      "score": 0.9790136143709348,
+      "model_label": "phishing",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.9370408431128047
+      }
+    },
+    {
+      "id": "syn-grok-137",
+      "label": "legitimate",
+      "score": 0.014481071253574514,
+      "model_label": "legitimate",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.04344321376072354
+      }
+    },
+    {
+      "id": "syn-grok-138",
+      "label": "legitimate",
+      "score": 0.37333333333333335,
+      "model_label": null,
+      "latency_ms": 840.2054180440609,
+      "cost_usd": 0.0012212,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.12
+      }
+    },
+    {
+      "id": "syn-grok-139",
+      "label": "phishing",
+      "score": 0.017044576505819958,
+      "model_label": "legitimate",
+      "latency_ms": 23.582029421813786,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.05113372951745987
+      }
+    },
+    {
+      "id": "syn-grok-140",
+      "label": "phishing",
+      "score": 0.9839379304181279,
+      "model_label": "phishing",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.9518137912543839
+      }
+    },
+    {
+      "id": "syn-grok-141",
+      "label": "legitimate",
+      "score": 0.013858942526375121,
+      "model_label": "legitimate",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.04157682757912536
+      }
+    },
+    {
+      "id": "syn-grok-142",
+      "label": "legitimate",
+      "score": 0.9265440062237916,
+      "model_label": "phishing",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.7796320186713748
+      }
+    },
+    {
+      "id": "syn-grok-143",
+      "label": "phishing",
+      "score": 0.01294629399975141,
+      "model_label": "legitimate",
+      "latency_ms": 23.582029421813786,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.03883888199925423
+      }
+    },
+    {
+      "id": "syn-grok-144-r1",
+      "label": "phishing",
+      "score": 0.9651792778480108,
+      "model_label": "phishing",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.8955378335440326
+      }
+    },
+    {
+      "id": "syn-grok-145",
+      "label": "phishing",
+      "score": 0.9537982411248658,
+      "model_label": "phishing",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.8613947233745972
+      }
+    },
+    {
+      "id": "syn-grok-146",
+      "label": "phishing",
+      "score": 0.6466666666666666,
+      "model_label": null,
+      "latency_ms": 1322.0339464204153,
+      "cost_usd": 0.0008712,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.94
+      }
+    },
+    {
+      "id": "syn-grok-147",
+      "label": "legitimate",
+      "score": 0.43333333333333335,
+      "model_label": null,
+      "latency_ms": 1727.9345294262748,
+      "cost_usd": 0.0005412,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.3
+      }
+    },
+    {
+      "id": "syn-grok-148",
+      "label": "phishing",
+      "score": 0.01850590854883194,
+      "model_label": "legitimate",
+      "latency_ms": 23.582029421813786,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.05551772564649582
+      }
+    },
+    {
+      "id": "syn-grok-149",
+      "label": "phishing",
+      "score": 0.6266666666666666,
+      "model_label": null,
+      "latency_ms": 1078.8349464163184,
+      "cost_usd": 0.0008892,
+      "error": null,
+      "details": {
+        "exit_tier": 3,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.88
+      }
+    },
+    {
+      "id": "syn-grok-150",
+      "label": "legitimate",
+      "score": 0.009382746622405116,
+      "model_label": "legitimate",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
+      "error": null,
+      "details": {
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.028148239867215347
+      }
+    }
+  ]
+}

@@ -1,0 +1,6005 @@
+{
+ "note": "Label audit by six Claude subagents on 2026-11-23, two independent reads per email, blind to all detector scores. This is an LLM review, not a human hand-check. The emails reviewed are the original set, synthetic-old.",
+ "emails": [
+  {
+   "id": "syn-chatgpt-001",
+   "label": "phishing",
+   "category": "advance-fee fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Advance-fee: promised $18,750 allocation in return for an $85 'processing contribution' and identity confirmation.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Promised $18,750 payout in return for $85 'processing contribution'; sender cloudharbor-billing.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-002",
+   "label": "legitimate",
+   "category": "genuine security notice",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign; sender domain, links and request consistent with the claimed organisation.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Reset notice; link on aureliaskies.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-003",
+   "label": "legitimate",
+   "category": "personal email",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign family email.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Family dinner invitation and a request for photographs; benign.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-004",
+   "label": "phishing",
+   "category": "invoice fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Unsolicited overdue invoice from a hyphenated finance domain with changed remittance arrangements to be supplied by reply.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "aurelia-skies-finance.example; 'remittance arrangements have recently been updated', reply for revised settlement instructions.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-005",
+   "label": "legitimate",
+   "category": "meeting or scheduling",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign meeting reschedule.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Ordinary rescheduling of a municipal meeting; sender domain consistent, nothing fraudulent.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-006",
+   "label": "phishing",
+   "category": "CEO fraud / business email compromise",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Classic BEC: urgent $24,800 transfer, bypass approval, secrecy, executive travelling.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "COO demands secret $24,800 transfer today outside approval process.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-007",
+   "label": "phishing",
+   "category": "CEO fraud / business email compromise",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "BEC: $38,400 transfer to 'updated settlement information', kept outside normal expenditure circulation.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Sender domain matches org, but demands $38,400 transfer to separately supplied 'updated settlement information', outside normal circulation and kept confidential - classic BEC.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-008",
+   "label": "phishing",
+   "category": "CEO fraud / business email compromise",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Supplier impersonation asking to replace bank details on file for a $16,920 payment.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Supplier-impersonation BEC: instructs finance to send $16,920 to revised account details instead of those on file. Sender domain is consistent, so the bank-detail change is the only tell.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-009",
+   "label": "legitimate",
+   "category": "genuine invoice or payment reminder",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign; sender domain, links and request consistent with the claimed organisation.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Invoice notice with link on redwood-coast-university.example; benign (Student Accounts billing a department is slightly odd).",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-010",
+   "label": "phishing",
+   "category": "malicious attachment",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Pressure to open a .zip, enable all features, use personal email if blocked, do not contact regular rep.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Sender domain matches org, but zip attachment, 'enable all document features', 'use a personal email account', 'do not contact our regular purchasing representative' are clear fraud markers.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-011",
+   "label": "legitimate",
+   "category": "urgent request from a manager",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign urgent report request.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Manager urgently requests a report; consistent domain, nothing fraudulent.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-012",
+   "label": "phishing",
+   "category": "invoice fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Invoice with revised remittance information replacing previous details.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Invoice from an '-hr-payroll' lookalike domain directing payment to revised remittance details in an attachment because old details are 'no longer monitored'.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-013",
+   "label": "phishing",
+   "category": "delivery scam",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Customs fee plus student ID and payment details on a lookalike parcel domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Customs fee, student ID and payment details on northfield-university-parcel.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-014",
+   "label": "legitimate",
+   "category": "marketing or newsletter",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign product newsletter, consistent domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Product newsletter; link on brightpath-people.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-015",
+   "label": "phishing",
+   "category": "malicious attachment",
+   "status": "label_doubt_both",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ambiguous",
+     "reason": "Labelled phishing but nothing in the text gives it away: consistent sender domain, ordinary .docx, no macros, no credentials, mild deadline. Reads the same as the legitimate work emails with attachments in this set (e.g. 053, 093, 098).",
+     "evidence": "I've attached the file Transfer_Summary_Nov22.docx ... Could you please open it and check the highlighted sections when you have a moment?"
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ambiguous",
+     "reason": "Labelled malicious attachment, but sender domain matches the organisation, the tone is relaxed, the deadline is mild and nothing fraudulent is requested; indistinguishable from a routine internal document review.",
+     "evidence": "From records@clearwater-medical-group.example, signed Clearwater Medical Group: \"I've attached the file Transfer_Summary_Nov22.docx ... Could you please open it and check the highlighted sections when you have a moment?\""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-016",
+   "label": "legitimate",
+   "category": "urgent request from a manager",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign urgent request for report materials.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Director requests internal report; no fraud.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-017",
+   "label": "legitimate",
+   "category": "marketing or newsletter",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign newsletter with offer, consistent domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Newsletter; booking link on millerfinch-accounting.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-018",
+   "label": "legitimate",
+   "category": "marketing or newsletter",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign loyalty marketing, consistent domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Loyalty newsletter; sender and link both silverwing-air.example, nothing requested.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-019",
+   "label": "legitimate",
+   "category": "meeting or scheduling",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign meeting reschedule.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Benign meeting reschedule.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-020",
+   "label": "legitimate",
+   "category": "urgent request from a manager",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign urgent request from a professor.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Professor asks for a report section; nothing fraudulent.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-021",
+   "label": "legitimate",
+   "category": "genuine delivery notification",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign delivery confirmation, consistent domain (internal supply service rather than a carrier, slightly off-category).",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Internal delivery confirmation, consistent domain, no action required.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-022",
+   "label": "phishing",
+   "category": "CEO fraud / business email compromise",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "BEC: $19,600 same-day payment, beneficiary details sent separately, confidentiality, cannot access finance system.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Executive asks for confidential $19,600 payment to separately sent 'updated beneficiary information', bypassing finance system.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-023",
+   "label": "legitimate",
+   "category": "university or school email",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign. Note category drift: it is a corporate staff-training notice from a telecom company, not a university email.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Benign staff learning programme announcement with no link. Category drift: corporate staff training rather than university mail.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-024",
+   "label": "phishing",
+   "category": "malicious attachment",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Pressure to open a .zip, enable active content, ignore security warnings; sender shop-velora-orders.example.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Zip attachment, enable active content, ignore security warnings; sender shop-velora-orders.example.",
+     "evidence": "If your computer displays a security warning, you can ignore it for this document."
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-025",
+   "label": "legitimate",
+   "category": "HR or IT administrative notice",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign HR benefits/policy notice, consistent domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Benefits enrolment notice; sender and portal on clearwater-medical-group.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-026",
+   "label": "phishing",
+   "category": "delivery scam",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Parcel fee from a 'bank'; sender harborstone-bank-parcel.example and link harborstone-bank-delivery.example differ.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "A bank chasing a parcel customs fee; sender harborstone-bank-parcel.example, link harborstone-bank-delivery.example.",
+     "evidence": "the amount due is $2.85"
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-027",
+   "label": "legitimate",
+   "category": "urgent request from a manager",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign urgent report request.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Manager asks for an internal report.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-028",
+   "label": "phishing",
+   "category": "invoice fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Overdue invoice from meridian-haulage-payments.example with revised payment information.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Overdue invoice from a '-payments' lookalike domain instructing use of revised remittance details in an attachment.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-029",
+   "label": "phishing",
+   "category": "advance-fee fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Grant in return for $185 fee and banking information.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Grant of $28,500 conditional on a $185 fee and banking information within 48 hours, from an '-awards' lookalike domain.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-030",
+   "label": "phishing",
+   "category": "CEO fraud / business email compromise",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "BEC: $18,650 transfer to external account outside normal approval queue, secrecy.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Sender domain matches Northbridge Ledger, but the content is a clear BEC: confidential same-day transfer to an external account outside the approval queue.",
+     "evidence": "this matter is to remain outside the normal client correspondence and approval queue"
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-031",
+   "label": "legitimate",
+   "category": "genuine delivery notification",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign; sender domain, links and request consistent with the claimed organisation.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Baggage delivery notice, consistent domain.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-032",
+   "label": "legitimate",
+   "category": "customer support reply",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign support reply, no link or request for data.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Benign support reply, no link, nothing requested.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-033",
+   "label": "legitimate",
+   "category": "customer support reply",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign support reply.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Benign support reply, no link.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-034",
+   "label": "legitimate",
+   "category": "HR or IT administrative notice",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign HR benefits reminder, consistent domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Benefits reminder; link and contact on copperfield-manufacturing.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-035",
+   "label": "legitimate",
+   "category": "university or school email",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign seminar invitation, consistent domain. Minor oddity: a retailer calls its own site 'the university events page'.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Benign seminar invitation; sender and link both on willowcart.example. Mild category drift: sent by a retailer's partnership programme, and it calls its own page 'the university events page'.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-036",
+   "label": "legitimate",
+   "category": "HR or IT administrative notice",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign HR notice, no link.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Policy acknowledgement via existing intranet, no link.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-037",
+   "label": "phishing",
+   "category": "malicious attachment",
+   "status": "label_doubt_both",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ambiguous",
+     "reason": "Labelled phishing but indistinguishable from a genuine bank statement email: sender domain matches Harborstone Bank, plain .pdf, no pressure, no credentials or payment requested.",
+     "evidence": "The monthly account statement you requested has been prepared and is attached to this message as Account_Statement_November_2026.pdf."
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ambiguous",
+     "reason": "Sender domain matches Harborstone Bank, there is no link, no threat, no deadline, no credential or payment request; it reads as a routine statement email and nothing in the text marks it as malicious.",
+     "evidence": "From documents@harborstone-bank.example; \"The monthly account statement you requested has been prepared and is attached to this message as Account_Statement_November_2026.pdf.\""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-038",
+   "label": "legitimate",
+   "category": "marketing or newsletter",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign city newsletter, consistent domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "City newsletter, consistent domain.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-039",
+   "label": "phishing",
+   "category": "malicious attachment",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Macro-enabled .docm with same-day pressure from harborstone-bank-secure.example.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Macro-enabled attachment pushed with a same-day deadline from lookalike harborstone-bank-secure.example.",
+     "evidence": "November_Reconciliation_Notice.docm"
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-040",
+   "label": "legitimate",
+   "category": "genuine invoice or payment reminder",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign student-account reminder, consistent domain and portal.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Student account reminder; portal link on the sender's eastmere-university.example domain, with an option to dispute the charge.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-041",
+   "label": "legitimate",
+   "category": "genuine delivery notification",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign freight tracking notice, consistent domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Carrier delivery update; sender, tracking link and contact address all on clearwater-freight.example, no payment or data requested.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-042",
+   "label": "legitimate",
+   "category": "personal email",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign personal email.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Benign note between friends about Saturday lunch; no request of any concern.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-043",
+   "label": "phishing",
+   "category": "invoice fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Threatening overdue notice from eastmere-university-invoice.example with changed bank details and 24h deadline.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Threatening overdue invoice with changed bank details in an attachment, from eastmere-university-invoice.example (lookalike).",
+     "evidence": "Our bank details have changed. Use the new payment instructions in the attached document."
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-044",
+   "label": "legitimate",
+   "category": "HR or IT administrative notice",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign training reminder, consistent domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Training reminder; link on willowmere-health.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-045",
+   "label": "phishing",
+   "category": "CEO fraud / business email compromise",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "BEC from willowcart-executive.example: $6,200 payment outside approval chain, beneficiary sent separately.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Confidential supplier payment outside the approval chain to details sent separately, from willowcart-executive.example.",
+     "evidence": "should not go through the normal approval chain"
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-046",
+   "label": "legitimate",
+   "category": "customer support reply",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign support reply.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Support reply, nothing requested.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-047",
+   "label": "phishing",
+   "category": "credential theft",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Credential request; sender willowcart-verification.example, link willowcart-account-verify.example.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Password confirmation demanded; sender willowcart-verification.example, link willowcart-account-verify.example.",
+     "evidence": "You must login now to confirm your password and account details."
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-048",
+   "label": "phishing",
+   "category": "delivery scam",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Customs fee plus personal details on asteria-air-customs.example (an airline holding a parcel).",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Customs handling balance of $3.40 plus recipient details requested via a '-air-customs' lookalike domain with a 48-hour window.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-049",
+   "label": "legitimate",
+   "category": "genuine delivery notification",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign shipping notice, consistent domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Shipping notice; sender and tracking link on cloudharbor-suite.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-050",
+   "label": "legitimate",
+   "category": "university or school email",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign career workshop invitation, consistent domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Benign career-workshop invitation with consistent domain. Loose fit for 'university or school email' (sender is an accounting firm) and contains raw markdown '**Event details**'.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-051",
+   "label": "phishing",
+   "category": "advance-fee fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Refund of $2,450 in return for a $28.50 processing charge and 'confirmation details'.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Promises a $2,450 loyalty refund in return for a $28.50 processing charge and 'confirmation details'.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-052",
+   "label": "phishing",
+   "category": "advance-fee fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Award in return for banking details and a $35 payment; sender westbridge-university-grants.example.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Award of $3,800 conditional on banking details and a 'refundable' $35 payment, from a '-university-grants' lookalike domain.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-053",
+   "label": "legitimate",
+   "category": "university or school email",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign orientation notice with a PDF schedule.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Benign student orientation notice from a care group; consistent domain.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-054",
+   "label": "phishing",
+   "category": "advance-fee fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "$1,200 credit for a $24 fee; link harbor-pine-rewards.example differs from sender harborandpine-retail.example.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Promises a $1,200 credit in exchange for a $24 'verification and transfer fee' on a link domain (harbor-pine-rewards.example) that differs from the sender domain.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-055",
+   "label": "phishing",
+   "category": "CEO fraud / business email compromise",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "BEC: $18,750 wire, skip two-approval policy, secrecy, phone unavailable.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "CEO fraud: secret $18,750 wire outside the payment queue, bypassing two approvals, contact only by reply.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-056",
+   "label": "phishing",
+   "category": "CEO fraud / business email compromise",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "BEC: $26,400 to changed contractor bank details, outside payment cycle, retrospective review.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Directive to pay $26,400 using separately sent changed bank details, bypassing committee review, kept off distribution list.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-057",
+   "label": "legitimate",
+   "category": "customer support reply",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign support reply, consistent portal domain, explicitly no payment or account info required.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Support reply; portal on oakwell-accounting.example, no payment or new credentials requested.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-058",
+   "label": "legitimate",
+   "category": "genuine security notice",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign sign-in alert, consistent domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "University sign-in alert; account link on the sender's eastmere-university.example domain.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-059",
+   "label": "legitimate",
+   "category": "customer support reply",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign support reply.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Support reply confirming a seat selection; no link, no action required.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-060",
+   "label": "phishing",
+   "category": "invoice fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Overdue invoice from northwind-freight-billing.example with replaced payment instructions and 24h suspension threat.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "northwind-freight-billing.example; 'disregard any previous payment instructions', 24h suspension threat.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-061",
+   "label": "legitimate",
+   "category": "ordinary work thread",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign work thread.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Benign work thread.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-062",
+   "label": "phishing",
+   "category": "malicious attachment",
+   "status": "label_doubt_both",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ambiguous",
+     "reason": "Labelled phishing but nothing distinguishes it from a genuine statement notice: domain matches Granite Harbor Bank, plain .pdf, no urgency, no credentials or payment requested, points to 'your established banking channel'.",
+     "evidence": "Please open the attached document, November_Statement_2026.pdf, to review the information and retain a copy for your records."
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ambiguous",
+     "reason": "Sender domain matches Granite Harbor Bank, there is no link, no urgency, no threat, no credential or payment request, and it refers questions to the customer's established banking channel. Nothing in the text distinguishes it from a genuine statement email.",
+     "evidence": "From documents@granite-harbor-bank.example; \"Please open the attached document, November_Statement_2026.pdf, to review the information and retain a copy for your records.\""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-063",
+   "label": "phishing",
+   "category": "credential theft",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Credential request; link cloudharbor-workspace-verify.example differs from sender cloudharbor-workspace.example.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Sign-in link on cloudharbor-workspace-verify.example differs from sender cloudharbor-workspace.example; asks for credentials.",
+     "evidence": "https://cloudharbor-workspace-verify.example/account/signin"
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-064",
+   "label": "phishing",
+   "category": "malicious attachment",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Pressure to run Project_Review.exe and grant all permissions.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Executable attachment with two-hour expiry and 'enable all permissions'.",
+     "evidence": "Open the attached Project_Review.exe to view it."
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-065",
+   "label": "legitimate",
+   "category": "meeting or scheduling",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign meeting reschedule.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Routine meeting time change from a city coordinator; benign.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-066",
+   "label": "legitimate",
+   "category": "genuine security notice",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign password-reset notice, consistent domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Password reset confirmation; security link on the sender's clearwave-telecom.example domain and states it never asks for passwords by email.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-067",
+   "label": "legitimate",
+   "category": "genuine delivery notification",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign delivery confirmation, consistent domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Delivery-completed notice; tracking link on the sender's irontrail-logistics.example domain, no action required.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-068",
+   "label": "phishing",
+   "category": "invoice fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Revised invoice from brightcart-payment.example with changed payment details.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "brightcart-payment.example, changed payment details.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-069",
+   "label": "legitimate",
+   "category": "genuine invoice or payment reminder",
+   "status": "quality_note",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "quality_issue",
+     "reason": "Label (legitimate) is safe, but the scenario is incoherent: Ironvale's Accounts Payable writes to its own supplier about the supplier's invoice being 'outstanding' and tells the supplier to submit payment. Payer and payee roles are confused.",
+     "evidence": "payment reminder for the equipment maintenance services provided by your organization ... If payment has not yet been arranged, please ensure that it is submitted by December 1, 2026"
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "quality_issue",
+     "reason": "Benign content, but the roles are incoherent: Ironvale's Accounts Payable (the customer) sends the supplier a 'payment reminder' for the supplier's own invoice and asks the supplier to submit payment.",
+     "evidence": "services provided by your organization ... 'If payment has not yet been arranged, please ensure that it is submitted by December 1, 2026'"
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-070",
+   "label": "phishing",
+   "category": "credential theft",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Asks for 'current authentication credentials' on meridian-connect-billing.example under a migration pretext.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Lookalike domain meridian-connect-billing.example for Meridian Connect and an explicit request for credentials.",
+     "evidence": "confirm your registered email address, account reference, and current authentication credentials"
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-071",
+   "label": "phishing",
+   "category": "delivery scam",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Redelivery charge; 'Patient Services' sender lakeshore-medical-group.example, link lakeshore-medical-delivery.example.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Redelivery fee request whose link domain (lakeshore-medical-delivery.example) differs from the sender domain (lakeshore-medical-group.example), with same-day pressure.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-072",
+   "label": "phishing",
+   "category": "credential theft",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Credential request on staffbridge-hr-verify.example with salary threat.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "staffbridge-hr-verify.example credential verification, salary threat.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-073",
+   "label": "legitimate",
+   "category": "genuine delivery notification",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign delivery confirmation, consistent domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Delivered notice; link on redwood-cargo.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-074",
+   "label": "phishing",
+   "category": "delivery scam",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Handling payment plus personal details on quickroute-parcel-update.example.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Redelivery fee and personal details on quickroute-parcel-update.example.",
+     "evidence": "small address correction and handling payment of $3.40"
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-075",
+   "label": "phishing",
+   "category": "delivery scam",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Fee, residential details and payment card on eastborough-city-delivery.example; other channels discouraged.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Fake municipal delivery notice on a '-city-delivery' domain demanding a $4.25 fee, address and payment card within 48 hours, with phone confirmation 'unavailable'.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-076",
+   "label": "legitimate",
+   "category": "personal email",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign personal email.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Friend's weekend trip plans and a request to bring camping chairs; benign.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-077",
+   "label": "phishing",
+   "category": "advance-fee fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Award for a $45 fee, ID copy and personal data; portal telvanta-customer-awards.example differs from sender telvanta-benefits.example. Minor generator slip: 'The processing fee will supposedly be returned'.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Award for a $45 fee and ID copy; link domain telvanta-customer-awards.example differs from sender telvanta-benefits.example. Minor generator slip: the word 'supposedly' is out of character for the scammer.",
+     "evidence": "The processing fee will supposedly be returned together with your compensation payment."
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-078",
+   "label": "phishing",
+   "category": "credential theft",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Sign-in demand with same-day suspension on meridian-fabrication-account.example.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Sign in to avoid same-day suspension on meridian-fabrication-account.example.",
+     "evidence": "Please sign in now and confirm your details"
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-079",
+   "label": "phishing",
+   "category": "credential theft",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Credential 'authentication confirmation' on northbridge-univ-access.example with access-interruption threat.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Credential confirmation on northbridge-univ-access.example lookalike with access-loss deadline.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-080",
+   "label": "phishing",
+   "category": "credential theft",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Unsolicited sign-in-to-confirm link on aerovelle-member.example. Low-key, but it is a credential-harvest request on a suffixed domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Low-pressure but unsolicited sign-in-and-confirm request on aerovelle-member.example lookalike.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-081",
+   "label": "legitimate",
+   "category": "HR or IT administrative notice",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign HR notice, no link, consistent contact addresses.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Benefits enrolment notice pointing to the intranet; all addresses on harborstonebank.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-082",
+   "label": "phishing",
+   "category": "delivery scam",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Redelivery payment; link shopcove-delivery.example differs from sender shopcove-order.example.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Sender shopcove-order.example, link shopcove-delivery.example, $2.35 redelivery payment.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-083",
+   "label": "legitimate",
+   "category": "genuine invoice or payment reminder",
+   "status": "quality_note",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "quality_issue",
+     "reason": "Label (legitimate) is safe, but roles are muddled: the invoice for maintenance done at the university is sent from the university's own Accounts Receivable domain and signed 'Westmere University Facilities Services', written as if by an outside contractor.",
+     "evidence": "our technicians were able to finish the work without delaying the university activities"
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Benign invoice that explicitly states no change to bank details. Roles are slightly muddled (a university facilities office invoicing for work done at the university) but nothing fraudulent.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-084",
+   "label": "legitimate",
+   "category": "genuine security notice",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign sign-in alert, no link, directs to app or official site.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Sign-in alert with no link that tells the reader to go directly to the app or official site.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-085",
+   "label": "phishing",
+   "category": "delivery scam",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Handling fee plus identification details on eastvale-municipal-delivery.example.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Fake municipal redelivery notice on a '-municipal-delivery' domain demanding a $3.40 fee plus name, address and identification details.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-086",
+   "label": "phishing",
+   "category": "malicious attachment",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Push to open a .docm and enable document functions before a same-day deadline.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Pushes the reader to open a macro-enabled .docm and enable document functions before a same-day deadline.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-087",
+   "label": "legitimate",
+   "category": "ordinary work thread",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign work thread.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Routine project coordination thread referencing a file in a shared folder; nothing requested beyond review.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-088",
+   "label": "legitimate",
+   "category": "personal email",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign personal email.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Benign personal email.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-089",
+   "label": "phishing",
+   "category": "credential theft",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Account-detail verification on clearwater-city-access.example with access-restriction threat.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "clearwater-city-access.example account verification with restriction threat.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-090",
+   "label": "phishing",
+   "category": "delivery scam",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Release fee plus personal details on ironvale-industries-parcel.example, 24h forfeiture threat.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Customs release fee plus personal details on lookalike domain ironvale-industries-parcel.example.",
+     "evidence": "A $2.80 release fee must be paid immediately"
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-091",
+   "label": "phishing",
+   "category": "invoice fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Overdue invoice from telcrest-accounting.example with new beneficiary account and 24h deadline.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "telcrest-accounting.example; 'updated beneficiary account', 24h threat.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-092",
+   "label": "legitimate",
+   "category": "university or school email",
+   "status": "quality_note",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign. Note category drift: an accounting firm's 'Academic Programs Office' addressing 'Dear Colleagues' and students at once.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "quality_issue",
+     "reason": "Label (legitimate) is fine and nothing is fraudulent, but it is off its 'university or school email' category and internally incoherent: an accounting firm's 'Academic Programs Office' addresses 'Dear Colleagues' while speaking to students about modules and placements. Minor; usable for binary labels, not for category analysis.",
+     "evidence": "From programs@ledgerbrook-accounting.example: \"Dear Colleagues ... Although the event is being hosted by Ledgerbrook Accounting, the sessions are open to students participating in our university partnership\" / \"Please circulate this announcement to any eligible classmates\""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-093",
+   "label": "legitimate",
+   "category": "urgent request from a manager",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign urgent report request with a working document.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Manager requests a revised report; consistent domain, says to call if unsure.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-094",
+   "label": "legitimate",
+   "category": "genuine security notice",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign password-reset confirmation, no link.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Password reset confirmation with no link, directing the reader to their payroll administrator and usual bookmark.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-095",
+   "label": "legitimate",
+   "category": "meeting or scheduling",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign meeting reschedule with agenda PDF.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Benign meeting reschedule with agenda attachment.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-096",
+   "label": "phishing",
+   "category": "credential theft",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Asks for employee login and password on peopletrack-employee.example; tells reader not to contact HR.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Demands login and password via a link today, threatens salary delay and tells the reader not to contact HR.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-097",
+   "label": "legitimate",
+   "category": "genuine invoice or payment reminder",
+   "status": "quality_note",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "quality_issue",
+     "reason": "Label (legitimate) is safe, but the email contradicts itself: it is sent by Silverpine Health 'Patient Accounts' as a supplier invoice to a hospital department, then thanks the recipient for 'the relationship with Silverpine Health'. Sender and customer are the same organisation.",
+     "evidence": "We appreciate the relationship with Silverpine Health and hope that the support provided by our team has been useful to your staff."
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "quality_issue",
+     "reason": "Benign content, but the roles are incoherent: the sender writes from Silverpine Health's domain and signs as Silverpine Health while addressing Silverpine Health as its customer.",
+     "evidence": "From accounts@silverpine-health.example ... 'We appreciate the relationship with Silverpine Health' ... signed 'Patient Accounts, Silverpine Health'"
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-098",
+   "label": "legitimate",
+   "category": "urgent request from a manager",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign urgent report request with a working spreadsheet.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Manager requests updated staffing spreadsheet; internal, no fraud.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-099",
+   "label": "legitimate",
+   "category": "genuine security notice",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign MFA notice, no link.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "MFA notice, no link, no request.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-100",
+   "label": "legitimate",
+   "category": "genuine security notice",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A1",
+     "verdict": "ok",
+     "reason": "Benign password-change alert, consistent contact address.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Password-change confirmation with no link; contact address on the same domain and advice not to share credentials.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-101",
+   "label": "phishing",
+   "category": "malicious attachment",
+   "status": "label_doubt_one",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "only tell is the lookalike sender domain plus a push to open a named attachment; body alone reads as a normal colleague mail (weak but fits spec).",
+     "evidence": "westbridge-university-billing.example"
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ambiguous",
+     "reason": "Labelled malicious attachment; only possible tell is the '-billing' suffix on the sender domain for an administrative coordinator, which is weak given legit emails in this set use similar suffixed domains. Content is a calm, plausible internal document check with a Thursday deadline.",
+     "evidence": "From m.ellison@westbridge-university-billing.example, signed Westbridge University: \"I've attached the updated file as Procurement_Revision_17.pdf. Could you please open it and confirm that the figures on page 2 match\""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-102",
+   "label": "phishing",
+   "category": "advance-fee fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "award released only after personal/payment details and an $85 'processing contribution'; lookalike domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "$18,750 award requiring payment details and $85 'processing contribution'; northmere-university-grants.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-103",
+   "label": "phishing",
+   "category": "CEO fraud / business email compromise",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "asks for a $4,860 transfer to changed supplier bank details while skipping the usual review.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Boss asks for $4,860 transfer to supplier's 'updated details', skipping the usual review.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-104",
+   "label": "phishing",
+   "category": "credential theft",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "credential request on a lookalike 'banking-verify' domain with 24h pressure.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Bank impersonation from a '-banking-verify' lookalike domain asking the reader to sign in with banking credentials within 24 hours.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-105",
+   "label": "phishing",
+   "category": "invoice fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "overdue notice with changed banking details and 24h threat; lookalike 'cloudharbor-invoice' domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Final-notice invoice from an '-invoice' lookalike domain with changed banking details and a 24-hour suspension threat.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-106",
+   "label": "phishing",
+   "category": "advance-fee fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "$12,400 payout conditional on ID details and a $65 charge; lookalike domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Supplemental payment of $12,400 for a $65 charge plus ID details, from meridian-industrial-awards.example (lookalike).",
+     "evidence": "A registration and document certification charge of $65 is payable"
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-107",
+   "label": "phishing",
+   "category": "malicious attachment",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "pressure to open a .zip attachment under threat of data loss; lookalike domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Zip attachment with deletion threat from stackfield-workspace-alerts.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-108",
+   "label": "phishing",
+   "category": "CEO fraud / business email compromise",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "asks to change vendor account and pay $6,200 today, documents later.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Executive away from office asks for a same-day payment to a changed vendor account with documentation deferred; sender domain itself gives nothing away.",
+     "evidence": "They recently changed their receiving account... We can sort out the supporting documents when I'm back in the office."
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-109",
+   "label": "legitimate",
+   "category": "meeting or scheduling",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "benign meeting reschedule, no link or request.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Colleague moving a product review meeting; benign.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-110",
+   "label": "legitimate",
+   "category": "genuine invoice or payment reminder",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "routine invoice, contact address on the sender's own domain, no changed bank details.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Routine invoice, consistent domain, no bank change.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-111",
+   "label": "phishing",
+   "category": "invoice fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "unpaid invoice with 'new bank details' in attachment; lookalike 'clearframe-subscription' domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "clearframe-subscription.example; new bank details in attachment.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-112",
+   "label": "legitimate",
+   "category": "urgent request from a manager",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "manager asks for a spreadsheet quickly; nothing fraudulent.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Colleague asks for an internal spreadsheet; no payment/credential request.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-113",
+   "label": "legitimate",
+   "category": "marketing or newsletter",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "airline promotion; link on sender's domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Sender and offer link both on silverwing-air.example; ordinary promotion.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-114",
+   "label": "legitimate",
+   "category": "ordinary work thread",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "benign work thread.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Benign work thread.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-115",
+   "label": "legitimate",
+   "category": "marketing or newsletter",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "telco plan update; link on sender's domain, no action required.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Plan update newsletter, consistent domain.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-116",
+   "label": "phishing",
+   "category": "delivery scam",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "redelivery fee and card details on a lookalike shipping-notice domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Redelivery fee plus card details on stackfield-shipping-notice.example with 12h deadline.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-117",
+   "label": "legitimate",
+   "category": "urgent request from a manager",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "dean asks for a report by 3 PM; nothing fraudulent.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Associate dean urgently requests a report; nothing fraudulent.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-118",
+   "label": "legitimate",
+   "category": "ordinary work thread",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "benign work thread.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Detailed colleague-to-colleague discussion of a maintenance schedule; nothing suspicious.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-119",
+   "label": "legitimate",
+   "category": "genuine delivery notification",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "dispatch notice; link on sender's domain, no action required.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Dispatch notice; link on willowcart-retail.example, no action required.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-120",
+   "label": "phishing",
+   "category": "CEO fraud / business email compromise",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "asks to change supplier bank details and pay $14,850 while bypassing the normal amendment review.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "BEC: managing partner pushes a $14,850 payment to replacement bank details today while telling the recipient to skip the usual supplier-amendment review and approval.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-121",
+   "label": "legitimate",
+   "category": "HR or IT administrative notice",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "HR enrolment notice; portal link on the company's own domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Annual policy and benefits notice; portal link on the sender's orbitdesk.example domain and it warns against emailing personal documents.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-122",
+   "label": "phishing",
+   "category": "malicious attachment",
+   "status": "label_doubt_one",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "lookalike '-docs' sender domain pushing a named attachment; body alone reads as benign (weak but fits spec).",
+     "evidence": "ironvale-manufacturing-docs.example"
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ambiguous",
+     "reason": "Reads as a routine internal request to check a PDF report; no organisation is named in the body, no threat, no credentials or payment. The only tell is the '-docs' suffix on the sender domain.",
+     "evidence": "records@ironvale-manufacturing-docs.example / Attachment: Batch_Inspection_2026_11_Final.pdf"
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-123",
+   "label": "legitimate",
+   "category": "personal email",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "benign personal note.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "One-paragraph note asking for a station pickup; benign.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-124",
+   "label": "legitimate",
+   "category": "HR or IT administrative notice",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "training reminder; link on the university's own domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Training reminder; sender and link on eastmere-university.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-125",
+   "label": "phishing",
+   "category": "advance-fee fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "$9,500 reward for bank details and a $45 release fee.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "$9,500 award for bank details and $45 release fee.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-126",
+   "label": "phishing",
+   "category": "advance-fee fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "refund for a $12 charge; link domain velora-market-claims.example differs from sender velora-market.example.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Refund promise with a $12 processing charge; link domain velora-market-claims.example differs from sender velora-market.example.",
+     "evidence": "cover the $12 processing charge"
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-127",
+   "label": "phishing",
+   "category": "advance-fee fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "$47,500 settlement requiring ID copy and an $85 fee.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Unclaimed $47,500 settlement in return for ID documents and an $85 fee.",
+     "evidence": "A nominal administrative fee of $85 is also required"
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-128",
+   "label": "phishing",
+   "category": "advance-fee fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "$12,500 grant requiring ID, bank name and $95 fee; link on harborline-cargo-grants.example differs from sender domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Grant promise with a $95 fee, ID copy and bank details; link domain harborline-cargo-grants.example differs from sender harborline-cargo.example.",
+     "evidence": "refundable $95 grant certification fee"
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-129",
+   "label": "phishing",
+   "category": "credential theft",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "asks to confirm password via civicbridge-portal.example, differing from sender civicbridge-notices.example.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Asks the reader to confirm password and resident information today; link domain civicbridge-portal.example differs from sender domain civicbridge-notices.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-130",
+   "label": "legitimate",
+   "category": "university or school email",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "benign course mail on the organisation's own domain. Note: it is a corporate 'academy', only loosely a university/school email, and a 'Spring' academy ending in December is odd.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Benign course schedule; submission link on the sender's cloudharbor.example domain. Minor notes: body contains raw Markdown '**' heading markers, and it is a corporate academy rather than a university.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-131",
+   "label": "legitimate",
+   "category": "personal email",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "benign family email.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Relative planning a visit and asking for a lift from the station; benign.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-132",
+   "label": "legitimate",
+   "category": "marketing or newsletter",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "retail newsletter; links on sender's domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Retail newsletter; sender and links on nookandnest.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-133",
+   "label": "phishing",
+   "category": "invoice fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "invoice with 'revised beneficiary information'; lookalike 'northstar-freight-invoices' domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Invoice from an '-invoices' lookalike domain asking that payment use revised beneficiary details in an attachment rather than those on file.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-134",
+   "label": "legitimate",
+   "category": "customer support reply",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "support reply granting a credit, no action required.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Support reply granting a credit; nothing requested.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-135",
+   "label": "legitimate",
+   "category": "ordinary work thread",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "benign work note.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Benign work thread.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-136",
+   "label": "legitimate",
+   "category": "genuine security notice",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "sign-in alert; link on sender's domain, warns never to share passwords.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Security notice; link on worknest-cloud.example, no credentials requested.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-137",
+   "label": "phishing",
+   "category": "malicious attachment",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "false pretext to open attachment and 'enable document editing', with 24h cancellation threat.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Sender matches org, but shipment held until attachment 'reviewed and approved', 'enable document editing', 24h cancellation.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-138",
+   "label": "phishing",
+   "category": "delivery scam",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "$2.85 handling charge; link meridian-health-delivery.example differs from sender meridian-health-parcels.example.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Handling charge; sender meridian-health-parcels.example but link meridian-health-delivery.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-139",
+   "label": "legitimate",
+   "category": "genuine invoice or payment reminder",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "invoice using 'established payment method'; link on sender's domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Invoice with link on redwood-transit.example, 'established payment method'.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-140",
+   "label": "phishing",
+   "category": "invoice fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "unpaid invoice with revised remittance details; lookalike 'eastgate-shipping-payments' domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Sender eastgate-shipping-payments.example (suffixed lookalike) plus changed remittance details.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-141",
+   "label": "phishing",
+   "category": "credential theft",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "sign-in link on velvetcart-account-verify.example, differing from sender velvetcart-support.example.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Sender velvetcart-support.example, link velvetcart-account-verify.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-142",
+   "label": "phishing",
+   "category": "advance-fee fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "$8,000 award for banking info and a $35 fee; link westbridge-awards.example differs from sender domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Award of $8,000 requiring banking details and a $35 fee; link domain westbridge-awards.example differs from sender domain westbridge-university-grants.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-143",
+   "label": "phishing",
+   "category": "delivery scam",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "$3.40 customs charge and banking details on firstharbor-parcel.example (a bank running parcels is an odd premise, but clearly fraudulent).",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Bank-branded parcel fee scam; sender firstharbor-banking-delivery.example, link firstharbor-parcel.example, asks for payment and banking details.",
+     "evidence": "You may also be required to confirm your banking details during the payment process."
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-144",
+   "label": "legitimate",
+   "category": "genuine delivery notification",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "shipment notice; link on sender's domain, no payment or data requested.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Shipment notification; sender and portal link both on pinecrest-medical.example, no payment or data requested.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-145",
+   "label": "phishing",
+   "category": "invoice fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "changed bank details and pay-today pressure.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Urgent invoice with changed bank details on an attached notice and same-day payment pressure.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-146",
+   "label": "phishing",
+   "category": "delivery scam",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "$2.50 handling payment; link tasknest-delivery.example differs from sender tasknest-cloud-parcels.example.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Handling-fee delivery scam; sender domain tasknest-cloud-parcels.example and link domain tasknest-delivery.example differ, with same-day pressure.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-147",
+   "label": "legitimate",
+   "category": "meeting or scheduling",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "benign meeting time change.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Benign meeting reschedule.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-148",
+   "label": "phishing",
+   "category": "malicious attachment",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": ".docm attachment with instruction to enable macros and suspension threat.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Sender domain is consistent with Eastborough University, but it pushes a .docm with an instruction to enable macros under same-day threat.",
+     "evidence": "please enable macros and follow the instructions provided within the file"
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-149",
+   "label": "phishing",
+   "category": "CEO fraud / business email compromise",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "confidential $4,800 gift-card request with codes sent to sender; '-executive' domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Gift-card BEC with secrecy from aerovista-executive.example.",
+     "evidence": "Please purchase gift cards and send the codes directly to me."
+    }
+   ]
+  },
+  {
+   "id": "syn-chatgpt-150",
+   "label": "legitimate",
+   "category": "ordinary work thread",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "benign work thread; link on sender's domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Benign work thread; link on the sender's own domain.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-001",
+   "label": "legitimate",
+   "category": "genuine invoice or payment reminder",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "overdue reminder; portal link on sender's domain, no changed bank details.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Sender and payment portal on riverview-medical.example; ordinary overdue reminder.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-002",
+   "label": "legitimate",
+   "category": "university or school email",
+   "status": "quality_note",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "quality_issue",
+     "reason": "Label is fine (benign appointment confirmation) but it is wildly off its category: an accounting firm's client-meeting confirmation, not a university or school email.",
+     "evidence": "From sarah.chen@meridian-ledger.example: \"This message confirms your appointment with our senior partner on Thursday at 10:00 a.m. in our downtown office. Please bring the most recent trial balance\""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "quality_issue",
+     "reason": "Label is fine (benign), but the text is a client appointment confirmation from an accounting firm and has nothing to do with the 'university or school email' category.",
+     "evidence": "\"This message confirms your appointment with our senior partner on Thursday at 10:00 a.m. in our downtown office. Please bring the most recent trial balance\" ... \"Meridian Ledger Associates\""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-003",
+   "label": "legitimate",
+   "category": "personal email",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "cousin asks for a family deed by post or scan, offers to cover postage; no money or credentials requested.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Formal but benign family request for an estate deed; no payment, credentials or link requested.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-004",
+   "label": "legitimate",
+   "category": "marketing or newsletter",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "telco promotion; link on sender's domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Telecom promotion; link on the sender's summitwave-comms.example domain, no payment or credentials requested.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-005",
+   "label": "legitimate",
+   "category": "urgent request from a manager",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "urgent internal request to upload a customs file; nothing fraudulent.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Operations coordinator urgently asking colleagues to upload an internal document to the shared drive; nothing fraudulent.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-006",
+   "label": "phishing",
+   "category": "advance-fee fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "$50,000 award for a $250 handling fee on a lookalike rewards domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "$50,000 award for a $250 handling fee on skyline-airways-rewards.example.",
+     "evidence": "A nominal handling fee of two hundred fifty dollars is required"
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-007",
+   "label": "legitimate",
+   "category": "HR or IT administrative notice",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "maintenance notice, no link or request.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Benign maintenance notice.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-008",
+   "label": "phishing",
+   "category": "malicious attachment",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "pressure to open and sign a named attachment by 3 p.m.; lookalike '-docs' domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Pressure to open and sign an attached PDF by 3 p.m. from cascade-freight-docs.example (lookalike), with an odd instruction to re-download from a link.",
+     "evidence": "If the PDF does not open correctly, download it again from the link in the message header."
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-009",
+   "label": "phishing",
+   "category": "delivery scam",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "$4.95 redelivery fee and details on a lookalike '-notify' domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Redelivery fee and detail confirmation demanded via a '-health-notify' lookalike domain with a 48-hour deadline.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-010",
+   "label": "legitimate",
+   "category": "genuine security notice",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "sign-in alert; reset link on sender's domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "New sign-in alert; reset link on the same ironclad-mfg.example domain as the sender.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-011",
+   "label": "phishing",
+   "category": "credential theft",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "username/password request on a lookalike 'cloudnest-login' domain with lockout threat.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Credential request on cloudnest-login.example with lockout threat.",
+     "evidence": "sign in with your username and password"
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-012",
+   "label": "legitimate",
+   "category": "customer support reply",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "support reply confirming a permit is active.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Municipal support reply confirming a permit payment was received; no link or sensitive request.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-013",
+   "label": "legitimate",
+   "category": "genuine invoice or payment reminder",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "short invoice reminder, no changed details or pressure.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Plain invoice reminder from harborview-accounting.example; nothing fraudulent.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-014",
+   "label": "legitimate",
+   "category": "university or school email",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "benign student-plan promo with no link. Note: it is telco marketing aimed at students, only loosely a university/school email.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Benign student-plan promotion and club event from a mobile provider, no link. Category drift: closer to marketing than university mail.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-015",
+   "label": "legitimate",
+   "category": "marketing or newsletter",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "free screening announcement; registration link on sender's domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Free health screening announcement; registration link on the hospital's own domain, no payment or credentials requested.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-016",
+   "label": "legitimate",
+   "category": "genuine invoice or payment reminder",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "patient statement; link on sender's domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Patient statement; sender and link on pinecrest-care.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-017",
+   "label": "legitimate",
+   "category": "ordinary work thread",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "benign work thread.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Benign colleague thread.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-018",
+   "label": "legitimate",
+   "category": "personal email",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "benign family RSVP.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Benign family dinner RSVP (stilted but fine).",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-019",
+   "label": "phishing",
+   "category": "CEO fraud / business email compromise",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "asks for gift cards and codes; lookalike '-bank-ceo' domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Gift-card CEO fraud from a '-bank-ceo' lookalike domain asking for codes by reply.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-020",
+   "label": "phishing",
+   "category": "invoice fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "changed bank account with deadline; lookalike 'gov-payments' domain. Note: roles are muddled (Accounts Payable telling a 'Vendor' to remit) and the account number is phone-shaped, but still clearly fraudulent.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Urgent bank-detail change with new account and routing numbers from a '-gov-payments' lookalike domain. Roles are muddled (an 'Accounts Payable' department announcing its receiving account) but the fraud element is clear.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-021",
+   "label": "legitimate",
+   "category": "genuine security notice",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "reset link is on the sender's own domain, so it fits the spec; note an unsolicited same-day mass password reset is a phishing-like pattern detectors may reasonably flag.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Sender and reset link both on harbor-city-admin.example, matching Harbor City Administration; urgent but consistent.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-022",
+   "label": "phishing",
+   "category": "delivery scam",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "$6.50 customs fee and details with 24h pressure on a lookalike domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Customs fee and personal details on elmwood-civic-delivery.example with a 24-hour deadline.",
+     "evidence": "small customs fee of 6.50 dollars"
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-023",
+   "label": "legitimate",
+   "category": "urgent request from a manager",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "urgent internal request for a draft memo; nothing fraudulent.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Manager asks for a draft memo in shared folder.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-024",
+   "label": "phishing",
+   "category": "delivery scam",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "$3.75 release fee and verification form on a lookalike '-notify' domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Release fee via valley-ridge-bookkeeping-notify.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-025",
+   "label": "legitimate",
+   "category": "genuine delivery notification",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "delivery status; tracking link on sender's domain, no fee or data requested.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Delivery update; link on maplewood-city.example, no payment or data requested.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-026",
+   "label": "phishing",
+   "category": "credential theft",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "credential verification on a lookalike 'payroll-secure' domain with delayed-pay threat.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Demands credential verification via a link on a '-payroll-secure' lookalike domain with a threat of delayed pay.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-027",
+   "label": "legitimate",
+   "category": "marketing or newsletter",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "city newsletter; link on sender's domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "City newsletter; link on the sender's harborview-city.example domain, nothing requested.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-028",
+   "label": "phishing",
+   "category": "invoice fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "new wire account, threats, 24h deadline; lookalike 'brightledger-invoices' domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Threatening overdue notice with new bank account on brightledger-invoices.example (lookalike of Bright Ledger).",
+     "evidence": "New bank account for wire transfer"
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-029",
+   "label": "phishing",
+   "category": "CEO fraud / business email compromise",
+   "status": "label_doubt_one",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "gift-card request from a boss 'in meetings all day' on an '-exec' domain. Weak: it never asks for the codes and says to 'expense them', so the body alone could pass as a real errand.",
+     "evidence": "jordan.hale@vividmart-exec.example"
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ambiguous",
+     "reason": "Gift-card request from an '-exec' domain, but it only asks to buy cards 'from the usual place' for a client event and expense them; no codes to send, no secrecy, no remote handover. Could be a real boss's errand.",
+     "evidence": "jordan.hale@vividmart-exec.example / Grab 10 of the $50 ones from the usual place and expense them."
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-030",
+   "label": "phishing",
+   "category": "invoice fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "pay to new account details and confirm via link within 48h; lookalike payments domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "summittrust-payments.example; 'transfer funds to the new account details attached', 48h threat.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-031",
+   "label": "legitimate",
+   "category": "HR or IT administrative notice",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "HR enrolment and maintenance reminder, no link.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Friendly HR benefits and maintenance reminder with no links and no sensitive request.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-032",
+   "label": "phishing",
+   "category": "delivery scam",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "$4.95 customs fee plus personal details with 24h destruction threat (a software subscription held at customs is an implausible premise, but clearly fraudulent).",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Customs fee plus personal details via cloudsync-delivery.example; absurd premise (customs on software subscription) is itself a tell.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-033",
+   "label": "phishing",
+   "category": "CEO fraud / business email compromise",
+   "status": "label_doubt_both",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ambiguous",
+     "reason": "Labelled phishing, but the sender domain is a plain company domain and the mail only asks a colleague to forward existing wire info to an assistant: no payment, bank-detail change, gift cards, link or credentials. A careful reader could take it as an ordinary urgent internal request.",
+     "evidence": "From maria.chen@riverstone-finance.example: \"Can you forward the current wire info for account ending 7742? It is urgent for closing today.\""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ambiguous",
+     "reason": "Labelled BEC but asks only that existing wire info be forwarded; no payment, gift card or changed-bank-detail request, no organisation named, no identifiable impersonation. Reads like a terse (and slightly garbled) urgent colleague request; could go either way.",
+     "evidence": "\"Can you forward the current wire info for account ending 7742? It is urgent for closing today.\" (from maria.chen@riverstone-finance.example)"
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-034",
+   "label": "legitimate",
+   "category": "customer support reply",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "support reply; tracking link on sender's domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Support reply; tracking link on horizontransport.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-035",
+   "label": "phishing",
+   "category": "credential theft",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "password reset/identity demand within 2 hours on a lookalike 'city-login' domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Threatens permanent suspension within 2 hours unless the reader signs in via a '-city-login' lookalike domain.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-036",
+   "label": "legitimate",
+   "category": "urgent request from a manager",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "director asks for a report approval by end of day.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Manager asks for report approval by end of day and invites a phone call; nothing fraudulent.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-037",
+   "label": "phishing",
+   "category": "invoice fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "overdue invoice with changed bank details and threats; lookalike 'air-payments' domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Overdue invoice with pay link and changed bank details on skypath-air-payments.example (lookalike).",
+     "evidence": "our bank details have changed so please use the new ones in the portal"
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-038",
+   "label": "legitimate",
+   "category": "meeting or scheduling",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "meeting follow-up; link on sender's domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Meeting follow-up; link on the sender's domain.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-039",
+   "label": "legitimate",
+   "category": "customer support reply",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "permit approval; link on sender's domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Permit approval reply; portal link on the same pinecrest-city.example domain, nothing requested.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-040",
+   "label": "phishing",
+   "category": "CEO fraud / business email compromise",
+   "status": "label_doubt_both",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ambiguous",
+     "reason": "Labelled phishing, but the request is only to send vendor payment details; it does not ask for a payment, gift cards or a bank-detail change, and is internally incoherent. The '-exec' domain is the only tell, so the text could pass as a normal urgent colleague request.",
+     "evidence": "From sam.patel@clearbooks-exec.example: \"Can you send over the updated vendor payment details for the Q3 close? We're switching banks and I need the new wire info ASAP\""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ambiguous",
+     "reason": "The sender asks the recipient to SEND vendor payment details rather than to make a payment, buy gift cards or use changed bank details, and the text is internally confused about who is switching banks. Only the '-exec' sender domain hints at fraud; there is no organisation named to compare it against.",
+     "evidence": "From sam.patel@clearbooks-exec.example; \"Can you send over the updated vendor payment details for the Q3 close? We're switching banks and I need the new wire info ASAP so I can process the transfer this afternoon.\""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-041",
+   "label": "legitimate",
+   "category": "personal email",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "benign personal email.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Benign personal email.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-042",
+   "label": "phishing",
+   "category": "malicious attachment",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "push to open a named payroll document via link on a lookalike 'harmonyhr-secure' domain (low pressure, but fits spec).",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Weak but acceptable: harmonyhr-secure.example lookalike with unsolicited payroll document link.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-043",
+   "label": "legitimate",
+   "category": "urgent request from a manager",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "manager asks for a report before a 3pm call.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Manager needs a shipment report before a 3pm call and offers a phone call; nothing fraudulent.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-044",
+   "label": "legitimate",
+   "category": "meeting or scheduling",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "meeting attendance confirmation, no link.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Benign meeting attendance request.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-045",
+   "label": "legitimate",
+   "category": "university or school email",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "training reminder; link on the company's own domain. Note: it is corporate staff training, closer to an HR/IT notice than a university/school email.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Benign; link on pulsewave.example. Note: category drift (corporate training notice, not university/school mail) but label unaffected.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-046",
+   "label": "phishing",
+   "category": "credential theft",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "asks staff to sign in to 'verify' on a lookalike 'forgeworks-login' domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Credential request on forgeworks-login.example, a lookalike of ForgeWorks Manufacturing.",
+     "evidence": "sign in with your usual credentials so we can confirm everything is good"
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-047",
+   "label": "legitimate",
+   "category": "personal email",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "benign family email.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Family visit plans; mention of papers to sign in person is benign.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-048",
+   "label": "phishing",
+   "category": "credential theft",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "asks to confirm credentials on a lookalike 'steelcore-secure' domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "steelcore-secure.example lookalike asking to verify with current credentials.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-049",
+   "label": "legitimate",
+   "category": "genuine security notice",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "sign-in alert; reset link on sender's domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Sign-in alert; link on alloytech.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-050",
+   "label": "legitimate",
+   "category": "marketing or newsletter",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A2",
+     "verdict": "ok",
+     "reason": "retail newsletter; link on sender's domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Retail newsletter, consistent domain.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-051",
+   "label": "phishing",
+   "category": "delivery scam",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Missed-delivery notice from a hyphenated lookalike domain demanding a small customs fee and personal details via link.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Customs fee and details on brightline-accounts-delivery.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-052",
+   "label": "legitimate",
+   "category": "meeting or scheduling",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Benign meeting reschedule from the organisation's own domain; no link or request beyond availability.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Benign workshop rescheduling.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-053",
+   "label": "phishing",
+   "category": "invoice fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Overdue invoice plus changed bank details from a '-billing' lookalike of the NimbusFlow domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Overdue invoice with new bank details from nimbusflow-platforms-billing.example (lookalike).",
+     "evidence": "the previous account details are no longer valid"
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-054",
+   "label": "legitimate",
+   "category": "genuine security notice",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "New sign-in alert; sender and reset link both on clearwave-telecom.example.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Sign-in alert; sender and reset link on clearwave-telecom.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-055",
+   "label": "legitimate",
+   "category": "HR or IT administrative notice",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Routine IT update notice, no action or link requested.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Benign IT maintenance notice, no link, no action required.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-056",
+   "label": "phishing",
+   "category": "malicious attachment",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Pressure to open a named attachment under threat of account restriction, from a '-secure' lookalike bank domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Bank impersonation from a '-bank-secure' lookalike domain with pressure to open a password-protected attachment and reply within 24 hours or face restrictions.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-057",
+   "label": "phishing",
+   "category": "invoice fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Overdue invoice with changed bank details, same-day pressure and phone support 'unavailable', from a '-invoices' lookalike domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "riverbend-medical-invoices.example, changed bank details, pay today, no phone support.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-058",
+   "label": "legitimate",
+   "category": "marketing or newsletter",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Benign service bulletin from the company's own domain; reads more like an operations notice than marketing but the label is right.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Service bulletin about transit times with no link and no action required.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-059",
+   "label": "legitimate",
+   "category": "genuine security notice",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Password reset with sender and link both on apexhaul-logistics.example; broken English but nothing fraudulent.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Reset link on the sender's own apexhaul-logistics.example domain; ignore-if-not-you.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-060",
+   "label": "legitimate",
+   "category": "ordinary work thread",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Ordinary internal work thread, no request for anything sensitive.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Benign work thread about a capacity plan.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-061",
+   "label": "legitimate",
+   "category": "genuine invoice or payment reminder",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Plain invoice reminder from the shop's own domain, payment via existing account portal.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Short invoice reminder, existing portal.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-062",
+   "label": "phishing",
+   "category": "CEO fraud / business email compromise",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Classic BEC: urgent confidential wire, secrecy, '-urgent' lookalike domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Classic CEO fraud: '-urgent' lookalike domain, secret same-day $18,500 wire, reply only to this message.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-063",
+   "label": "phishing",
+   "category": "delivery scam",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Customs-hold fee with ID copy requested via link on a '-ship' lookalike domain, 24h threat.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Customs-fee scam from a manufacturer-named '-ship' domain demanding payment, ID copy and action within 24 hours via link only.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-064",
+   "label": "phishing",
+   "category": "CEO fraud / business email compromise",
+   "status": "label_doubt_one",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ambiguous",
+     "reason": "Bank-detail change is the only fraud marker; the sender domain matches the organisation, there is no urgency or secrecy, and it points to the intranet policy document and 'usual channels' for verification, so it reads like a genuine internal treasury notice.",
+     "evidence": "controller@talentpay-services.example; \"The change has already been approved by the board and is reflected in the latest treasury policy document available on the intranet.\""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Unsigned 'Finance Controller' instructs staff to redirect salary and vendor payments to a new bank account and confirm by reply.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-065",
+   "label": "legitimate",
+   "category": "ordinary work thread",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Short benign work reply.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Benign one-line work confirmation.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-066",
+   "label": "phishing",
+   "category": "malicious attachment",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Pushes a named attachment with 'the file is safe' reassurance from a '-support-docs' lookalike of the QuickCart domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "quickcart-support-docs.example; 'The file is safe and come from our system'.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-067",
+   "label": "legitimate",
+   "category": "ordinary work thread",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Ordinary colleague feedback on a draft.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Clinician's comments on a staffing draft; benign work thread.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-068",
+   "label": "phishing",
+   "category": "CEO fraud / business email compromise",
+   "status": "label_doubt_one",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Gift-card purchase request with 'tied up in meetings' pretext from a '-finance' lookalike domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ambiguous",
+     "reason": "Asks a colleague to buy $500 of gift cards and bring them physically to the office against a receipt and budget code; no codes sent, no secrecy. Only tell is the domain harborview-civic-finance.example for Harborview Municipal Services.",
+     "evidence": "Could you pick up $500 in gift cards from the local supermarket today and bring them to the office?"
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-069",
+   "label": "legitimate",
+   "category": "personal email",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Benign personal email.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Benign family email.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-070",
+   "label": "legitimate",
+   "category": "genuine security notice",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "MFA enrolment notice; sender and portal both on ironridge-manufacturing.example.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "MFA enrolment notice; sender and portal link both on ironridge-manufacturing.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-071",
+   "label": "legitimate",
+   "category": "marketing or newsletter",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Benign community programme announcement, no link or payment.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Benign programme announcement, no links.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-072",
+   "label": "phishing",
+   "category": "delivery scam",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Baggage storage fee and details via link on a '-notify' lookalike domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Storage fee and details via skypath-airways-notify.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-073",
+   "label": "phishing",
+   "category": "malicious attachment",
+   "status": "label_doubt_both",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "label_wrong",
+     "reason": "No fraudulent element: sender and link are both on the organisation's own domain, there is no pressure, no credential or payment request; it reads as a normal support reply sharing a report.",
+     "evidence": "support@nimbusflow-platforms.example; https://files.nimbusflow-platforms.example/share/usage-nov"
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "label_wrong",
+     "reason": "No fraudulent element: sender and link are both on nimbusflow-platforms.example, matching the signature; no urgency, credentials or payment. Reads as a normal support reply sharing a report.",
+     "evidence": "support@nimbusflow-platforms.example / https://files.nimbusflow-platforms.example/share/usage-nov"
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-074",
+   "label": "legitimate",
+   "category": "customer support reply",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Benign support reply, nothing requested.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Support reply; replacement sent, nothing requested.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-075",
+   "label": "phishing",
+   "category": "CEO fraud / business email compromise",
+   "status": "label_doubt_both",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "label_wrong",
+     "reason": "Labelled BEC but requests no payment and gives no bank details; it actually tells staff to hold transfers and wait for written confirmation, from the organisation's own domain. Reads as a legitimate finance control notice.",
+     "evidence": "cfo-office@nimbusflow-platforms.example; \"Until the formal notice is issued, hold any pending transfers and await written confirmation from this office.\""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "label_wrong",
+     "reason": "No fraudulent request: sender domain matches NimbusFlow Platforms, no bank details are given, and the email tells staff to HOLD transfers and await written confirmation, which is a sound control. Reads as a legitimate finance notice.",
+     "evidence": "Until the formal notice is issued, hold any pending transfers and await written confirmation from this office."
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-076",
+   "label": "legitimate",
+   "category": "genuine invoice or payment reminder",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Genuine invoice reminder, payment via usual portal or details on the invoice.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Ordinary invoice notice, usual portal.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-077",
+   "label": "legitimate",
+   "category": "urgent request from a manager",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Urgent but benign manager request for a report and an approval.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Manager asks for a report and an overtime approval; consistent domain, nothing fraudulent.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-078",
+   "label": "phishing",
+   "category": "invoice fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Overdue notice asking to 'update payment details' via link on aether-link-billing.example, a lookalike of AetherLink.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Overdue notice from a '-billing' lookalike domain demanding same-day payment and payment details through a link.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-079",
+   "label": "legitimate",
+   "category": "genuine delivery notification",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Benign digital-delivery confirmation from cloudforge.example; a loose fit for 'delivery notification' but label is right.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Benign licence key notice pointing to customer portal, no link.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-080",
+   "label": "phishing",
+   "category": "CEO fraud / business email compromise",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Sender domain looks genuine, but the request to buy $2,000 in gift cards and send codes in secret is unmistakable fraud.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Gift-card BEC with secrecy and codes by reply.",
+     "evidence": "Please buy $2,000 in gift cards from any major store and send me the codes by reply."
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-081",
+   "label": "legitimate",
+   "category": "genuine invoice or payment reminder",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Friendly tuition reminder, pay via existing portal or in person.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Tuition reminder pointing to existing portal/office.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-082",
+   "label": "phishing",
+   "category": "delivery scam",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Customs fee via link on a '-shipping' lookalike domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Customs fee demanded through a pay link on a payroll-named shipping domain that matches no real carrier.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-083",
+   "label": "phishing",
+   "category": "advance-fee fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Unclaimed refund released only after an $85 processing fee and bank details: advance-fee fraud despite a plausible sender domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Unclaimed $4,200 refund offered in exchange for an $85 fee and bank details.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-084",
+   "label": "legitimate",
+   "category": "genuine invoice or payment reminder",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Plain invoice notice, pay through online account.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Plain invoice notice pointing to the customer's online account; no link, no bank change.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-085",
+   "label": "phishing",
+   "category": "malicious attachment",
+   "status": "label_doubt_both",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "label_wrong",
+     "reason": "No fraudulent element: sender domain matches Ridgeway Logistics, tone is relaxed ('when you get a chance'), no pressure, no request beyond reading a schedule. Indistinguishable from an ordinary work email with an attachment.",
+     "evidence": "sam.okonkwo@ridgewaylogistics.example; \"please have a look when you get a chance\""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ambiguous",
+     "reason": "Labelled malicious attachment, but sender domain matches the organisation and the message is a casual, no-pressure schedule update; nothing a careful reader could point to as fraudulent.",
+     "evidence": "From sam.okonkwo@ridgewaylogistics.example, signed Ridgeway Logistics: \"The file is called Ridgeway_Northern_Route_Rev3.pdf. Let me know if any of the new times clash with your side.\""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-086",
+   "label": "phishing",
+   "category": "advance-fee fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Prize win requiring a $50 fee and bank account, from a '-rewards' lookalike domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Prize for $50 fee and bank account.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-087",
+   "label": "phishing",
+   "category": "delivery scam",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Sender is on skyharborair.example but the payment link is on a different domain (skyharbor-air-clearance.example) and demands a customs fee.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Customs fee link on skyharbor-air-clearance.example differs from sender skyharborair.example.",
+     "evidence": "https://customs.skyharbor-air-clearance.example/pay"
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-088",
+   "label": "legitimate",
+   "category": "marketing or newsletter",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Benign market reminder.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Benign community market reminder.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-089",
+   "label": "phishing",
+   "category": "malicious attachment",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Forces opening an attachment to keep account access, from cloudforge-support.example rather than cloudforge.example.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Open attachment or lose account access, from cloudforge-support.example (lookalike of CloudForge).",
+     "evidence": "This is require for continue access to your account."
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-090",
+   "label": "phishing",
+   "category": "advance-fee fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Bill credit in return for an activation fee on a lookalike '-offers' domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "$75 credit for $4.99 activation fee; aetherlink-offers.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-091",
+   "label": "legitimate",
+   "category": "customer support reply",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Benign support reply.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Short support reply with a tracking number; no link or request.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-092",
+   "label": "phishing",
+   "category": "credential theft",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Sign-in verification via link; sender (ridgeway-logistics-portal) and link (ridgeway-logistics-verify) are two different lookalike domains.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Sender ridgeway-logistics-portal.example, link ridgeway-logistics-verify.example; verify within 24h or suspension.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-093",
+   "label": "phishing",
+   "category": "credential theft",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Sender on cloudforge.example but the reset link goes to login.cloudforge-secure.example, a mismatched domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Sender cloudforge.example but reset link on cloudforge-secure.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-094",
+   "label": "legitimate",
+   "category": "customer support reply",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Benign compensation update; only asks for a preference and booking reference by reply.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Compensation reply; only asks for booking reference by reply.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-095",
+   "label": "phishing",
+   "category": "advance-fee fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Grant released only after a $120 fee plus bank account number.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Grant of $8,500 released only after a $120 fee, bank account number and full legal name.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-096",
+   "label": "phishing",
+   "category": "credential theft",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Sender on lakesidehealthgroup.example but login link on lakeside-health-portal.example; asks for sign-in plus date of birth and postcode.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Link domain verify.lakeside-health-portal.example does not match the sender domain lakesidehealthgroup.example, and it asks for sign-in plus date of birth and postcode.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-097",
+   "label": "phishing",
+   "category": "invoice fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Unsolicited vendor bank-detail change by email; sender domain helixpayroll.example also differs from the helixpayrollpartners.example used for the same organisation in syn-grok-076. Subtle but fits the spec.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Vendor announces changed receiving bank account and asks for records to be updated; sender domain matches Helix Payroll Partners, so the bank-detail change is the only fraud marker.",
+     "evidence": "We have changed our receiving bank for payroll service invoices."
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-098",
+   "label": "legitimate",
+   "category": "meeting or scheduling",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Benign briefing time change.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Benign briefing time change.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-099",
+   "label": "phishing",
+   "category": "advance-fee fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Sender domain matches the institution, but demanding a $150 'processing contribution' per proposal to be shortlisted for funding is an advance-fee element.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Internal-looking funding notice that requires a $150 'processing contribution' per proposal to be short-listed. Sender domain is consistent, so the fee is the only tell.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-100",
+   "label": "phishing",
+   "category": "credential theft",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Verify-account link; sender and link are two different lookalike domains (harborview-civic-login / harborview-civic-verify).",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Sender harborview-civic-login.example, link harborview-civic-verify.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-101",
+   "label": "phishing",
+   "category": "advance-fee fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Unclaimed fare adjustment released after a processing fee and account details, from a '-refunds' lookalike domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Refund promise with a 47.00 processing fee and account details, from aether-airlines-refunds.example.",
+     "evidence": "a one-time processing fee of 47.00 payable by bank transfer or card"
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-102",
+   "label": "legitimate",
+   "category": "genuine delivery notification",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Benign specimen receipt confirmation, no action or link.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Benign lab specimen receipt confirmation on a consistent domain. Mild category drift: a lab receipt rather than a carrier or shop delivery notice.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-103",
+   "label": "phishing",
+   "category": "CEO fraud / business email compromise",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Urgent wire to new account details from an executive who 'can't get into the usual portal', on a '-mfg-finance' lookalike domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Urgent wire to newly supplied account details from an executive who 'can't get into the usual portal'; domain vanguard-mfg-finance.example is a lookalike.",
+     "evidence": "Use the new account details they sent me this morning"
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-104",
+   "label": "phishing",
+   "category": "malicious attachment",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Forces opening an attachment under threat of account restriction, from a '-secure' lookalike bank domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Bank impersonation from a '-bank-secure' lookalike domain pressing the reader to open a password-protected attachment within 48 hours or face account restriction.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-105",
+   "label": "legitimate",
+   "category": "university or school email",
+   "status": "quality_note",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "quality_issue",
+     "reason": "Label (legitimate) is fine, but the content is wildly off its category: specified as a university or school email, it is a logistics dispatcher offering an overtime shift.",
+     "evidence": "dispatch@horizon-logistics.example; \"the 22:00 run out of the west dock is short one driver\""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "quality_issue",
+     "reason": "Benign, so the label holds, but it is entirely off its category: spec says university or school email, the text is a logistics dispatcher offering an overtime shift.",
+     "evidence": "From: Horizon Logistics Dispatch <dispatch@horizon-logistics.example> / the 22:00 run out of the west dock is short one driver"
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-106",
+   "label": "phishing",
+   "category": "invoice fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Overdue invoice, changed bank account 'for security reasons', late-fee threat and an attachment to open, from ledgerco-accounts.example.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "ledgerco-accounts.example lookalike, changed bank account, threats.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-107",
+   "label": "legitimate",
+   "category": "ordinary work thread",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Ordinary work thread.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Short internal thread about a sidewalk repair priority list; benign.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-108",
+   "label": "legitimate",
+   "category": "university or school email",
+   "status": "quality_note",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "quality_issue",
+     "reason": "Label (legitimate) is fine, but it is off its category: specified as a university or school email, it is a corporate warehouse safety training notice to employees (an HR/IT notice).",
+     "evidence": "training@cascade-logistics.example; \"The updated warehouse safety module is now live on the learning portal.\""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Benign training notice with no link. Category drift: corporate warehouse safety training rather than university or school mail.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-109",
+   "label": "phishing",
+   "category": "delivery scam",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Customs clearance fee for a domestically shipped handset via link on a '-delivery' domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Fake missed-delivery notice demanding a customs fee via a link on a delivery-themed lookalike domain.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-110",
+   "label": "legitimate",
+   "category": "genuine invoice or payment reminder",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Genuine invoice; payment to the account already on file, no changes requested.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Routine invoice payable to the account on file.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-111",
+   "label": "legitimate",
+   "category": "genuine delivery notification",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Shipping notice with tracking link on the shop's own domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Shipping notice; sender and tracking link on cartwright-online.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-112",
+   "label": "phishing",
+   "category": "delivery scam",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Implausible customs fee for payroll documents, same-day deadline, link on a '-hr-delivery' lookalike domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Customs clearance fee for 'payroll documents' via peoplefirst-hr-delivery.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-113",
+   "label": "legitimate",
+   "category": "HR or IT administrative notice",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Benign IT update notice, no link or credential request.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Internal IT update notice with no link and no credential request; domain consistent with Horizon Logistics.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-114",
+   "label": "phishing",
+   "category": "invoice fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Final-notice invoice with collections threat and payment link on a '-pay' lookalike domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "aether-airlines-pay.example payment link, collections threat.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-115",
+   "label": "phishing",
+   "category": "advance-fee fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Loyalty credit released after a processing fee and account number on a '-rewards' lookalike domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Loyalty credit released only after confirming account number and paying a 9.50 fee on a '-rewards' lookalike domain.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-116",
+   "label": "legitimate",
+   "category": "HR or IT administrative notice",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Benign internal password rotation reminder, no link.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Internal quarterly password reset reminder with no link and no request to send credentials.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-117",
+   "label": "legitimate",
+   "category": "personal email",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Benign personal email.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Benign personal email.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-118",
+   "label": "phishing",
+   "category": "credential theft",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Credential verification link on a '-login' lookalike domain with a 12-hour lockout threat.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "lakeside-university-login.example credential verification with 12h threat.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-119",
+   "label": "phishing",
+   "category": "invoice fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Bank-detail change for an invoice from a '-invoice' lookalike domain. Note one incoherent sentence, but the email is still usable.",
+     "evidence": "\"Details are in the reply if you need them.\""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Bank-detail change for an invoice from an '-airlines-invoice' lookalike domain. Wording is slightly garbled ('Details are in the reply if you need them') but the fraud element is clear.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-120",
+   "label": "phishing",
+   "category": "malicious attachment",
+   "status": "label_doubt_one",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Pushes a named attachment from riverside-cityworks-docs.example, a lookalike of the riverside-cityworks.example domain. Subtle: the domain suffix is the only giveaway.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ambiguous",
+     "reason": "Three-line casual note attaching a PDF 'you asked for'; no threat, no credentials, no payment. The only tell is the '-docs' suffix in the sender domain.",
+     "evidence": "permits@riverside-cityworks-docs.example / Open it and let me know if the dates look right."
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-121",
+   "label": "legitimate",
+   "category": "HR or IT administrative notice",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Benign training reminder, no link.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Compliance training reminder with no link or sensitive request.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-122",
+   "label": "legitimate",
+   "category": "ordinary work thread",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Benign work note.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Short benign colleague note about a draft in the shared folder.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-123",
+   "label": "legitimate",
+   "category": "meeting or scheduling",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Benign meeting reschedule.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Benign rescheduling request.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-124",
+   "label": "phishing",
+   "category": "CEO fraud / business email compromise",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Confidential gift-card purchase with codes sent by email, from a '-exec' lookalike domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Classic gift-card BEC: buy cards, send codes by email, keep it secret; sender domain peoplefirst-hr-exec.example is a lookalike of PeopleFirst HR Services.",
+     "evidence": "send the codes to this email address"
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-125",
+   "label": "phishing",
+   "category": "CEO fraud / business email compromise",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Changed bank details for a supplier payment from cartwright-online-pay.example, a lookalike of cartwright-online.example.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Bank-detail change request from cartwright-online-pay.example, a lookalike of Cartwright Online.",
+     "evidence": "We need to update the bank account for the next supplier payment."
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-126",
+   "label": "legitimate",
+   "category": "urgent request from a manager",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Urgent but benign request for internal documents into a shared folder.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Urgent but ordinary request for a reconciliation package in a shared folder; phone number offered, nothing fraudulent.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-127",
+   "label": "phishing",
+   "category": "advance-fee fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Unclaimed refund in return for a wired $95 fee plus date of birth and bank details.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Unclaimed refund for a $95 wire fee plus DOB and bank details.",
+     "evidence": "we require a processing fee of $95 paid by wire"
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-128",
+   "label": "legitimate",
+   "category": "genuine delivery notification",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Card dispatch notice; sender and all links on meridianbank.example, explicitly says it will never ask for card number or PIN.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Replacement card dispatch notice; all links on the sender's meridianbank.example domain and it states the bank never asks for card number, PIN or passcode by email.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-129",
+   "label": "legitimate",
+   "category": "genuine security notice",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Sign-in alert with sender and links on summitridgehealth.example; nothing requested by email.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "New sign-in alert; sender and links on summitridgehealth.example and it states it never asks for passwords. Minor oddity: a 'patient portal' account with a 'provider ID'.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-130",
+   "label": "legitimate",
+   "category": "marketing or newsletter",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Marketing offer with link on the institution's own domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Bank CD promotion; sender and link on oakvalesavings.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-131",
+   "label": "phishing",
+   "category": "advance-fee fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Prize requiring a Western Union fee plus passport number and date of birth.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Prize for a $187 Western Union fee plus passport number.",
+     "evidence": "Please send the fee by Western Union or money order"
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-132",
+   "label": "legitimate",
+   "category": "genuine delivery notification",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Shipping notice with tracking and portal links on forgewell.example.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Shipping notice; all links on forgewell.example, no payment asked.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-133",
+   "label": "phishing",
+   "category": "CEO fraud / business email compromise",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Urgent payroll transfer to a new account with a secrecy instruction.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "CFO orders a $48,750 payroll transfer to a new account with secrecy.",
+     "evidence": "Do not discuss this with others until the transfer is done."
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-134",
+   "label": "phishing",
+   "category": "malicious attachment",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Statement pushed as an attachment 'so you do not need to log in', from a '-cu-alerts' lookalike domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Weak but acceptable: lookalike lakeside-cu-alerts.example, statement pushed as attachment 'so you do not need to log in', reply-to-confirm.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-135",
+   "label": "phishing",
+   "category": "credential theft",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Sign-in and payment-method confirmation via link on a '-secure' lookalike domain with a read-only threat.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "nimbus-taskflow-secure.example; sign in and confirm payment method.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-136",
+   "label": "phishing",
+   "category": "delivery scam",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Customs fee and card digits via link on a '-parcel' lookalike domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Customs fee plus card digits on aether-crm-parcel.example.",
+     "evidence": "clearance fee of $42.80"
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-137",
+   "label": "legitimate",
+   "category": "meeting or scheduling",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Benign call reschedule.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Short request to move an ops call; benign.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-138",
+   "label": "legitimate",
+   "category": "HR or IT administrative notice",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Benefits enrolment notice; sender and link on vistapacific.example.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Sender and benefits link both on vistapacific.example; routine enrolment notice.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-139",
+   "label": "phishing",
+   "category": "invoice fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Past-due invoice with changed receiving bank account and same-day pressure. Sender domain is consistent with the named vendor, so the bank change is the only marker.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Past-due invoice with changed receiving bank account and pressure to pay today; domain matches HR Nexus Services so the bank change is the fraud marker.",
+     "evidence": "Note that our receiving bank account has changed."
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-140",
+   "label": "phishing",
+   "category": "invoice fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Overdue invoice with updated remittance details 'for security reasons'; the previous account 'no longer monitored'. Sender domain is consistent with the vendor, so the bank change is the only marker.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Sender domain matches the vendor name, but the email announces changed bank details and directs payment to a new account, a clear invoice-fraud element.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-141",
+   "label": "legitimate",
+   "category": "university or school email",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Benign course deadline reminder to students; link on the sender's own domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Course deadline reminder to students; portal link on the sender's cascadefreight.example domain.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-142",
+   "label": "legitimate",
+   "category": "genuine delivery notification",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Benign pickup notice, no link or payment; loose fit for 'delivery notification' but label is right.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Benign pickup notice, no link (collection rather than delivery, minor category drift).",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-143",
+   "label": "phishing",
+   "category": "credential theft",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Casual 'confirm it is still you' link on a '-login' lookalike domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "quill-workspace-login.example verify link after 'failed sign-in attempts'.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-144",
+   "label": "phishing",
+   "category": "malicious attachment",
+   "status": "label_doubt_both",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ambiguous",
+     "reason": "Nothing in the text gives it away: the sender domain is consistent with Northern Star Airlines, there is no urgency, threat, link or request. An airline emailing a boarding pass PDF is normal, so a careful reader could easily take it as legitimate.",
+     "evidence": "documents@northernstar-air.example; \"Please find attached your updated boarding pass and itinerary as BoardingPass_NS441.pdf.\""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ambiguous",
+     "reason": "Labelled malicious attachment, but it is a three-sentence boarding-pass email from a domain consistent with the airline, with no pressure, no pretext and no request; text alone gives nothing away.",
+     "evidence": "From documents@northernstar-air.example: \"Please find attached your updated boarding pass and itinerary as BoardingPass_NS441.pdf. Open the file to view gate and seat details.\""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-145",
+   "label": "phishing",
+   "category": "advance-fee fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Settlement award in return for a $120 release fee and banking information.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "Class-action settlement promised in exchange for a $120 release fee and banking information, from a '-claims' domain.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-146",
+   "label": "phishing",
+   "category": "advance-fee fraud",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Unsolicited grant offer requiring a $150 application fee to move 'to the top of the queue', from a '-fund' domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "$7,500 grant conditional on $150 application fee; clearview-partners-fund.example.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-147",
+   "label": "legitimate",
+   "category": "HR or IT administrative notice",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Training notice with link on talentflow.example.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B1",
+     "verdict": "ok",
+     "reason": "One-line mandatory training notice; course link on the sender's talentflow.example domain.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-148",
+   "label": "phishing",
+   "category": "malicious attachment",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Pushes a named attachment to sign under threat of service interruption, from a '-voice-docs' lookalike domain. Moderately subtle.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B3",
+     "verdict": "ok",
+     "reason": "Sender domain horizon-voice-docs.example is a lookalike of Horizon Voice Telecom and pressures the reader to open and sign a PDF under threat of service interruption. Fairly mild, but the mismatch is visible.",
+     "evidence": "Failure to return the signed agreement may result in service interruption."
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-149",
+   "label": "phishing",
+   "category": "credential theft",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Password expiry reset asking for current password and employee ID on a '-portal' lookalike domain.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Lookalike domain precision-gearworks-portal.example; asks for current password and badge ID under 48h lockout threat.",
+     "evidence": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-grok-150",
+   "label": "legitimate",
+   "category": "urgent request from a manager",
+   "status": "ok",
+   "reviews": [
+    {
+     "reviewer": "A3",
+     "verdict": "ok",
+     "reason": "Urgent but benign request for project figures into a shared drive.",
+     "evidence": ""
+    },
+    {
+     "reviewer": "B2",
+     "verdict": "ok",
+     "reason": "Manager asks for specs in shared drive.",
+     "evidence": ""
+    }
+   ]
+  }
+ ]
+}

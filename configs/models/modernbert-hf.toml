@@ -1,0 +1,20 @@
+# ModernBERT-base, fine-tuned in Phase 3 (configs/models/modernbert.toml), loaded
+# from the published weights instead of a local checkpoint. Read at 512 tokens,
+# as it was trained.
+
+[detector]
+class = "phishbench.detectors.encoder:TransformerEncoderDetector"
+data_allowed = ["train: fit (done in Phase 3)", "validation: threshold"]
+
+[detector.params]
+model_name_or_path = "iceninja3/phishing-modernbert-base"
+revision = "8343a0918db737b4dc82246e458cafe33adccc45"
+pretrained = true
+checkpoint_dir = "checkpoints/hf/phishing-modernbert-base"  # used if present (same files, downloaded by hand); else the Hub
+name = "modernbert-base"
+max_length = 512
+eval_batch_size = 16
+
+[eval]
+warmup = 3
+batch_size = 16

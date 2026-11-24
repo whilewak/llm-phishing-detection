@@ -1,0 +1,30 @@
+# Cascade tuned on val_llm by scripts/tune_cascade.py (do not edit by hand).
+# Tiers replay the per-email scores, latencies and costs saved by scripts/dump_scores.py,
+# so the cascade goes through the normal harness without re-running any model.
+
+[detector]
+class = "phishbench.detectors.cascade:CascadeDetector"
+data_allowed = ["val_llm: tier choice, hand-off thresholds, final threshold"]
+
+[detector.params]
+name = "cascade"
+
+[[detector.params.tiers]]
+class = "phishbench.detectors.replay:ReplayDetector"
+low = 0.04562162941790192
+high = 0.7689257496433818
+params = { name = "tfidf-lr", score_files = ["results/scores/tfidf-lr__synthetic-old.json", "results/scores/tfidf-lr__synthetic.json", "results/scores/tfidf-lr__test_llm.json", "results/scores/tfidf-lr__val_llm.json"] }
+
+[[detector.params.tiers]]
+class = "phishbench.detectors.replay:ReplayDetector"
+low = 0.05673714124437036
+high = 0.9685178189442075
+params = { name = "deberta-v3-base", score_files = ["results/scores/deberta-v3-base__synthetic-old.json", "results/scores/deberta-v3-base__synthetic.json", "results/scores/deberta-v3-base__test_llm.json", "results/scores/deberta-v3-base__val_llm.json"] }
+
+[[detector.params.tiers]]
+class = "phishbench.detectors.replay:ReplayDetector"
+params = { name = "claude-sonnet-5-5-zeroshot", score_files = ["results/scores/claude-sonnet-5-5-zeroshot__synthetic-old.json", "results/scores/claude-sonnet-5-5-zeroshot__synthetic.json", "results/scores/claude-sonnet-5-5-zeroshot__test_llm.json", "results/scores/claude-sonnet-5-5-zeroshot__val_llm.json"] }
+
+[eval]
+warmup = 0
+batch_size = 2500

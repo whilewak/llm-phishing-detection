@@ -1,0 +1,25 @@
+I'm a university student working on a course research project that benchmarks phishing-email DETECTORS (a rules baseline, TF-IDF + logistic regression, fine-tuned BERT-style classifiers and LLM classifiers). The public phishing corpora we use are 15-20 years old and are almost certainly in the training data of the models we test, so we need a small, fresh test set that no detector has seen. Your output is used only as labelled test data for those detectors; none of it is ever sent to anyone.
+
+Please write the 3 test emails specified below. These replace a few phishing emails from an earlier batch that turned out to have no detectable fraud in the text.
+
+Safety rules (these keep the set harmless):
+- Every organisation, person, product and address must be fictional. Do not use real brands, real companies or real people.
+- Every domain in a sender address or link must end in ".example" (a reserved top-level domain that can never resolve), for phishing and legitimate emails alike. Example: billing@northwind-freight.example, https://portal.northwind-freight.example/invoices
+- No real phone numbers (use 555 numbers), no real account numbers, no working payloads. Attachments are only mentioned by file name.
+
+Realism rules:
+- Write each email the way that sender would really write it. Follow the spec's tone, length and writing quality.
+- A phishing email should impersonate a fictional organisation the way real phishing does (for example a lookalike domain such as northwind-freight-billing.example for northwind-freight.example). Never label it, warn about it or add a disclaimer inside the email.
+- A legitimate email must be genuinely legitimate: sender domain, links and request all consistent with the organisation.
+- Vary names, organisations, greetings, sign-offs and structure between emails. Do not reuse an organisation name within this batch.
+- No placeholders such as [Name] or <link>; fill everything in.
+- For this batch, the fraud in every phishing email must be identifiable from the text of the email itself: for example a sender or link domain that is a lookalike of (not identical to) the organisation's own domain, or a request for payment, gift-card codes, credentials, a fee, or changed bank details. An attachment may be mentioned, but the email must not rely on the attachment alone to be malicious, and an email whose sender domain and request are both consistent with the organisation does not count.
+
+Output format: exactly 3 lines of JSON (JSONL) in one code block, nothing else, one object per email, in the order given:
+{"id": "<the spec id>", "from": "Display Name <address@domain.example>", "subject": "...", "body": "..."}
+Use \n for line breaks inside "body".
+
+Specs:
+- syn-chatgpt-015-r1 | PHISHING, malicious attachment: pushes the reader to open an attached or linked document (invoice, scan, voicemail, shared file); name the attachment in the text | organisation: a hospital group | tone: casual | length: medium (100-180 words) | writing: a few typos or awkward phrases | how detectable: subtle (well written, plausible, only the request or the sender domain gives it away)
+- syn-chatgpt-037-r1 | PHISHING, malicious attachment: pushes the reader to open an attached or linked document (invoice, scan, voicemail, shared file); name the attachment in the text | organisation: a retail bank | tone: terse | length: medium (100-180 words) | writing: polished | how detectable: subtle (well written, plausible, only the request or the sender domain gives it away)
+- syn-chatgpt-062-r1 | PHISHING, malicious attachment: pushes the reader to open an attached or linked document (invoice, scan, voicemail, shared file); name the attachment in the text | organisation: a retail bank | tone: formal | length: medium (100-180 words) | writing: polished | how detectable: subtle (well written, plausible, only the request or the sender domain gives it away)
