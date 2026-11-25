@@ -29,6 +29,8 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--model", required=True, type=Path, help="model config (TOML)")
     parser.add_argument("--splits", type=Path, help="frozen split directory (data/splits/<version>)")
+    parser.add_argument("--test-splits", type=Path,
+                        help="split set holding --test, if different from --splits (e.g. data/splits/synthetic-v1)")
     parser.add_argument("--test", required=True, help="test split name, or a JSON/JSONL file")
     parser.add_argument("--val", help="validation split or file, used to choose the threshold")
     parser.add_argument("--train", help="training split or file, for models that learn")
@@ -52,7 +54,13 @@ def main(argv: list[str] | None = None) -> int:
         source_groups = {}
         data_ref = {}
 
-    test = load(args.test)
+    if args.test_splits:
+        test_manifest = json.loads((args.test_splits / "manifest.json").read_text(encoding="utf-8"))
+        test = load_split(args.test_splits, args.test)
+        source_groups = {"true_phishing": test_manifest.get("true_phishing_sources", [])}
+        data_ref = {**data_ref, "test_splits": str(args.test_splits), "test_version": test_manifest.get("version")}
+    else:
+        test = load(args.test)
     val = load(args.val) if args.val else []
     train = load(args.train) if args.train else []
 

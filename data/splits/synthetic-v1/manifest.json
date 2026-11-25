@@ -1,0 +1,47 @@
+{
+  "version": "synthetic-v1",
+  "dataset": {
+    "title": "LLM-written phishing and legitimate emails",
+    "writers": [
+      "chatgpt",
+      "grok"
+    ],
+    "specs": "data/synthetic/specs.json",
+    "prompts": "data/synthetic/prompts/"
+  },
+  "processed_file": "data/synthetic/synthetic-v1.jsonl",
+  "label_mapping": "from the spec each email was written to, not from the writer's output",
+  "true_phishing_sources": [
+    "chatgpt",
+    "grok"
+  ],
+  "missing_specs": [],
+  "replaced": {
+    "syn-chatgpt-015-r1": "syn-chatgpt-015",
+    "syn-chatgpt-037-r1": "syn-chatgpt-037",
+    "syn-chatgpt-062-r1": "syn-chatgpt-062",
+    "syn-grok-033-r1": "syn-grok-033",
+    "syn-grok-040-r1": "syn-grok-040",
+    "syn-grok-075-r1": "syn-grok-075",
+    "syn-grok-144-r1": "syn-grok-144",
+    "syn-grok-073-r2": "syn-grok-073",
+    "syn-grok-085-r2": "syn-grok-085"
+  },
+  "splits": {
+    "synthetic": {
+      "n": 300,
+      "labels": {
+        "legitimate": 150,
+        "phishing": 150
+      },
+      "by_source_label": {
+        "chatgpt/legitimate": 75,
+        "chatgpt/phishing": 75,
+        "grok/legitimate": 75,
+        "grok/phishing": 75
+      },
+      "ids_sha256": "3ebef43e4c4b14a0bd68a5f3798e6b17ca534a4c8eac56f2e11efe53a47ef97e",
+      "content_fingerprint": "e7b81672743dde7c17a082e4d70cab6779af1ef98acdc29ef480141a6c21d173"
+    }
+  }
+}

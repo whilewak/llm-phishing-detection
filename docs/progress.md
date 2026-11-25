@@ -1,6 +1,6 @@
 # Progress
 
-As of 2026-11-23. Phases 0–5 are complete and benchmarked on the frozen splits. Phase 6 (cascade and report) has not started.
+As of 2026-11-23. Phases 0–5 are complete and benchmarked on the frozen splits. Phase 6 (cascade and report) is in progress.
 
 | Phase | Status | Gate |
 | --- | --- | --- |
@@ -11,7 +11,7 @@ As of 2026-11-23. Phases 0–5 are complete and benchmarked on the frozen splits
 | 3 · Encoders (ModernBERT, DeBERTa-v3, Laya) | Done | Met: all 3 encoder models benchmarked on test_llm, Laya calibrated on validation |
 | 4 · SLM (Qwen3.5-4B) | Done | Met: corrected zero-shot and eight-shot scored on frozen validation/test LLM splits; earlier zero-shot/four-shot results retained |
 | 5 · Frontier LLMs (Claude Sonnet 5.5, Haiku 5.5) | Done (PR #2, draft) | Met: all 4 configs scored on `test_llm`, thresholds from `val_llm` |
-| 6 · Cascade and report | Not started | |
+| 6 · Cascade and report | In progress (branch `phase-6-cascade`) | Cascade built, tuned and scored on `test_llm` and the synthetic set; all four tiers in; report not yet reviewed |
 
 ## Planning
 
@@ -160,9 +160,134 @@ Branch `phase-5-frontier-llms`. Plan and sources: [phase5-plan.md](phase5-plan.m
 
 To rerun (needs `ANTHROPIC_API_KEY`; cached responses are reused for free): see "Running it" in [phase5-plan.md](phase5-plan.md).
 
+## Phase 6 · Cascade and report
+
+Branch `phase-6-cascade`. Status as of 2026-11-24: every model in the plan is scored on `val_llm`, `test_llm` and the synthetic set, and the four-tier cascade is tuned and evaluated.
+
+### What was built
+
+- **Saved scores** (`scripts/dump_scores.py` → `results/scores/<model>__<split>.json`): every model's per-email score, latency and cost on `val_llm`, `test_llm` and the synthetic set. Claude scores came from the response cache ($0 new spend). The cascade is tuned and evaluated from these files, so no model is re-run or re-paid for.
+- **Cascade detector** (`detectors/cascade.py`): each tier but the last has a `low` and a `high` hand-off threshold; at or below `low` it answers legitimate, at or above `high` phishing, otherwise (or on an error or refusal) the email escalates. Latency and cost are summed over the tiers visited. `detectors/replay.py` replays saved scores so the cascade goes through the normal harness.
+- **Tuning** (`scripts/tune_cascade.py`, logic in `cascade_tuning.py`), on `val_llm` only: per tier, the candidate with the best validation recall at 1% FPR (the cheapest one if several are within one point); then a grid search over hand-off thresholds for the most recall with the cascade's FPR ≤ 1% and ≤ 10% of emails reaching the top tier. Writes `configs/models/cascade.toml` and `results/cascade_tuning.json`.
+- **Report** (`scripts/make_report.py` → `results/report/`): summary table, accuracy-vs-cost and accuracy-vs-latency plots, and the cascade's recall-vs-escalation curve.
+- **Published encoder weights:** `configs/models/deberta-hf.toml` and `modernbert-hf.toml` load the Phase 3 models from Hugging Face (`iceninja3/phishing-deberta-v3-base`, `iceninja3/phishing-modernbert-base`) at pinned revisions (checksums verified).
+
+### Result on `test_llm` (thresholds fixed on `val_llm`)
+
+Tiers chosen on validation recall at 1% FPR: TF-IDF + LR (0.935, over rules 0.037) → DeBERTa-v3 (0.890, over ModernBERT 0.856 and Laya 0.847) → Qwen3.5-4B 8-shot (0.752, over zero-shot 0.699) → Claude Sonnet 5.5 zero-shot (0.978; few-shot's 0.980 is within a point and costs more).
+
+| | Recall | FPR | Emails reaching Sonnet | $ per 1M emails | Mean latency |
+| --- | --- | --- | --- | --- | --- |
+| Cascade: TF-IDF → DeBERTa → Qwen → Sonnet | **0.986** | 1.23% | 6.2% | $122 | 259 ms |
+| Without Qwen: TF-IDF → DeBERTa → Sonnet | 0.986 | 1.16% | 8.5% | $149 | 228 ms |
+| Without DeBERTa: TF-IDF → Qwen → Sonnet | 0.988 | 1.09% | 8.5% | $148 | 380 ms |
+| Without TF-IDF: DeBERTa → Qwen → Sonnet | 0.974 | 1.59% | 7.6% | $160 | 420 ms |
+| Two tiers: TF-IDF → Sonnet | 0.990 | 0.94% | 9.9% | $150 | 253 ms |
+| Sonnet 5.5 zero-shot alone | 0.979 | 0.94% | 100% | $1,638 | 2,255 ms |
+| TF-IDF + LR alone | 0.933 | 0.80% | — | $0 | <1 ms |
+
+- **The plan's target is met on this dataset.** At the validation thresholds the cascade keeps 100.6% of Sonnet's recall with 6.2% of emails escalated, at about 7% of Sonnet's cost. TF-IDF answers 80.4% of emails, DeBERTa 11.1%, Qwen 2.3%.
+- **Its false-positive rate lands at 1.23% on test** (17 false positives against a budget of 13), having been 0.94% on validation. Held strictly to 1% FPR, as the harness reports every model (`results/cascade_*.json`), its recall is 0.967 (95% CI 0.863–0.991), which is 98.8% of Sonnet's 0.979; PR-AUC 0.995.
+- **What each extra tier buys here is cost, not accuracy:** every variant that starts with TF-IDF lands at 0.986–0.990 recall. Adding Qwen cuts the share of emails reaching Sonnet from 8.5% to 6.2%.
+- The published encoder weights reproduce Phase 3 exactly on this machine: DeBERTa-v3 0.882 (0.843–0.914), ModernBERT 0.820 (0.745–0.891), Laya 0.802 (0.669–0.879). Qwen, rerun here with the Phase 4 configs and pinned versions, gives 0.707 zero-shot and 0.713 eight-shot against the 0.711 and 0.708 measured in Phase 4; per-email scores differ by about 0.01 between the two machines.
+- **Latency figures:** in the Phase 6 tables and plots every local model (rules, TF-IDF, both encoders, Laya, Qwen) was timed on one machine, a MacBook Pro M2 Max with 32 GB, so they compare with each other; Claude latencies are API round trips. They differ from the timings quoted in the Phase 2–4 sections above, which came from other laptops: DeBERTa 110 ms here vs 328 ms, ModernBERT 28 vs 200, Laya 258 vs 1,477, Qwen 478 vs 1,097 (medians).
+- With the top tier capped at 2% of emails the cascade still reaches 0.978 recall ($30 per 1M); with no frontier tier at all, 0.967 (`results/report/cascade_curve.png`).
+- Hand-off thresholds were searched on a 30-point grid per tier. A coarser grid finds thresholds that do equally well on validation and `test_llm` but can transfer very differently to the synthetic set (see below).
+- Full table: `results/report/summary.md`.
+
+### Synthetic test set (`data/splits/synthetic-v1`)
+
+300 emails written by models that are not being benchmarked: 150 by ChatGPT and 150 by Grok, each 75 phishing and 75 legitimate. Prompts were pasted into the chat apps by hand.
+
+- **Design:** `scripts/build_synthetic_prompts.py` draws 300 specs from a fixed grid (6 phishing subtypes, 25 emails each; 11 legitimate categories, 6 of them deliberately tricky such as genuine password resets and urgent requests from a manager; tone, length, writing quality, organisation type and, for phishing, how detectable). Specs, prompts and raw replies are in `data/synthetic/`.
+- **Safety and shortcuts:** every organisation is fictional and every domain ends in `.example`, in both classes, so the domain convention cannot give the label away.
+- **Checks** (`scripts/build_synthetic.py`): all 300 present, none flagged for outside domains, placeholders, in-email disclaimers or short bodies. Labels come from the spec. `source` is the writer, so results break down per writer.
+- **Edits to the raw text:** ChatGPT addressed five emails to the project member's real name; those were replaced with fictional names. Nothing else was edited by hand.
+- **Not hand-checked by a person.** The LLM label audit and the replacements it led to are described below.
+- Grok wrote shorter than asked (median 139 words for the 220–350 band; ChatGPT 271).
+
+#### Label audit and the 9 replaced emails
+
+On 2026-11-23 six Claude subagents each read 100 emails of the first build of the set, so every email was read twice in different groupings. They saw the spec and the email, never a detector's score. Verdicts with reasons and quoted evidence: `data/synthetic/review.json`; the 15 doubted emails in full: `data/synthetic/review_flagged.md`.
+
+| Outcome on the first build | Emails |
+| --- | ---: |
+| Both reviewers: fits its label | 278 |
+| Label doubted by both reviewers | 9 |
+| Label doubted by one reviewer | 6 |
+| Label fine, quality note only (off-category, muddled payer/payee roles) | 7 |
+
+- All 15 doubted emails were labelled phishing: "malicious attachment" (9) and CEO fraud (6) emails with nothing fraudulent in the text. No legitimate email was doubted.
+- **Rule, fixed before any rescoring** (`data/synthetic/replacements.json`): an email is replaced only if both reviewers doubted its label. The same writer rewrites it to the same spec plus one rule, that the fraud must be identifiable from the text. That gave 9 replacements (3 ChatGPT, 6 Grok); the 6 doubted by one reviewer stay.
+- The replacements were reviewed the same way, mixed in with untouched emails (`data/synthetic/review_replacements.json`). Two of Grok's were doubted by both reviewers again and were rewritten once more with a stricter prompt; both reviewers passed the rewrites. Final state of the 9: 6 passed by both reviewers, 3 (ChatGPT's, where the only tell is a suffixed sender domain) passed by one and called ambiguous by the other.
+- `synthetic-v1` is the 291 unchanged emails plus those 9. Prompts for both rounds: `data/synthetic/prompts/replacements/`.
+- **Limits:** the reviewers are Claude models, the same family as two of the detectors, and the set was changed after first results were seen. The effect of the change is small for every model except the frontier ones: on the first build, recall at 1% FPR was 0.953 for both Sonnet configs (0.980 after), 0.940 for Haiku zero-shot (0.960), 0.240 for TF-IDF + LR (0.247), 0.033 for DeBERTa-v3 and 0.073 for ModernBERT (both unchanged). The first build is not kept as a separate set; its emails remain in `data/synthetic/raw/`.
+
+#### Results on `synthetic-v1` (2026-11-24, thresholds unchanged from `val_llm`)
+
+Full table and plots: `results/report/summary_synthetic.md`, `pareto_*_synthetic.png`.
+
+| Model | Recall at 1% FPR (95% CI) | Recall / FPR at validation threshold | PR-AUC | $ per 1M emails |
+| --- | --- | --- | --- | ---: |
+| Sonnet 5.5 few-shot | 0.980 (0.926–1.000) | 1.000 / 10.67% | 0.999 | $1,804 |
+| Sonnet 5.5 zero-shot | 0.980 (0.934–1.000) | 1.000 / 11.33% | 0.999 | $1,001 |
+| Haiku 5.5 zero-shot | 0.960 (0.779–0.993) | 0.960 / 0.67% | 0.998 | $52 |
+| Haiku 5.5 few-shot | 0.940 (0.897–1.000) | 0.993 / 5.33% | 0.997 | $102 |
+| Qwen3.5-4B 8-shot | 0.680 (0.604–0.768) | 0.667 / 0.67% | 0.951 | $0 |
+| Qwen3.5-4B zero-shot | 0.600 (0.511–0.707) | 0.620 / 2.00% | 0.955 | $0 |
+| Cascade (TF-IDF → DeBERTa → Qwen → Sonnet) | 0.427 (0.190–0.537) | 0.660 / 8.00% | 0.853 | $185 |
+| TF-IDF + LR | 0.247 (0.041–0.345) | 0.373 / 4.00% | 0.806 | $0 |
+| Laya | 0.153 (0.083–0.335) | 0.120 / 0.67% | 0.856 | $0 |
+| Rules | 0.113 (0.022–0.269) | 0.340 / 8.67% | 0.703 | $0 |
+| ModernBERT | 0.073 (0.000–0.221) | 0.233 / 4.00% | 0.745 | $0 |
+| DeBERTa-v3 | 0.033 (0.007–0.106) | 0.073 / 2.67% | 0.661 | $0 |
+
+Cascades with the `val_llm` thresholds (`transfer_to_synthetic` in `results/cascade_tuning.json`):
+
+| | Recall | FPR | Emails reaching Sonnet |
+| --- | --- | --- | --- |
+| TF-IDF → DeBERTa → Qwen → Sonnet | 0.660 | 8.0% | 19.3% |
+| TF-IDF → DeBERTa → Sonnet | 0.660 | 8.0% | 32.0% |
+| TF-IDF → Qwen → Sonnet | 0.927 | 8.7% | 35.7% |
+| DeBERTa → Qwen → Sonnet | 0.633 | 10.0% | 24.7% |
+| TF-IDF → Sonnet | 0.833 | 12.7% | 41.3% |
+| Sonnet 5.5 zero-shot alone | 1.000 | 11.3% | 100% |
+
+- **The cascade does not transfer.** It catches 66% of phishing here against 100% for Sonnet alone. The tiers trained on the old corpora clear phishing as legitimate before anything better sees it: DeBERTa is the worst offender, and every cascade that contains it stays at 63–66%. Adding Qwen behind DeBERTa changes nothing but the share reaching Sonnet.
+- **Without the encoder, the cascade nearly holds:** TF-IDF → Qwen → Sonnet reaches 0.927 recall at 8.7% FPR with 36% of emails escalated. That variant was not the one chosen on validation, so it is a lead for a more robust design, not a result to headline.
+- **Transfer is fragile to tuning details.** With a 16-point threshold grid instead of 30, TF-IDF → Sonnet scored 0.647 here instead of 0.833 and the four-tier cascade 0.760 instead of 0.660, with near-identical validation and `test_llm` results.
+- **Every trained model collapses:** TF-IDF + LR from 0.937 on `test_llm` to 0.247, DeBERTa-v3 from 0.882 to 0.033, ModernBERT from 0.820 to 0.073. The fine-tuned encoders do worse than the hand-written rules (0.113). They learned the old corpora, not phishing. Replacing the 9 emails changes none of this.
+- **Qwen is the only local model that survives:** 0.713 on `test_llm` and 0.680 here for eight-shot (0.707 and 0.600 zero-shot), with PR-AUC 0.95. A prompted language model, small or large, transfers to fresh phishing where the trained classifiers do not; the frontier models are still well ahead.
+- **Laya degrades more gracefully than the fine-tuned encoders, but still fails:** it ranks the synthetic emails best of the local models (PR-AUC 0.856), yet at its validation threshold it catches 12% of the phishing (0.67% FPR). Its weights were fitted on 200 validation emails, so it too is tuned to the old corpora.
+- **The frontier models hold up on ranking** (PR-AUC 0.997–0.999, no refusals; Haiku had 49–89 refusals on `test_llm`), but **their `val_llm` thresholds are too low for this set**: Sonnet zero-shot catches every phishing email and flags 17 of 150 legitimate ones, all from the tricky categories (mostly genuine security notices and genuine invoices). In the audit, both reviewers passed 16 of those 17 as legitimate.
+- **Haiku 5.5 zero-shot is the cheap model that survives:** 0.960 recall at 0.67% FPR at its validation threshold, for $52 per million emails.
+- On the 9 replacements, Sonnet scores 0.62–0.95 and Haiku 0.62–0.92; TF-IDF scores 8 of them below 0.34 and DeBERTa 8 of them below 0.08.
+- With 150 legitimate emails, 1% FPR allows one false positive, so recall at 1% FPR is coarse on this set.
+- API spend on the synthetic sets: about $0.92 in total ($0.89 for the first build, $0.03 for the replacements). Opus was not run.
+
+### Still to do
+
+- **A cascade built to survive fresh email.** The saved scores make this free to explore: a prompted model (Qwen or Haiku zero-shot) as the first or second tier in place of the trained ones, chosen on validation as before.
+- A person reading the 9 replacement emails and the 6 phishing emails one reviewer doubted. Paired significance tests (McNemar) between the cascade and Sonnet. A cheap first tier that survives the synthetic set (for example Haiku zero-shot, 0.933 recall at 0.67% FPR there) is the obvious next cascade to try.
+
+### Reproduce
+
+```bash
+S=data/splits/champa2023-v1
+python scripts/dump_scores.py --model configs/models/tfidf_lr.toml --splits $S --train train --val val_llm --score val_llm test_llm
+python scripts/dump_scores.py --model configs/models/claude-sonnet-5-5-zeroshot.toml --splits $S --val val_llm --score val_llm test_llm   # from the cache
+python scripts/tune_cascade.py
+python scripts/evaluate.py --model configs/models/cascade.toml --splits $S --val val_llm --test test_llm
+python scripts/make_report.py
+# synthetic set
+python scripts/dump_scores.py --model configs/models/<name>.toml --splits $S --score-splits data/splits/synthetic-v1 --score synthetic
+python scripts/evaluate.py --model configs/models/cascade.toml --splits $S --val val_llm --test-splits data/splits/synthetic-v1 --test synthetic
+python scripts/make_report.py --splits data/splits/synthetic-v1 --split synthetic
+```
+
 ## Tests
 
-87 tests passed after excluding the Laya model-download integration, with two optional integrations skipped (Claude API and Qwen GPU). Qwen’s real-model integration passed separately on Apple GPU before the corrected runs; both corrected full evaluations completed without errors. The default full suite needs Laya model weights available to run its integration test.
+86 unit tests pass with one optional integration skipped (Qwen GPU), run as named modules with `HF_HUB_OFFLINE=1`: metrics, harness, rules, TF-IDF, Laya calibration, encoders, LLM detectors, Qwen, cascade, replay and threshold tuning. The Laya integration test downloads the model and was not run.
 
 ## Known issues to carry forward
 
@@ -176,4 +301,4 @@ To rerun (needs `ANTHROPIC_API_KEY`; cached responses are reused for free): see 
 
 ## Next
 
-Proceed to Phase 6 (cascade and report).
+Finish Phase 6 ("Still to do" above), then the presentation.

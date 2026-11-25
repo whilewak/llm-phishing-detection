@@ -9,3 +9,4 @@ data/cache/
 checkpoints/
 .env
 data/models/
+.venv-qwen/

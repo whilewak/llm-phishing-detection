@@ -1,0 +1,19 @@
+{
+ "rule": "An email is replaced only if both independent reviewers doubted its label (data/synthetic/review.json). The replacement is written by the same writer to the same spec plus one rule: the fraud must be identifiable from the email text. Fixed on 2026-11-24, before any model was scored on the replacements. A second and final round on 2026-11-24 rewrote the two replacements that both reviewers again doubted; that prompt also required the organisation to be named, a lookalike sender domain and a false pretext for opening the attachment.",
+ "prompts": "data/synthetic/prompts/replacements/",
+ "replaced": {
+  "syn-chatgpt-015-r1": "syn-chatgpt-015",
+  "syn-chatgpt-037-r1": "syn-chatgpt-037",
+  "syn-chatgpt-062-r1": "syn-chatgpt-062",
+  "syn-grok-033-r1": "syn-grok-033",
+  "syn-grok-040-r1": "syn-grok-040",
+  "syn-grok-075-r1": "syn-grok-075",
+  "syn-grok-144-r1": "syn-grok-144",
+  "syn-grok-073-r2": "syn-grok-073",
+  "syn-grok-085-r2": "syn-grok-085"
+ },
+ "superseded": {
+  "syn-grok-073-r1": "both reviewers still found it ambiguous (data/synthetic/review_replacements.json); rewritten once more as syn-grok-073-r2",
+  "syn-grok-085-r1": "both reviewers still found it ambiguous; rewritten once more as syn-grok-085-r2"
+ }
+}
