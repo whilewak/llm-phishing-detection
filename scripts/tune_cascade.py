@@ -136,14 +136,19 @@ def main(argv: list[str] | None = None) -> int:
         list(y["val_llm"]), list(last_tier_scores(data["val_llm"][ref_i]["score"], y["val_llm"])), MAX_FPR)
     ref_test = apply([], data["test_llm"][ref_i]["score"], y["test_llm"], [], ref_val_t)
 
+    # Ablations at the target cap: first tier straight to the top tier, and the cascade with each
+    # single tier removed. Same grid as the main search, so they are directly comparable.
     ablations = {}
     if len(chosen) > 2:
-        for idx in ([0, full[-1]], full[1:]):
-            ablations[" -> ".join(chosen[i] for i in idx)] = run(idx, caps=(TARGET_SHARE,)).get(TARGET_SHARE)
+        subsets = [[0, full[-1]]] + [[i for i in full if i != j] for j in full[:-1]]
+        for idx in subsets:
+            name = " -> ".join(chosen[i] for i in idx)
+            if name not in ablations:
+                ablations[name] = run(idx, caps=(TARGET_SHARE,)).get(TARGET_SHARE)
 
     # Transfer check: the same fixed thresholds on the LLM-written sets (never used for any choice).
     transfer: dict[str, dict] = {}
-    for set_name, split in (("synthetic-v1", "synthetic"), ("synthetic-old", "synthetic-old")):
+    for set_name, split in (("synthetic-v1", "synthetic"),):
         syn_dir = ROOT / "data" / "splits" / set_name
         if not (syn_dir / "manifest.json").exists() or not all(load(args.scores, m, split) for m in chosen):
             continue

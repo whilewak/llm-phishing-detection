@@ -1,6 +1,6 @@
 {
   "model": "cascade",
-  "timestamp": "2026-11-24T17:10:17+00:00",
+  "timestamp": "2026-11-24T22:55:54+00:00",
   "config": {
     "path": "configs/models/cascade.toml",
     "detector": {
@@ -41,6 +41,19 @@
           },
           {
             "class": "phishbench.detectors.replay:ReplayDetector",
+            "low": 0.006692850924284856,
+            "high": 0.9241418199787566,
+            "params": {
+              "name": "qwen3.5-4b-8shot-shared-v1",
+              "score_files": [
+                "results/scores/qwen3.5-4b-8shot-shared-v1__synthetic.json",
+                "results/scores/qwen3.5-4b-8shot-shared-v1__test_llm.json",
+                "results/scores/qwen3.5-4b-8shot-shared-v1__val_llm.json"
+              ]
+            }
+          },
+          {
+            "class": "phishbench.detectors.replay:ReplayDetector",
             "params": {
               "name": "claude-sonnet-5-5-zeroshot",
               "score_files": [
@@ -61,9 +74,9 @@
     "data_ref": {
       "splits": "data/splits/champa2023-v1",
       "version": "champa2023-v1",
-      "test_splits": "data/splits/synthetic-old",
-      "test_version": "synthetic-old",
-      "test": "synthetic-old",
+      "test_splits": "data/splits/synthetic-v1",
+      "test_version": "synthetic-v1",
+      "test": "synthetic",
       "val": "val_llm",
       "train": null
     }
@@ -88,7 +101,7 @@
         "phishing": 150,
         "legitimate": 150
       },
-      "fingerprint": "565dc11681a07432126295ba7670eb8bce285ba24d3b57ec7e0c358b7494f8d7"
+      "fingerprint": "e7b81672743dde7c17a082e4d70cab6779af1ef98acdc29ef480141a6c21d173"
     }
   },
   "threshold": {
@@ -102,22 +115,22 @@
     "rule": "always counted wrong: a miss if phishing, a false positive if not"
   },
   "score_ties": {
-    "tie_share": 0.31
+    "tie_share": 0.26
   },
   "calibration": {
-    "ece": 0.29115014647550647
+    "ece": 0.25011014310503366
   },
   "speed": {
-    "latency_ms_p50": 27.490275107847992,
-    "latency_ms_p95": 2237.279293050815,
-    "latency_ms_mean": 624.0289547969851,
-    "throughput_per_s": 529450.7153751337,
+    "latency_ms_p50": 25.670978231428307,
+    "latency_ms_p95": 2468.989771766792,
+    "latency_ms_mean": 495.71928917765035,
+    "throughput_per_s": 509121.76547959907,
     "batch_size": 2500,
     "warmup_calls": 0
   },
   "inference_cost_usd": {
-    "total": 0.092938,
-    "per_million_emails": 309.79333333333335
+    "total": 0.0554484,
+    "per_million_emails": 184.828
   },
   "training_cost": {
     "wall_clock_s": 0.0,
@@ -127,7 +140,7 @@
     "n_train_emails": 0
   },
   "resources": {
-    "peak_rss_mb": 1574.5,
+    "peak_rss_mb": 1575.703125,
     "gpu": null
   },
   "environment": {
@@ -142,39 +155,39 @@
       "anthropic": "2.8.0",
       "pydantic": "2.14.3"
     },
-    "git_commit": "d14f8768a37d5ce2e31d223e01468247dd99c3bf-dirty"
+    "git_commit": "07c52a0162c87b82b70f1e187be3cd2d919d7e54-dirty"
   },
   "detection": {
     "headline_recall_at_fpr": {
       "max_fpr": 0.01,
-      "recall": 0.24,
+      "recall": 0.4266666666666667,
       "ci95": [
-        0.04081632653061224,
-        0.3312883435582822
+        0.1895424836601307,
+        0.5374149659863946
       ],
       "threshold": 0.961126452076544
     },
     "secondary_recall_at_fpr": {
       "max_fpr": 0.001,
-      "recall": 0.06666666666666667,
+      "recall": 0.24,
       "ci95": [
-        0.033112582781456956,
-        0.2987012987012987
+        0.176056338028169,
+        0.4935064935064935
       ],
       "threshold": 0.9855470360662659
     },
-    "pr_auc": 0.8215885867493412,
+    "pr_auc": 0.8529177193271505,
     "at_chosen_threshold": {
       "threshold": 0.47333333333333333,
-      "tp": 100,
+      "tp": 99,
       "fp": 12,
       "tn": 138,
-      "fn": 50,
-      "precision": 0.8928571428571429,
-      "recall": 0.6666666666666666,
-      "f1": 0.7633587786259541,
+      "fn": 51,
+      "precision": 0.8918918918918919,
+      "recall": 0.66,
+      "f1": 0.7586206896551725,
       "false_positive_rate": 0.08,
-      "precision_at_0.01_prevalence": 0.07763975155279502
+      "precision_at_0.01_prevalence": 0.07692307692307693
     },
     "by_source": {
       "chatgpt": {
@@ -185,7 +198,7 @@
           "false_positive_rate": 0.02666666666666667
         },
         "at_headline_threshold": {
-          "recall": 0.17333333333333334,
+          "recall": 0.44,
           "false_positive_rate": 0.0
         }
       },
@@ -193,11 +206,11 @@
         "n_phishing": 75,
         "n_not_phishing": 75,
         "at_chosen_threshold": {
-          "recall": 0.7066666666666667,
+          "recall": 0.6933333333333334,
           "false_positive_rate": 0.13333333333333333
         },
         "at_headline_threshold": {
-          "recall": 0.30666666666666664,
+          "recall": 0.41333333333333333,
           "false_positive_rate": 0.013333333333333334
         }
       },
@@ -205,11 +218,11 @@
         "n_phishing": 150,
         "n_not_phishing": 150,
         "at_chosen_threshold": {
-          "recall": 0.6666666666666666,
+          "recall": 0.66,
           "false_positive_rate": 0.08
         },
         "at_headline_threshold": {
-          "recall": 0.24,
+          "recall": 0.4266666666666667,
           "false_positive_rate": 0.006666666666666667
         }
       }
@@ -219,15 +232,15 @@
     {
       "id": "syn-chatgpt-001",
       "label": "phishing",
-      "score": 0.6566666666666666,
-      "model_label": null,
-      "latency_ms": 2233.3883575844084,
-      "cost_usd": 0.003002,
+      "score": 0.9953121243189181,
+      "model_label": "phishing",
+      "latency_ms": 6290.115857580167,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.97
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.9859363729567544
       }
     },
     {
@@ -235,11 +248,11 @@
       "label": "legitimate",
       "score": 0.4066666666666667,
       "model_label": null,
-      "latency_ms": 2391.608233585066,
+      "latency_ms": 2998.2982335855922,
       "cost_usd": 0.002858,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.22
       }
@@ -387,15 +400,15 @@
     {
       "id": "syn-chatgpt-013",
       "label": "phishing",
-      "score": 0.6566666666666666,
-      "model_label": null,
-      "latency_ms": 1758.5653155907494,
-      "cost_usd": 0.002192,
+      "score": 0.9993577551122241,
+      "model_label": "phishing",
+      "latency_ms": 345.0683995793952,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.97
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.9980732653366725
       }
     },
     {
@@ -413,17 +426,17 @@
       }
     },
     {
-      "id": "syn-chatgpt-015",
+      "id": "syn-chatgpt-015-r1",
       "label": "phishing",
-      "score": 0.002383602001938279,
+      "score": 0.0008402496059903205,
       "model_label": "legitimate",
-      "latency_ms": 0.08135583004332148,
+      "latency_ms": 0.08224332996178418,
       "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 1,
         "exit_model": "tfidf-lr",
-        "tier_score": 0.0071508060058148365
+        "tier_score": 0.0025207488179709615
       }
     },
     {
@@ -445,11 +458,11 @@
       "label": "legitimate",
       "score": 0.37333333333333335,
       "model_label": null,
-      "latency_ms": 2125.049654135728,
+      "latency_ms": 2409.0389461358427,
       "cost_usd": 0.0007612000000000001,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.12
       }
@@ -459,11 +472,11 @@
       "label": "legitimate",
       "score": 0.37333333333333335,
       "model_label": null,
-      "latency_ms": 1371.8690711426461,
+      "latency_ms": 2002.775529142673,
       "cost_usd": 0.0014612,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.12
       }
@@ -471,15 +484,15 @@
     {
       "id": "syn-chatgpt-019",
       "label": "legitimate",
-      "score": 0.3466666666666667,
-      "model_label": null,
-      "latency_ms": 1755.1470301437803,
-      "cost_usd": 0.0006532,
+      "score": 0.0019703562854145986,
+      "model_label": "legitimate",
+      "latency_ms": 299.35732114299753,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.04
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.005911068856243796
       }
     },
     {
@@ -541,15 +554,15 @@
     {
       "id": "syn-chatgpt-024",
       "label": "phishing",
-      "score": 0.66,
-      "model_label": null,
-      "latency_ms": 8139.364863137962,
-      "cost_usd": 0.0012952,
+      "score": 0.9986432874280347,
+      "model_label": "phishing",
+      "latency_ms": 638.1010301416609,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.98
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.995929862284104
       }
     },
     {
@@ -571,11 +584,11 @@
       "label": "phishing",
       "score": 0.6566666666666666,
       "model_label": null,
-      "latency_ms": 2224.672821135391,
+      "latency_ms": 2848.5546131356386,
       "cost_usd": 0.0014032,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.97
       }
@@ -641,11 +654,11 @@
       "label": "legitimate",
       "score": 0.37333333333333335,
       "model_label": null,
-      "latency_ms": 1740.0213631368388,
+      "latency_ms": 2026.879613136407,
       "cost_usd": 0.0006852000000000001,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.12
       }
@@ -653,15 +666,15 @@
     {
       "id": "syn-chatgpt-032",
       "label": "legitimate",
-      "score": 0.3466666666666667,
-      "model_label": null,
-      "latency_ms": 2877.293863133309,
-      "cost_usd": 0.0014592000000000001,
+      "score": 0.0015365240597914028,
+      "model_label": "legitimate",
+      "latency_ms": 697.3741541420168,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.04
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.004609572179374208
       }
     },
     {
@@ -711,27 +724,27 @@
       "label": "legitimate",
       "score": 0.37333333333333335,
       "model_label": null,
-      "latency_ms": 3053.455670767653,
+      "latency_ms": 3338.004754767644,
       "cost_usd": 0.0007132000000000001,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.12
       }
     },
     {
-      "id": "syn-chatgpt-037",
+      "id": "syn-chatgpt-037-r1",
       "label": "phishing",
-      "score": 0.016402382403612137,
-      "model_label": "legitimate",
-      "latency_ms": 66.02343651695264,
-      "cost_usd": 0.0,
+      "score": 0.5733333333333334,
+      "model_label": null,
+      "latency_ms": 1416.5874617652662,
+      "cost_usd": 0.0008112000000000001,
       "error": null,
       "details": {
-        "exit_tier": 2,
-        "exit_model": "deberta-v3-base",
-        "tier_score": 0.04920714721083641
+        "exit_tier": 4,
+        "exit_model": "claude-sonnet-5-5-zeroshot",
+        "tier_score": 0.72
       }
     },
     {
@@ -793,29 +806,29 @@
     {
       "id": "syn-chatgpt-042",
       "label": "legitimate",
-      "score": 0.3433333333333333,
-      "model_label": null,
-      "latency_ms": 2443.556669760801,
-      "cost_usd": 0.0005872000000000001,
+      "score": 0.0005003940855789972,
+      "model_label": "legitimate",
+      "latency_ms": 305.19116976811347,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.03
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.0015011822567369915
       }
     },
     {
       "id": "syn-chatgpt-043",
       "label": "phishing",
-      "score": 0.6533333333333333,
-      "model_label": null,
-      "latency_ms": 2161.0746707698127,
-      "cost_usd": 0.0007052,
+      "score": 0.9971408381954294,
+      "model_label": "phishing",
+      "latency_ms": 351.0434207679282,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.96
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.991422514586288
       }
     },
     {
@@ -879,11 +892,11 @@
       "label": "phishing",
       "score": 0.6533333333333333,
       "model_label": null,
-      "latency_ms": 1911.5512957756437,
+      "latency_ms": 2604.3243367763353,
       "cost_usd": 0.0014712,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.96
       }
@@ -933,15 +946,15 @@
     {
       "id": "syn-chatgpt-052",
       "label": "phishing",
-      "score": 0.6566666666666666,
-      "model_label": null,
-      "latency_ms": 1511.0878995725216,
-      "cost_usd": 0.0006272000000000001,
+      "score": 0.9990663576776263,
+      "model_label": "phishing",
+      "latency_ms": 319.5934835808657,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.97
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.9971990730328789
       }
     },
     {
@@ -961,15 +974,15 @@
     {
       "id": "syn-chatgpt-054",
       "label": "phishing",
-      "score": 0.6533333333333333,
-      "model_label": null,
-      "latency_ms": 1432.1598995844397,
-      "cost_usd": 0.0011012,
+      "score": 0.9988021324728599,
+      "model_label": "phishing",
+      "latency_ms": 565.1816495806997,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.96
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.9964063974185798
       }
     },
     {
@@ -1047,11 +1060,11 @@
       "label": "phishing",
       "score": 0.6433333333333334,
       "model_label": null,
-      "latency_ms": 3301.609232581177,
+      "latency_ms": 3792.437232581142,
       "cost_usd": 0.0011132,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.93
       }
@@ -1071,17 +1084,17 @@
       }
     },
     {
-      "id": "syn-chatgpt-062",
+      "id": "syn-chatgpt-062-r1",
       "label": "phishing",
-      "score": 0.54,
-      "model_label": null,
-      "latency_ms": 6036.014040765731,
-      "cost_usd": 0.0008032,
+      "score": 0.01674174889922142,
+      "model_label": "legitimate",
+      "latency_ms": 77.53727458075446,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
-        "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.62
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.05022524669766426
       }
     },
     {
@@ -1101,15 +1114,15 @@
     {
       "id": "syn-chatgpt-064",
       "label": "phishing",
-      "score": 0.66,
-      "model_label": null,
-      "latency_ms": 1746.515316579098,
-      "cost_usd": 0.0005392000000000001,
+      "score": 0.996763841172842,
+      "model_label": "phishing",
+      "latency_ms": 308.40369158122485,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.98
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.9902915235185259
       }
     },
     {
@@ -1131,11 +1144,11 @@
       "label": "legitimate",
       "score": 0.37333333333333335,
       "model_label": null,
-      "latency_ms": 1691.9045710779756,
+      "latency_ms": 2022.6621540774431,
       "cost_usd": 0.0007752000000000001,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.12
       }
@@ -1145,11 +1158,11 @@
       "label": "legitimate",
       "score": 0.37333333333333335,
       "model_label": null,
-      "latency_ms": 1439.5590710733813,
+      "latency_ms": 1826.351279073242,
       "cost_usd": 0.0008032,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.12
       }
@@ -1187,11 +1200,11 @@
       "label": "phishing",
       "score": 0.6533333333333333,
       "model_label": null,
-      "latency_ms": 1531.7103210796631,
+      "latency_ms": 2065.5850710796585,
       "cost_usd": 0.0012032,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.96
       }
@@ -1213,15 +1226,15 @@
     {
       "id": "syn-chatgpt-072",
       "label": "phishing",
-      "score": 0.6566666666666666,
-      "model_label": null,
-      "latency_ms": 1430.0076550822268,
-      "cost_usd": 0.0006832,
+      "score": 0.9984634759402087,
+      "model_label": "phishing",
+      "latency_ms": 299.42040508067294,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.97
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.9953904278206259
       }
     },
     {
@@ -1229,11 +1242,11 @@
       "label": "legitimate",
       "score": 0.37333333333333335,
       "model_label": null,
-      "latency_ms": 1490.060821084262,
+      "latency_ms": 1777.831488083939,
       "cost_usd": 0.0006772000000000001,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.12
       }
@@ -1241,29 +1254,29 @@
     {
       "id": "syn-chatgpt-074",
       "label": "phishing",
-      "score": 0.6533333333333333,
-      "model_label": null,
-      "latency_ms": 1373.9316550741933,
-      "cost_usd": 0.0013212,
+      "score": 0.9932225488857803,
+      "model_label": "phishing",
+      "latency_ms": 640.5653210800665,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.96
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.9796676466573412
       }
     },
     {
       "id": "syn-chatgpt-075",
       "label": "phishing",
-      "score": 0.6533333333333333,
-      "model_label": null,
-      "latency_ms": 1369.5886540768697,
-      "cost_usd": 0.0014532,
+      "score": 0.996763841172842,
+      "model_label": "phishing",
+      "latency_ms": 679.610071080424,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.96
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.9902915235185259
       }
     },
     {
@@ -1297,15 +1310,15 @@
     {
       "id": "syn-chatgpt-078",
       "label": "phishing",
-      "score": 0.6533333333333333,
-      "model_label": null,
-      "latency_ms": 1871.9134040835343,
-      "cost_usd": 0.0006012000000000001,
+      "score": 0.9982599581021473,
+      "model_label": "phishing",
+      "latency_ms": 290.55644708078034,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.96
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.9947798743064417
       }
     },
     {
@@ -1353,15 +1366,15 @@
     {
       "id": "syn-chatgpt-082",
       "label": "phishing",
-      "score": 0.6533333333333333,
-      "model_label": null,
-      "latency_ms": 1884.6978083889553,
-      "cost_usd": 0.0014812,
+      "score": 0.9932225488857803,
+      "model_label": "phishing",
+      "latency_ms": 748.8093503921846,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.96
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.9796676466573412
       }
     },
     {
@@ -1397,11 +1410,11 @@
       "label": "phishing",
       "score": 0.6533333333333333,
       "model_label": null,
-      "latency_ms": 1972.1106413922826,
+      "latency_ms": 2559.3834323923147,
       "cost_usd": 0.0013512,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.96
       }
@@ -1481,11 +1494,11 @@
       "label": "phishing",
       "score": 0.6433333333333334,
       "model_label": null,
-      "latency_ms": 1246.0022673909407,
+      "latency_ms": 1701.6909343907173,
       "cost_usd": 0.0010252,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.93
       }
@@ -1523,11 +1536,11 @@
       "label": "legitimate",
       "score": 0.37333333333333335,
       "model_label": null,
-      "latency_ms": 2026.6058503908425,
+      "latency_ms": 2311.5185583916173,
       "cost_usd": 0.0006772000000000001,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.12
       }
@@ -1549,15 +1562,15 @@
     {
       "id": "syn-chatgpt-096",
       "label": "phishing",
-      "score": 0.6566666666666666,
-      "model_label": null,
-      "latency_ms": 1664.986267394488,
-      "cost_usd": 0.0008332000000000001,
+      "score": 0.996763841172842,
+      "model_label": "phishing",
+      "latency_ms": 395.5081833924851,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.97
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.9902915235185259
       }
     },
     {
@@ -1607,11 +1620,11 @@
       "label": "legitimate",
       "score": 0.36000000000000004,
       "model_label": null,
-      "latency_ms": 1431.2319855067472,
+      "latency_ms": 1810.3470685069624,
       "cost_usd": 0.0008512000000000001,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.08
       }
@@ -1633,15 +1646,15 @@
     {
       "id": "syn-chatgpt-102",
       "label": "phishing",
-      "score": 0.6533333333333333,
-      "model_label": null,
-      "latency_ms": 1644.1514905069198,
-      "cost_usd": 0.0011252,
+      "score": 0.998942439052505,
+      "model_label": "phishing",
+      "latency_ms": 542.2824905168454,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.96
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.9968273171575148
       }
     },
     {
@@ -1675,29 +1688,29 @@
     {
       "id": "syn-chatgpt-105",
       "label": "phishing",
-      "score": 0.6466666666666666,
-      "model_label": null,
-      "latency_ms": 1462.7956565287604,
-      "cost_usd": 0.0007352000000000001,
+      "score": 0.9875577042186235,
+      "model_label": "phishing",
+      "latency_ms": 341.5938245176221,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.94
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.9626731126558706
       }
     },
     {
       "id": "syn-chatgpt-106",
       "label": "phishing",
-      "score": 0.6566666666666666,
-      "model_label": null,
-      "latency_ms": 1417.2692405169073,
-      "cost_usd": 0.0018072000000000001,
+      "score": 0.9953121243189181,
+      "model_label": "phishing",
+      "latency_ms": 840.6552405172988,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.97
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.9859363729567544
       }
     },
     {
@@ -1789,11 +1802,11 @@
       "label": "legitimate",
       "score": 0.37333333333333335,
       "model_label": null,
-      "latency_ms": 1291.1263752699597,
+      "latency_ms": 1828.045208270487,
       "cost_usd": 0.0010972,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.12
       }
@@ -1817,11 +1830,11 @@
       "label": "legitimate",
       "score": 0.36000000000000004,
       "model_label": null,
-      "latency_ms": 1547.7258342667483,
+      "latency_ms": 2028.6152922668407,
       "cost_usd": 0.0010632,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.08
       }
@@ -1873,11 +1886,11 @@
       "label": "legitimate",
       "score": 0.3666666666666667,
       "model_label": null,
-      "latency_ms": 1657.3940432659583,
+      "latency_ms": 1986.6394602655419,
       "cost_usd": 0.0007832000000000001,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.1
       }
@@ -1927,15 +1940,15 @@
     {
       "id": "syn-chatgpt-123",
       "label": "legitimate",
-      "score": 0.3433333333333333,
-      "model_label": null,
-      "latency_ms": 1944.703126262175,
-      "cost_usd": 0.0005292000000000001,
+      "score": 0.0005669074704784293,
+      "model_label": "legitimate",
+      "latency_ms": 266.733834266779,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.03
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.001700722411435288
       }
     },
     {
@@ -1997,29 +2010,29 @@
     {
       "id": "syn-chatgpt-128",
       "label": "phishing",
-      "score": 0.66,
-      "model_label": null,
-      "latency_ms": 2325.036334260949,
-      "cost_usd": 0.0015272,
+      "score": 0.9988021324728599,
+      "model_label": "phishing",
+      "latency_ms": 822.1977512672311,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.98
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.9964063974185798
       }
     },
     {
       "id": "syn-chatgpt-129",
       "label": "phishing",
-      "score": 0.65,
-      "model_label": null,
-      "latency_ms": 2340.1989387635695,
-      "cost_usd": 0.0006372000000000001,
+      "score": 0.998942439052505,
+      "model_label": "phishing",
+      "latency_ms": 336.84552176655416,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.95
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.9968273171575148
       }
     },
     {
@@ -2055,11 +2068,11 @@
       "label": "legitimate",
       "score": 0.35333333333333333,
       "model_label": null,
-      "latency_ms": 2704.8534807687247,
+      "latency_ms": 3211.5846897682786,
       "cost_usd": 0.0011112000000000001,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.06
       }
@@ -2111,11 +2124,11 @@
       "label": "legitimate",
       "score": 0.4066666666666667,
       "model_label": null,
-      "latency_ms": 1758.682812767438,
+      "latency_ms": 2468.989771766792,
       "cost_usd": 0.0015172,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.22
       }
@@ -2125,11 +2138,11 @@
       "label": "phishing",
       "score": 0.64,
       "model_label": null,
-      "latency_ms": 1014.7554797582416,
+      "latency_ms": 1393.7374377579545,
       "cost_usd": 0.0008792,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.92
       }
@@ -2139,11 +2152,11 @@
       "label": "phishing",
       "score": 0.6533333333333333,
       "model_label": null,
-      "latency_ms": 2700.453562763505,
+      "latency_ms": 3086.0221047638333,
       "cost_usd": 0.0009372,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.96
       }
@@ -2193,15 +2206,15 @@
     {
       "id": "syn-chatgpt-142",
       "label": "phishing",
-      "score": 0.66,
-      "model_label": null,
-      "latency_ms": 1794.1815637746913,
-      "cost_usd": 0.0010712,
+      "score": 0.998942439052505,
+      "model_label": "phishing",
+      "latency_ms": 599.4531047668715,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.98
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.9968273171575148
       }
     },
     {
@@ -2249,15 +2262,15 @@
     {
       "id": "syn-chatgpt-146",
       "label": "phishing",
-      "score": 0.6533333333333333,
-      "model_label": null,
-      "latency_ms": 1656.2413264615316,
-      "cost_usd": 0.0006852000000000001,
+      "score": 0.9984634759402087,
+      "model_label": "phishing",
+      "latency_ms": 338.33703445416177,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.96
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.9953904278206259
       }
     },
     {
@@ -2321,11 +2334,11 @@
       "label": "legitimate",
       "score": 0.54,
       "model_label": null,
-      "latency_ms": 2079.9302014489513,
+      "latency_ms": 2723.2692844487246,
       "cost_usd": 0.0012832,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.62
       }
@@ -2349,11 +2362,11 @@
       "label": "legitimate",
       "score": 0.4066666666666667,
       "model_label": null,
-      "latency_ms": 971.7120354467625,
+      "latency_ms": 1446.8618274464461,
       "cost_usd": 0.0011132,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.22
       }
@@ -2363,11 +2376,11 @@
       "label": "legitimate",
       "score": 0.4066666666666667,
       "model_label": null,
-      "latency_ms": 1261.9338264481485,
+      "latency_ms": 1645.1473684479424,
       "cost_usd": 0.0009252,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.22
       }
@@ -2517,11 +2530,11 @@
       "label": "legitimate",
       "score": 0.37333333333333335,
       "model_label": null,
-      "latency_ms": 1557.089685514802,
+      "latency_ms": 2085.996518515094,
       "cost_usd": 0.0011432,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.12
       }
@@ -2531,11 +2544,11 @@
       "label": "legitimate",
       "score": 0.3833333333333333,
       "model_label": null,
-      "latency_ms": 1608.734977527638,
+      "latency_ms": 1944.5813115276906,
       "cost_usd": 0.0007752000000000001,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.15
       }
@@ -2557,15 +2570,15 @@
     {
       "id": "syn-grok-018",
       "label": "legitimate",
-      "score": 0.3466666666666667,
-      "model_label": null,
-      "latency_ms": 1587.4938945140457,
-      "cost_usd": 0.0005992,
+      "score": 0.0007275721484483936,
+      "model_label": "legitimate",
+      "latency_ms": 261.317810518085,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.04
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.0021827164453451808
       }
     },
     {
@@ -2601,11 +2614,11 @@
       "label": "legitimate",
       "score": 0.5733333333333334,
       "model_label": null,
-      "latency_ms": 1488.0603525176411,
+      "latency_ms": 1820.5308945176512,
       "cost_usd": 0.0007792000000000001,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.72
       }
@@ -2641,15 +2654,15 @@
     {
       "id": "syn-grok-024",
       "label": "phishing",
-      "score": 0.6533333333333333,
-      "model_label": null,
-      "latency_ms": 1979.5813525066478,
-      "cost_usd": 0.0008632000000000001,
+      "score": 0.9984634759402087,
+      "model_label": "phishing",
+      "latency_ms": 356.86451951787603,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.96
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.9953904278206259
       }
     },
     {
@@ -2657,11 +2670,11 @@
       "label": "legitimate",
       "score": 0.4066666666666667,
       "model_label": null,
-      "latency_ms": 1339.7630195191596,
+      "latency_ms": 1883.423894518819,
       "cost_usd": 0.0011772,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.22
       }
@@ -2765,17 +2778,17 @@
       }
     },
     {
-      "id": "syn-grok-033",
+      "id": "syn-grok-033-r1",
       "label": "phishing",
-      "score": 0.014800426860650381,
+      "score": 0.012668036314666002,
       "model_label": "legitimate",
-      "latency_ms": 28.931503267558583,
+      "latency_ms": 0.06712332979077473,
       "cost_usd": 0.0,
       "error": null,
       "details": {
-        "exit_tier": 2,
-        "exit_model": "deberta-v3-base",
-        "tier_score": 0.04440128058195114
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.038004108943998006
       }
     },
     {
@@ -2825,11 +2838,11 @@
       "label": "phishing",
       "score": 0.64,
       "model_label": null,
-      "latency_ms": 1795.2727606367262,
+      "latency_ms": 2132.375385636442,
       "cost_usd": 0.0007892,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.92
       }
@@ -2863,17 +2876,17 @@
       }
     },
     {
-      "id": "syn-grok-040",
+      "id": "syn-grok-040-r1",
       "label": "phishing",
-      "score": 0.6066666666666666,
-      "model_label": null,
-      "latency_ms": 1861.0632532615637,
-      "cost_usd": 0.0005512000000000001,
+      "score": 0.014251676698525747,
+      "model_label": "legitimate",
+      "latency_ms": 25.515719642135082,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
-        "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.82
+        "exit_tier": 2,
+        "exit_model": "deberta-v3-base",
+        "tier_score": 0.04275503009557724
       }
     },
     {
@@ -2921,15 +2934,15 @@
     {
       "id": "syn-grok-044",
       "label": "legitimate",
-      "score": 0.36000000000000004,
-      "model_label": null,
-      "latency_ms": 1618.5877922704094,
-      "cost_usd": 0.0005972000000000001,
+      "score": 0.0011978675271400298,
+      "model_label": "legitimate",
+      "latency_ms": 218.8497932671453,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.08
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.0035936025814200896
       }
     },
     {
@@ -2963,15 +2976,15 @@
     {
       "id": "syn-grok-047",
       "label": "legitimate",
-      "score": 0.36000000000000004,
-      "model_label": null,
-      "latency_ms": 1783.5817922765273,
-      "cost_usd": 0.0006952000000000001,
+      "score": 0.0011978675271400298,
+      "model_label": "legitimate",
+      "latency_ms": 314.20820926778106,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.08
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.0035936025814200896
       }
     },
     {
@@ -2979,11 +2992,11 @@
       "label": "phishing",
       "score": 0.6266666666666666,
       "model_label": null,
-      "latency_ms": 1267.4842092688777,
+      "latency_ms": 1647.6782092691792,
       "cost_usd": 0.0008832,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.88
       }
@@ -2993,11 +3006,11 @@
       "label": "legitimate",
       "score": 0.5,
       "model_label": null,
-      "latency_ms": 1675.7655012639589,
+      "latency_ms": 1915.2522092641448,
       "cost_usd": 0.0006432,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.5
       }
@@ -3007,11 +3020,11 @@
       "label": "legitimate",
       "score": 0.37333333333333335,
       "model_label": null,
-      "latency_ms": 1400.1427922790754,
+      "latency_ms": 1737.4847092793061,
       "cost_usd": 0.0008332000000000001,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.12
       }
@@ -3063,11 +3076,11 @@
       "label": "legitimate",
       "score": 0.43333333333333335,
       "model_label": null,
-      "latency_ms": 2009.7162751006545,
+      "latency_ms": 2492.1329411007173,
       "cost_usd": 0.0010192,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.3
       }
@@ -3089,15 +3102,15 @@
     {
       "id": "syn-grok-056",
       "label": "phishing",
-      "score": 0.6466666666666666,
-      "model_label": null,
-      "latency_ms": 1633.5332751003443,
-      "cost_usd": 0.0006992000000000001,
+      "score": 0.9980296437145855,
+      "model_label": "phishing",
+      "latency_ms": 312.4102341078833,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.94
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.9940889311437562
       }
     },
     {
@@ -3119,11 +3132,11 @@
       "label": "legitimate",
       "score": 0.36000000000000004,
       "model_label": null,
-      "latency_ms": 1352.1352341157035,
+      "latency_ms": 1643.8496921162732,
       "cost_usd": 0.0007992,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.08
       }
@@ -3133,11 +3146,11 @@
       "label": "legitimate",
       "score": 0.47333333333333333,
       "model_label": null,
-      "latency_ms": 3319.363141615977,
+      "latency_ms": 3611.7610166164377,
       "cost_usd": 0.0006472,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.42
       }
@@ -3161,11 +3174,11 @@
       "label": "legitimate",
       "score": 0.48333333333333334,
       "model_label": null,
-      "latency_ms": 1317.5688926074508,
+      "latency_ms": 1557.0585596077217,
       "cost_usd": 0.0005552,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.45
       }
@@ -3215,15 +3228,15 @@
     {
       "id": "syn-grok-065",
       "label": "legitimate",
-      "score": 0.3466666666666667,
-      "model_label": null,
-      "latency_ms": 3476.338475602315,
-      "cost_usd": 0.0005292000000000001,
+      "score": 0.0005669074704784293,
+      "model_label": "legitimate",
+      "latency_ms": 208.16305860702414,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.04
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.001700722411435288
       }
     },
     {
@@ -3231,11 +3244,11 @@
       "label": "phishing",
       "score": 0.6066666666666666,
       "model_label": null,
-      "latency_ms": 3587.176767608835,
+      "latency_ms": 3869.197059608123,
       "cost_usd": 0.0006432,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.82
       }
@@ -3287,11 +3300,11 @@
       "label": "legitimate",
       "score": 0.43333333333333335,
       "model_label": null,
-      "latency_ms": 2036.3111006098188,
+      "latency_ms": 2365.112808609265,
       "cost_usd": 0.0008052000000000001,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.3
       }
@@ -3301,11 +3314,11 @@
       "label": "legitimate",
       "score": 0.37333333333333335,
       "model_label": null,
-      "latency_ms": 1303.8118925995514,
+      "latency_ms": 1695.0276425994525,
       "cost_usd": 0.0009592,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.12
       }
@@ -3313,29 +3326,29 @@
     {
       "id": "syn-grok-072",
       "label": "phishing",
-      "score": 0.6433333333333334,
-      "model_label": null,
-      "latency_ms": 1842.375850604949,
-      "cost_usd": 0.0006672000000000001,
+      "score": 0.996763841172842,
+      "model_label": "phishing",
+      "latency_ms": 318.61610060681414,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.93
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.9902915235185259
       }
     },
     {
-      "id": "syn-grok-073",
+      "id": "syn-grok-073-r2",
       "label": "phishing",
-      "score": 0.011602019214193335,
+      "score": 0.012679945024588484,
       "model_label": "legitimate",
-      "latency_ms": 0.056280420103576034,
+      "latency_ms": 0.05356417008442804,
       "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 1,
         "exit_model": "tfidf-lr",
-        "tier_score": 0.034806057642580004
+        "tier_score": 0.03803983507376545
       }
     },
     {
@@ -3353,17 +3366,17 @@
       }
     },
     {
-      "id": "syn-grok-075",
+      "id": "syn-grok-075-r1",
       "label": "phishing",
-      "score": 0.012615436067183813,
+      "score": 0.011684513340393702,
       "model_label": "legitimate",
-      "latency_ms": 40.19167360758729,
+      "latency_ms": 25.670978231428307,
       "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 2,
         "exit_model": "deberta-v3-base",
-        "tier_score": 0.03784630820155144
+        "tier_score": 0.03505354002118111
       }
     },
     {
@@ -3371,11 +3384,11 @@
       "label": "legitimate",
       "score": 0.43333333333333335,
       "model_label": null,
-      "latency_ms": 1303.166436225947,
+      "latency_ms": 1594.9177282262463,
       "cost_usd": 0.0006672000000000001,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.3
       }
@@ -3413,11 +3426,11 @@
       "label": "legitimate",
       "score": 0.43333333333333335,
       "model_label": null,
-      "latency_ms": 1304.75506122988,
+      "latency_ms": 1584.454270229653,
       "cost_usd": 0.0006492000000000001,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.3
       }
@@ -3453,15 +3466,15 @@
     {
       "id": "syn-grok-082",
       "label": "phishing",
-      "score": 0.6533333333333333,
-      "model_label": null,
-      "latency_ms": 1882.3980202194798,
-      "cost_usd": 0.0006052000000000001,
+      "score": 0.9980296437145855,
+      "model_label": "phishing",
+      "latency_ms": 266.0324782308089,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.96
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.9940889311437562
       }
     },
     {
@@ -3493,17 +3506,17 @@
       }
     },
     {
-      "id": "syn-grok-085",
+      "id": "syn-grok-085-r2",
       "label": "phishing",
-      "score": 0.0015127809786337832,
+      "score": 0.01311389957305504,
       "model_label": "legitimate",
-      "latency_ms": 0.056280420103576034,
+      "latency_ms": 0.05356417008442804,
       "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 1,
         "exit_model": "tfidf-lr",
-        "tier_score": 0.004538342935901349
+        "tier_score": 0.03934169871916512
       }
     },
     {
@@ -3537,15 +3550,15 @@
     {
       "id": "syn-grok-088",
       "label": "legitimate",
-      "score": 0.3466666666666667,
-      "model_label": null,
-      "latency_ms": 1846.464770225648,
-      "cost_usd": 0.0005892,
+      "score": 0.0017400418978527992,
+      "model_label": "legitimate",
+      "latency_ms": 266.516812231057,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.04
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.005220125693558397
       }
     },
     {
@@ -3553,11 +3566,11 @@
       "label": "phishing",
       "score": 0.6466666666666666,
       "model_label": null,
-      "latency_ms": 1516.2511032447946,
+      "latency_ms": 1709.5800612449602,
       "cost_usd": 0.0005292000000000001,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.94
       }
@@ -3623,11 +3636,11 @@
       "label": "legitimate",
       "score": 0.3833333333333333,
       "model_label": null,
-      "latency_ms": 3050.9547649924934,
+      "latency_ms": 3447.0657649925124,
       "cost_usd": 0.0008672,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.15
       }
@@ -3819,11 +3832,11 @@
       "label": "legitimate",
       "score": 0.36000000000000004,
       "model_label": null,
-      "latency_ms": 1305.1135954100027,
+      "latency_ms": 1597.8039704094408,
       "cost_usd": 0.0007052,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.08
       }
@@ -3831,15 +3844,15 @@
     {
       "id": "syn-grok-109",
       "label": "phishing",
-      "score": 0.6433333333333334,
-      "model_label": null,
-      "latency_ms": 1520.414554421077,
-      "cost_usd": 0.0009752000000000001,
+      "score": 0.997769049691905,
+      "model_label": "phishing",
+      "latency_ms": 476.1786794213913,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.93
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.9933071490757153
       }
     },
     {
@@ -3861,11 +3874,11 @@
       "label": "legitimate",
       "score": 0.36000000000000004,
       "model_label": null,
-      "latency_ms": 1305.0117204200797,
+      "latency_ms": 1548.1615534198136,
       "cost_usd": 0.0006072,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.08
       }
@@ -3873,15 +3886,15 @@
     {
       "id": "syn-grok-112",
       "label": "phishing",
-      "score": 0.6533333333333333,
-      "model_label": null,
-      "latency_ms": 2149.929928413112,
-      "cost_usd": 0.0009872000000000001,
+      "score": 0.9991757922811217,
+      "model_label": "phishing",
+      "latency_ms": 468.1586794202667,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.96
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.9975273768433653
       }
     },
     {
@@ -3943,15 +3956,15 @@
     {
       "id": "syn-grok-117",
       "label": "legitimate",
-      "score": 0.3433333333333333,
-      "model_label": null,
-      "latency_ms": 1297.8613454123115,
-      "cost_usd": 0.0005092,
+      "score": 0.0005669074704784293,
+      "model_label": "legitimate",
+      "latency_ms": 210.77967842105863,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.03
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.001700722411435288
       }
     },
     {
@@ -3973,11 +3986,11 @@
       "label": "phishing",
       "score": 0.6433333333333334,
       "model_label": null,
-      "latency_ms": 1297.8278874305397,
+      "latency_ms": 1487.4635544309422,
       "cost_usd": 0.0005312,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.93
       }
@@ -4001,11 +4014,11 @@
       "label": "legitimate",
       "score": 0.3833333333333333,
       "model_label": null,
-      "latency_ms": 1295.1744294203672,
+      "latency_ms": 1543.4486794200348,
       "cost_usd": 0.0006172,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.15
       }
@@ -4013,15 +4026,15 @@
     {
       "id": "syn-grok-122",
       "label": "legitimate",
-      "score": 0.37333333333333335,
-      "model_label": null,
-      "latency_ms": 1425.6448454196652,
-      "cost_usd": 0.0005592,
+      "score": 0.0017400418978527992,
+      "model_label": "legitimate",
+      "latency_ms": 219.90326142062258,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.12
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.005220125693558397
       }
     },
     {
@@ -4043,11 +4056,11 @@
       "label": "phishing",
       "score": 0.6566666666666666,
       "model_label": null,
-      "latency_ms": 1712.1978770554415,
+      "latency_ms": 2104.4035020557567,
       "cost_usd": 0.0008912000000000001,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.97
       }
@@ -4099,11 +4112,11 @@
       "label": "legitimate",
       "score": 0.37333333333333335,
       "model_label": null,
-      "latency_ms": 1283.1223350329674,
+      "latency_ms": 2006.648418033219,
       "cost_usd": 0.0014412000000000001,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.12
       }
@@ -4113,11 +4126,11 @@
       "label": "legitimate",
       "score": 0.54,
       "model_label": null,
-      "latency_ms": 1290.8239180358942,
+      "latency_ms": 1912.3434590363468,
       "cost_usd": 0.0013752,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.62
       }
@@ -4155,11 +4168,11 @@
       "label": "legitimate",
       "score": 0.35333333333333333,
       "model_label": null,
-      "latency_ms": 2237.279293050815,
+      "latency_ms": 2917.236376050678,
       "cost_usd": 0.0013552,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.06
       }
@@ -4183,11 +4196,11 @@
       "label": "phishing",
       "score": 0.6066666666666666,
       "model_label": null,
-      "latency_ms": 1270.6466690541129,
+      "latency_ms": 1600.6646280546556,
       "cost_usd": 0.0007572000000000001,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.82
       }
@@ -4239,11 +4252,11 @@
       "label": "legitimate",
       "score": 0.37333333333333335,
       "model_label": null,
-      "latency_ms": 840.2054180440609,
+      "latency_ms": 1377.1440840444848,
       "cost_usd": 0.0012212,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.12
       }
@@ -4319,17 +4332,17 @@
       }
     },
     {
-      "id": "syn-grok-144",
+      "id": "syn-grok-144-r1",
       "label": "phishing",
-      "score": 0.5733333333333334,
-      "model_label": null,
-      "latency_ms": 1283.2423151670082,
-      "cost_usd": 0.0005472000000000001,
+      "score": 0.9651792778480108,
+      "model_label": "phishing",
+      "latency_ms": 0.05356417008442804,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
-        "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.72
+        "exit_tier": 1,
+        "exit_model": "tfidf-lr",
+        "tier_score": 0.8955378335440326
       }
     },
     {
@@ -4349,15 +4362,15 @@
     {
       "id": "syn-grok-146",
       "label": "phishing",
-      "score": 0.6466666666666666,
-      "model_label": null,
-      "latency_ms": 1322.0339464204153,
-      "cost_usd": 0.0008712,
+      "score": 0.9774844362867903,
+      "model_label": "phishing",
+      "latency_ms": 415.0297374215734,
+      "cost_usd": 0.0,
       "error": null,
       "details": {
         "exit_tier": 3,
-        "exit_model": "claude-sonnet-5-5-zeroshot",
-        "tier_score": 0.94
+        "exit_model": "qwen3.5-4b-8shot-shared-v1",
+        "tier_score": 0.9324533088603709
       }
     },
     {
@@ -4365,11 +4378,11 @@
       "label": "legitimate",
       "score": 0.43333333333333335,
       "model_label": null,
-      "latency_ms": 1727.9345294262748,
+      "latency_ms": 1916.9509464271323,
       "cost_usd": 0.0005412,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.3
       }
@@ -4393,11 +4406,11 @@
       "label": "phishing",
       "score": 0.6266666666666666,
       "model_label": null,
-      "latency_ms": 1078.8349464163184,
+      "latency_ms": 1457.149571416121,
       "cost_usd": 0.0008892,
       "error": null,
       "details": {
-        "exit_tier": 3,
+        "exit_tier": 4,
         "exit_model": "claude-sonnet-5-5-zeroshot",
         "tier_score": 0.88
       }

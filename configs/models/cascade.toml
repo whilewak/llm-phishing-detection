@@ -23,6 +23,12 @@ params = { name = "deberta-v3-base", score_files = ["results/scores/deberta-v3-b
 
 [[detector.params.tiers]]
 class = "phishbench.detectors.replay:ReplayDetector"
+low = 0.006692850924284856
+high = 0.9241418199787566
+params = { name = "qwen3.5-4b-8shot-shared-v1", score_files = ["results/scores/qwen3.5-4b-8shot-shared-v1__synthetic.json", "results/scores/qwen3.5-4b-8shot-shared-v1__test_llm.json", "results/scores/qwen3.5-4b-8shot-shared-v1__val_llm.json"] }
+
+[[detector.params.tiers]]
+class = "phishbench.detectors.replay:ReplayDetector"
 params = { name = "claude-sonnet-5-5-zeroshot", score_files = ["results/scores/claude-sonnet-5-5-zeroshot__synthetic-old.json", "results/scores/claude-sonnet-5-5-zeroshot__synthetic.json", "results/scores/claude-sonnet-5-5-zeroshot__test_llm.json", "results/scores/claude-sonnet-5-5-zeroshot__val_llm.json"] }
 
 [eval]

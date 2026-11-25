@@ -9,9 +9,8 @@ its spec, and writes
     data/splits/synthetic-v1/              frozen split set with one split, `synthetic`
 
 data/synthetic/replacements.json lists emails that were replaced after review
-(new id -> the id it replaces); the replaced originals are left out. The
-original 300 are frozen separately as `synthetic-old` (`--original` rebuilds
-that set).
+(new id -> the id it replaces); the replaced originals are left out of the set
+but stay in the raw replies.
 
 Labels come from the spec. `source` is the writer, so results break down per
 writer. Nothing is ever tuned on this set.
@@ -79,8 +78,6 @@ def check_email(rec: dict, spec: dict) -> list[str]:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--version", default="synthetic-v1")
-    parser.add_argument("--original", action="store_true",
-                        help="build the original set (no replacements) as synthetic-old")
     parser.add_argument("--check", action="store_true", help="report only; write nothing")
     parser.add_argument("--allow-missing", action="store_true", help="freeze even if some specs have no email")
     args = parser.parse_args(argv)
@@ -89,9 +86,7 @@ def main(argv: list[str] | None = None) -> int:
     replaced: dict[str, str] = {}
     superseded: set[str] = set()
     split_name = "synthetic"
-    if args.original:
-        args.version = split_name = "synthetic-old"
-    elif (SYN / "replacements.json").exists():
+    if (SYN / "replacements.json").exists():
         rep = json.loads((SYN / "replacements.json").read_text(encoding="utf-8"))
         replaced, superseded = rep["replaced"], set(rep.get("superseded", {}))
     dropped = set(replaced.values()) | superseded
@@ -107,7 +102,7 @@ def main(argv: list[str] | None = None) -> int:
         problems += bad
         for rec in records:
             rid = str(rec.get("id", ""))
-            if rid in dropped or (args.original and rid.rsplit("-", 1)[-1] in ("r1", "r2")):
+            if rid in dropped:
                 continue  # not part of this set
             if rid not in specs or specs[rid]["writer"] != writer:
                 problems.append(f"{writer}/{path.name}: id {rid!r} is not one of {writer}'s specs")

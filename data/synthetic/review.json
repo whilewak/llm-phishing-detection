@@ -1,5 +1,5 @@
 {
- "note": "Label audit by six Claude subagents on 2026-11-23, two independent reads per email, blind to all detector scores. This is an LLM review, not a human hand-check. The emails reviewed are the original set, synthetic-old.",
+ "note": "Label audit by six Claude subagents on 2026-11-23, two independent reads per email, blind to all detector scores. This is an LLM review, not a human hand-check. The emails reviewed are the first build of the set, before 9 of them were replaced (data/synthetic/replacements.json); their text is in data/synthetic/raw/.",
  "emails": [
   {
    "id": "syn-chatgpt-001",
